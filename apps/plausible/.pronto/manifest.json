@@ -1,0 +1,31 @@
+{
+  "written": [
+    ".config/mise/conf.d/omnishell.toml",
+    ".github/workflows/cd.yml",
+    ".goreleaser.yaml",
+    ".say.yaml",
+    ".vscode/tasks.json",
+    "bayt.cue",
+    "bayt.json",
+    "buf.yaml",
+    "compose.yaml",
+    "docker/Caddyfile",
+    "offline-first-sw.js",
+    "robots.txt",
+    "schema/entities.proto",
+    "shell/boot.js",
+    "shell/design.css",
+    "shell/index.html",
+    "shell/screens/dash.html",
+    "shell/screens/index.html",
+    "shell/screens/log.html",
+    "shell/screens/panel.html",
+    "shell/screens/sessions.html",
+    "shell/screens/spec.html",
+    "shell/shell.css",
+    "shell/shell.json",
+    "shell/shell.yaml",
+    "sitemap.xml",
+    "tests/pairs.yaml"
+  ]
+}

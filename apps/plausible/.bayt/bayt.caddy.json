@@ -1,0 +1,979 @@
+{
+  "_generated_from": "bayt.cue (do not edit)",
+  "compose": {
+    "up": false,
+    "manual": false,
+    "build": {
+      "additional_contexts": {
+        "root": "../../.."
+      },
+      "secrets": [],
+      "args": {}
+    },
+    "environment": {
+      "ELECTRIC_SECRET": "${ELECTRIC_SECRET:-dev-electric-secret}"
+    },
+    "ports": [
+      "${CADDY_TLS_HOST_PORT:-8443}:8443"
+    ],
+    "volumes": [
+      "../.certs:/certs:ro"
+    ],
+    "depends_on": {},
+    "networks": {
+      "default": {
+        "aliases": [
+          "caddy"
+        ]
+      }
+    },
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "httpcheck",
+        "http://127.0.0.1:8080/health"
+      ],
+      "interval": "5s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "10s",
+      "start_interval": "500ms"
+    },
+    "develop": {
+      "watch": [
+        {
+          "action": "sync+restart",
+          "path": "../docker/Caddyfile",
+          "target": "/etc/caddy/Caddyfile"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/index.html",
+          "target": "/srv/shell/index.html"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/shell.css",
+          "target": "/srv/shell/shell.css"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/boot.js",
+          "target": "/srv/shell/boot.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../offline-first-sw.js",
+          "target": "/srv/offline-first-sw.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/shell.yaml",
+          "target": "/srv/shell/shell.yaml"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/shell.json",
+          "target": "/srv/shell/shell.json"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/design.css",
+          "target": "/srv/shell/design.css"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/index.html",
+          "target": "/srv/shell/screens/index.html"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/index.css",
+          "target": "/srv/shell/screens/index.css"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/dash.html",
+          "target": "/srv/shell/screens/dash.html"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/dash.css",
+          "target": "/srv/shell/screens/dash.css"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/panel.html",
+          "target": "/srv/shell/screens/panel.html"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/panel.css",
+          "target": "/srv/shell/screens/panel.css"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/sessions.html",
+          "target": "/srv/shell/screens/sessions.html"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/sessions.css",
+          "target": "/srv/shell/screens/sessions.css"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/log.html",
+          "target": "/srv/shell/screens/log.html"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/log.css",
+          "target": "/srv/shell/screens/log.css"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/spec.html",
+          "target": "/srv/shell/screens/spec.html"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/screens/spec.css",
+          "target": "/srv/shell/screens/spec.css"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/handlers/rollup.js",
+          "target": "/srv/shell/handlers/rollup.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/handlers/stitch.js",
+          "target": "/srv/shell/handlers/stitch.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../shell/shared/instrument.css",
+          "target": "/srv/shell/shared/instrument.css"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/shell.js",
+          "target": "/omnishell/interpreter/shell.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/chrome.js",
+          "target": "/omnishell/interpreter/chrome.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/screen.js",
+          "target": "/omnishell/interpreter/screen.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/fragment.js",
+          "target": "/omnishell/interpreter/fragment.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/data-sync.js",
+          "target": "/omnishell/interpreter/data-sync.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/validate.js",
+          "target": "/omnishell/interpreter/validate.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/render.js",
+          "target": "/omnishell/interpreter/render.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/hatch.js",
+          "target": "/omnishell/interpreter/hatch.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/hatch-worker.js",
+          "target": "/omnishell/interpreter/hatch-worker.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/storybook.js",
+          "target": "/omnishell/interpreter/storybook.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/jessie.js",
+          "target": "/omnishell/interpreter/jessie.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/vendor/mecha-client.js",
+          "target": "/omnishell/interpreter/vendor/mecha-client.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/vendor/js-yaml.js",
+          "target": "/omnishell/interpreter/vendor/js-yaml.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/vendor/ses.umd.min.js",
+          "target": "/omnishell/interpreter/vendor/ses.umd.min.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/interpreter/vendor/morphlex.js",
+          "target": "/omnishell/interpreter/vendor/morphlex.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../../../plugins/omnishell/components/wallclock.js",
+          "target": "/omnishell/components/wallclock.js"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../brief.html",
+          "target": "/srv/docs/brief.html"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../ir.html",
+          "target": "/srv/docs/ir.html"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../acceptance.md",
+          "target": "/srv/docs/acceptance.md"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../DESIGN.md",
+          "target": "/srv/docs/DESIGN.md"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../robots.txt",
+          "target": "/srv/robots.txt"
+        },
+        {
+          "action": "sync+restart",
+          "path": "../sitemap.xml",
+          "target": "/srv/sitemap.xml"
+        }
+      ]
+    }
+  },
+  "dockerfile": {
+    "preamble": [],
+    "preambleCopyContexts": [],
+    "from": {
+      "name": "caddy:2.9-alpine@sha256:b4e3952384eb9524a887633ce65c752dd7c71314d2c2acf98cd5c715aaa534f0"
+    },
+    "add": [],
+    "mounts": [],
+    "secrets": {},
+    "extra_hosts": [],
+    "epilogue": [],
+    "copy": [
+      {
+        "from": {
+          "name": "tarampampam/microcheck:1@sha256:79c187c05bfa67518078bf4db117771942fa8fe107dc79a905861c75ddf28dfa"
+        },
+        "srcs": [
+          "/bin/httpcheck"
+        ],
+        "dst": "/usr/local/bin/httpcheck",
+        "chmod": "755",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "docker/Caddyfile"
+        ],
+        "dst": "/etc/caddy/Caddyfile",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/index.html"
+        ],
+        "dst": "/srv/shell/index.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/shell.css"
+        ],
+        "dst": "/srv/shell/shell.css",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/boot.js"
+        ],
+        "dst": "/srv/shell/boot.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "offline-first-sw.js"
+        ],
+        "dst": "/srv/offline-first-sw.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/shell.yaml"
+        ],
+        "dst": "/srv/shell/shell.yaml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/shell.json"
+        ],
+        "dst": "/srv/shell/shell.json",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/design.css"
+        ],
+        "dst": "/srv/shell/design.css",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/index.html"
+        ],
+        "dst": "/srv/shell/screens/index.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/index.css"
+        ],
+        "dst": "/srv/shell/screens/index.css",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/dash.html"
+        ],
+        "dst": "/srv/shell/screens/dash.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/dash.css"
+        ],
+        "dst": "/srv/shell/screens/dash.css",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/panel.html"
+        ],
+        "dst": "/srv/shell/screens/panel.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/panel.css"
+        ],
+        "dst": "/srv/shell/screens/panel.css",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/sessions.html"
+        ],
+        "dst": "/srv/shell/screens/sessions.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/sessions.css"
+        ],
+        "dst": "/srv/shell/screens/sessions.css",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/log.html"
+        ],
+        "dst": "/srv/shell/screens/log.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/log.css"
+        ],
+        "dst": "/srv/shell/screens/log.css",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/spec.html"
+        ],
+        "dst": "/srv/shell/screens/spec.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/screens/spec.css"
+        ],
+        "dst": "/srv/shell/screens/spec.css",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/handlers/rollup.js"
+        ],
+        "dst": "/srv/shell/handlers/rollup.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/handlers/stitch.js"
+        ],
+        "dst": "/srv/shell/handlers/stitch.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "shell/shared/instrument.css"
+        ],
+        "dst": "/srv/shell/shared/instrument.css",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/shell.js"
+        ],
+        "dst": "/omnishell/interpreter/shell.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/chrome.js"
+        ],
+        "dst": "/omnishell/interpreter/chrome.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/screen.js"
+        ],
+        "dst": "/omnishell/interpreter/screen.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/fragment.js"
+        ],
+        "dst": "/omnishell/interpreter/fragment.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/data-sync.js"
+        ],
+        "dst": "/omnishell/interpreter/data-sync.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/validate.js"
+        ],
+        "dst": "/omnishell/interpreter/validate.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/render.js"
+        ],
+        "dst": "/omnishell/interpreter/render.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/hatch.js"
+        ],
+        "dst": "/omnishell/interpreter/hatch.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/hatch-worker.js"
+        ],
+        "dst": "/omnishell/interpreter/hatch-worker.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/storybook.js"
+        ],
+        "dst": "/omnishell/interpreter/storybook.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/jessie.js"
+        ],
+        "dst": "/omnishell/interpreter/jessie.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/vendor/mecha-client.js"
+        ],
+        "dst": "/omnishell/interpreter/vendor/mecha-client.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/vendor/js-yaml.js"
+        ],
+        "dst": "/omnishell/interpreter/vendor/js-yaml.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/vendor/ses.umd.min.js"
+        ],
+        "dst": "/omnishell/interpreter/vendor/ses.umd.min.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/interpreter/vendor/morphlex.js"
+        ],
+        "dst": "/omnishell/interpreter/vendor/morphlex.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": {
+          "name": "root"
+        },
+        "srcs": [
+          "plugins/omnishell/components/wallclock.js"
+        ],
+        "dst": "/omnishell/components/wallclock.js",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "brief.html"
+        ],
+        "dst": "/srv/docs/brief.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "ir.html"
+        ],
+        "dst": "/srv/docs/ir.html",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "acceptance.md"
+        ],
+        "dst": "/srv/docs/acceptance.md",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "DESIGN.md"
+        ],
+        "dst": "/srv/docs/DESIGN.md",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "robots.txt"
+        ],
+        "dst": "/srv/robots.txt",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      },
+      {
+        "from": null,
+        "srcs": [
+          "sitemap.xml"
+        ],
+        "dst": "/srv/sitemap.xml",
+        "link": true,
+        "parents": false,
+        "exclude": []
+      }
+    ],
+    "healthcheck": {
+      "test": [
+        "CMD",
+        "httpcheck",
+        "http://127.0.0.1:8080/health"
+      ],
+      "interval": "5s",
+      "timeout": "5s",
+      "retries": 30,
+      "start_period": "10s"
+    },
+    "expose": [],
+    "entrypoint": null,
+    "incremental": false,
+    "cmd": null
+  },
+  "name": "caddy",
+  "project": "apps_plausible",
+  "dir": "apps/plausible",
+  "activate": "",
+  "srcs": {
+    "globs": [
+      "docker/Caddyfile",
+      "shell/index.html",
+      "shell/shell.css",
+      "shell/boot.js",
+      "offline-first-sw.js",
+      "shell/shell.yaml",
+      "shell/shell.json",
+      "shell/design.css",
+      "shell/screens/index.html",
+      "shell/screens/index.css",
+      "shell/screens/dash.html",
+      "shell/screens/dash.css",
+      "shell/screens/panel.html",
+      "shell/screens/panel.css",
+      "shell/screens/sessions.html",
+      "shell/screens/sessions.css",
+      "shell/screens/log.html",
+      "shell/screens/log.css",
+      "shell/screens/spec.html",
+      "shell/screens/spec.css",
+      "shell/handlers/rollup.js",
+      "shell/handlers/stitch.js",
+      "shell/shared/instrument.css",
+      "brief.html",
+      "ir.html",
+      "acceptance.md",
+      "DESIGN.md",
+      "robots.txt",
+      "sitemap.xml"
+    ],
+    "exclude": []
+  },
+  "outs": {
+    "globs": [],
+    "exclude": []
+  },
+  "state": {
+    "globs": []
+  },
+  "env": {},
+  "synthetics": {
+    "bayt": {
+      "name": "caddy_bayt",
+      "project": "apps_plausible",
+      "dir": "apps/plausible",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          ".bayt/compose.caddy.yaml",
+          ".bayt/Dockerfile.caddy",
+          ".bayt/bayt.caddy.json",
+          ".bayt/Taskfile.yml",
+          ".bayt/Taskfile.bayt.yml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "apps/plausible/.bayt/compose.caddy.yaml"
+      ]
+    },
+    "outs": {
+      "name": "caddy_outs",
+      "project": "apps_plausible",
+      "dir": "apps/plausible",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "apps/plausible/.bayt/compose.caddy.yaml"
+      ]
+    },
+    "srcs": {
+      "name": "caddy_srcs",
+      "project": "apps_plausible",
+      "dir": "apps/plausible",
+      "activate": "",
+      "srcs": {
+        "globs": [],
+        "exclude": []
+      },
+      "outs": {
+        "globs": [
+          "docker/Caddyfile",
+          "shell/index.html",
+          "shell/shell.css",
+          "shell/boot.js",
+          "offline-first-sw.js",
+          "shell/shell.yaml",
+          "shell/shell.json",
+          "shell/design.css",
+          "shell/screens/index.html",
+          "shell/screens/index.css",
+          "shell/screens/dash.html",
+          "shell/screens/dash.css",
+          "shell/screens/panel.html",
+          "shell/screens/panel.css",
+          "shell/screens/sessions.html",
+          "shell/screens/sessions.css",
+          "shell/screens/log.html",
+          "shell/screens/log.css",
+          "shell/screens/spec.html",
+          "shell/screens/spec.css",
+          "shell/handlers/rollup.js",
+          "shell/handlers/stitch.js",
+          "shell/shared/instrument.css",
+          "brief.html",
+          "ir.html",
+          "acceptance.md",
+          "DESIGN.md",
+          "robots.txt",
+          "sitemap.xml"
+        ],
+        "exclude": []
+      },
+      "env": {},
+      "visibility": "internal",
+      "deps": [],
+      "transitiveDeps": [],
+      "transitiveCrossDeps": [],
+      "chainedDeps": [],
+      "cmds": [],
+      "cache": {
+        "full": false,
+        "similar": false
+      },
+      "upClosure": [
+        "apps/plausible/.bayt/compose.caddy.yaml"
+      ]
+    }
+  },
+  "visibility": "internal",
+  "emitsSrcs": true,
+  "deps": [],
+  "sameProjectDeps": [],
+  "transitiveDeps": [],
+  "transitiveCrossDeps": [],
+  "upClosure": [
+    "apps/plausible/.bayt/compose.caddy.yaml"
+  ],
+  "chainedDeps": [],
+  "cmds": [],
+  "cache": {
+    "full": false,
+    "similar": false
+  }
+}

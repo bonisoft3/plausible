@@ -1,0 +1,106 @@
+[
+  {
+    "id": "A1",
+    "test": "test/plausible_web/controllers/api/external_stats_controller/query_test.exs :: aggregates all metrics in a single query",
+    "cohort": "3 pageviews: v1 at +0 and +1500, v2 at +0",
+    "prefix": "anc1-",
+    "filter": null,
+    "asserts": {
+      "pageviews": 3,
+      "visits": 2,
+      "views_per_visit": 1.5,
+      "visitors": 2,
+      "bounce_rate": 50,
+      "visit_duration": 750
+    }
+  },
+  {
+    "id": "A2",
+    "test": "same file :: aggregate views_per_visit rounds to two decimal places",
+    "cohort": "5 pageviews: v1 at +0 and +1500, v2 at +0 and +1500, v3 at +0",
+    "prefix": "anc2-",
+    "filter": null,
+    "asserts": {
+      "views_per_visit": 1.67
+    }
+  },
+  {
+    "id": "A3",
+    "test": "same file :: can filter by source",
+    "cohort": "3 pageviews: v1 at +0 with source=google then +1500 with none, v2 at +0 with none",
+    "prefix": "anc3-",
+    "filter": "visit:source is google",
+    "asserts": {
+      "pageviews": 2,
+      "visitors": 1,
+      "bounce_rate": 0,
+      "visit_duration": 1500
+    }
+  },
+  {
+    "id": "A4",
+    "test": "same file :: can filter by page",
+    "cohort": "4 pageviews: v1 at +0 on / then +1500 on /blog/why, v2 at +0 on /, v3 at +0 on /blog/why",
+    "prefix": "anc4-",
+    "filter": "event:page is /blog/why",
+    "asserts": {
+      "pageviews": 2,
+      "visitors": 2,
+      "bounce_rate": 100,
+      "visit_duration": 750
+    }
+  },
+  {
+    "id": "A5",
+    "test": "same file :: does not count engagement events towards the events metric; engagement events do not affect bounce rate and visit duration",
+    "cohort": "2 hits: a pageview at +0 and an engagement at +3",
+    "prefix": "anc5-",
+    "filter": null,
+    "asserts": {
+      "events": 1,
+      "bounce_rate": 100,
+      "visit_duration": 0
+    }
+  },
+  {
+    "id": "A6",
+    "test": "same file :: visitors and visits are smeared across time:hour buckets but visit_duration is not",
+    "cohort": "15 pageviews in one local day: v1 every 20 min from 00:00 to 03:20, v2 at 01:05 and 01:10, v3 at 02:10 and 02:20",
+    "prefix": "anc6-",
+    "filter": null,
+    "asserts": [
+      {
+        "00": [
+          1,
+          1,
+          0,
+          3
+        ]
+      },
+      {
+        "01": [
+          2,
+          2,
+          300,
+          5
+        ]
+      },
+      {
+        "02": [
+          2,
+          2,
+          600,
+          5
+        ]
+      },
+      {
+        "03": [
+          1,
+          1,
+          12000,
+          2
+        ]
+      }
+    ]
+  }
+]

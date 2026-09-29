@@ -1,0 +1,1999 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Answer Set &mdash; IR</title>
+<meta name="pronto-ir-version" content="alpha">
+<meta name="pronto-source" content="brief.md">
+<meta name="pronto-brief-sha256" content="498b8251129b729624e07ff423e5dd53893f0e5655a054ba2604c14d9f3cff3d">
+<meta name="pronto-generated" content="2026-09-09">
+<meta name="pronto-compiler" content="claude-opus-5">
+<meta name="pronto-team" content="studio (plugins/pronto/teams/studio.md)">
+<meta name="pronto-cluster" content="mecha (plugins/pronto/clusters/mecha.cue)">
+<meta name="pronto-terminal" content="omnishell (plugins/pronto/terminals/omnishell.cue)">
+<meta name="pronto-loop" content="sayt (plugins/pronto/loops/sayt.cue)">
+<meta name="pronto-build" content="bayt (plugins/pronto/builders/bayt.cue)">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"
+  integrity="sha384-rbtjAdnIQE/aQJGEgXrVUlMibdfTSa4PQju4HDhN3sR2PmaKFzhEafuePsl9H/9I"
+  crossorigin="anonymous"></script>
+<script>mermaid.initialize({startOnLoad: true, theme: "neutral"});</script>
+<style>
+  :root { color-scheme: light dark; }
+  body { max-width: 62rem; margin: 2rem auto; padding: 0 1rem;
+         font: 15px/1.55 -apple-system, "Segoe UI", sans-serif; }
+  h1, h2, h3 { line-height: 1.2; }
+  table { border-collapse: collapse; margin: 0.7rem 0; }
+  th, td { border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+           padding: 0.25rem 0.6rem; text-align: left; vertical-align: top; }
+  code.cel { font: 0.85em/1.4 ui-monospace, monospace; padding: 0.05em 0.3em;
+             border-radius: 4px;
+             background: color-mix(in srgb, currentColor 8%, transparent); }
+  figure { margin: 1rem 0; }
+  figure svg { border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+               border-radius: 6px; }
+  figcaption { font-size: 0.8rem; opacity: 0.75; max-width: 215px; }
+  .storyboard { display: flex; flex-wrap: wrap; gap: 1rem; }
+  p[data-kind="test"] { border-left: 3px solid color-mix(in srgb, currentColor 30%, transparent);
+                        padding-left: 0.8rem; }
+  section[data-kind="review"] { border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+                        border-radius: 6px; padding: 0.2rem 1rem; margin: 1rem 0; }
+  .verdict { font-weight: 700; }
+
+  /* Frame palette: the app's own token values, transcribed. design.css is where
+     they are declared; this document is not a screen stylesheet, so the lint
+     that forbids a second copy of a colour does not reach here and the values
+     are spelled out. A frame drawn in a colour the app does not ship is a
+     picture of a different product. */
+  .frames text { font: 10px ui-sans-serif, sans-serif; fill: #0D1216; }
+  .frames .h { font-size: 12px; font-weight: 700; }
+  .frames .big { font-size: 15px; font-weight: 600; }
+  .frames .sect { font-size: 7px; font-weight: 700; letter-spacing: 0.08em; fill: #56626D; }
+  .frames .muted { fill: #56626D; }
+  .frames .warn { fill: #8A5A00; }
+  .frames .danger { fill: #C0261C; font-size: 8px; }
+  .frames .mono { font: 8.5px ui-monospace, monospace; }
+  .frames .num { text-anchor: end; }
+  /* instrument.css's identity map. A hue says WHICH breakdown a block is, never
+     how large a value in it is: magnitude is the LENGTH of the wash behind a
+     row's label, so nothing a filter leaves standing is ever repainted.
+     --accent is --series-1 by reference rather than a second copy of it, and is
+     one rule here for the same reason. */
+  .frames .accent, .frames [data-panel="page"] { fill: #2A78D6; }
+  .frames [data-panel="source"] { fill: #EB6834; }
+  .frames [data-panel="browser"] { fill: #1BAF7A; }
+  .frames [data-panel="entry_page"] { fill: #EDA100; }
+  .frames .wash { fill-opacity: 0.22; }
+  /* The ink that rides a filled hue, and its twin is the same value. Stated for
+     both appearances in one rule because `.frames .dark text` ties on
+     specificity and would otherwise win on order. */
+  .frames text.ink, .frames .dark text.ink { fill: #000000; }
+  /* A bounce share is a share of a divisor of its own, so it is the one
+     quantity not drawn in its panel's hue. */
+  .frames circle.ring { fill: none; stroke: #8A5A00; stroke-opacity: 0.78; stroke-width: 1.6; }
+  .frames rect.page { fill: #FFFFFF; }
+  .frames rect.ctl { fill: #FFFFFF; stroke: #C9D1D9; }
+  .frames rect.chip { fill: #E2E7EC; stroke: #C9D1D9; }
+  .frames path.columns { stroke: none; }
+  .frames .rule { stroke: #C9D1D9; stroke-width: 1; }
+  .frames .heavy { stroke: #0D1216; stroke-width: 1; }
+  .frames .dark text { fill: #EAF0F4; }
+  .frames .dark .sect, .frames .dark .muted { fill: #8B99A5; }
+  .frames .dark .accent, .frames .dark [data-panel="page"] { fill: #3987E5; }
+  .frames .dark [data-panel="source"] { fill: #D95926; }
+  .frames .dark [data-panel="browser"] { fill: #199E70; }
+  .frames .dark [data-panel="entry_page"] { fill: #C98500; }
+  .frames .dark .warn { fill: #D9A64A; }
+  .frames .dark .danger { fill: #E8837A; }
+  .frames .dark circle.ring { stroke: #D9A64A; }
+  .frames .dark rect.page { fill: #151B21; }
+  .frames .dark rect.ctl { fill: #151B21; stroke: #2A333B; }
+  .frames .dark rect.chip { fill: #1D242B; stroke: #2A333B; }
+  .frames .dark .rule { stroke: #2A333B; }
+  .frames .dark .heavy { stroke: #EAF0F4; }
+</style>
+</head>
+<body>
+
+<h1>The Answer Set &mdash; engineering design</h1>
+<p>
+Compiled from <a href="brief.md">brief.md</a> (pinned above) by the
+<a href="../../plugins/pronto/teams/studio.md">studio</a> team, onto the mecha
+cluster, the omnishell terminal, the sayt loop and the bayt build graph.
+</p>
+
+<h2 id="overview">Overview</h2>
+<p>
+A web-analytics dashboard over a checked-in log, whose correctness is decided by
+an oracle that never read its code: hand-authored SQL over the same 1 200 hits,
+plus the vendor&rsquo;s own asserted numbers transcribed from its test suite. The
+app exists to mature the language, and the way it does that is by being
+<em>gradeable</em> &mdash; every number on every screen answers a published
+question, and every published question is asked of the app by something that
+runs.
+</p>
+<p>
+Every entity takes the <code>tab</code> path
+(<a href="#decision-01">decision-01</a>), which is the load-bearing decision
+rather than a shortcut: the aggregation has to live where a fixture harness can
+execute it, and at this tier that is the <code>data-on-mutation</code> seat
+(<a href="#decision-02">decision-02</a>). Two reduces sit in it.
+<a href="#stitch">stitch</a> turns the log into visits and local hours from the
+log alone; <a href="#rollup">rollup</a> turns one cursor row into every figure,
+bucket, tick, path string, panel row and chip on the screen.
+</p>
+<p>
+The idea worth carrying up is the second one: <strong>a route parameter reaches
+arithmetic without a write</strong>. Eleven cursors are materialised, each named
+by a URL, and the reduce reads exactly one of them through a read attribute. So
+there is no overlay, no precedence branch and no discriminator to go stale
+&mdash; and the cost, which is real, is that the answerable set is finite and the
+parameter is unlintable at this tier
+(<a href="#decision-10">decision-10</a>, <a href="#decision-20">decision-20</a>).
+</p>
+
+<div class="mermaid">
+graph TD
+  Event["Event (tab)"] --&gt; stitch
+  Zone["Zone (tab)"] --&gt; stitch
+  stitch["stitch (reduce)"] --&gt; Session["Session (tab)"]
+  stitch --&gt; SessionHour["SessionHour (tab)"]
+  stitch --&gt; Corpus["Corpus (tab)"]
+  Corpus --&gt; rollup["rollup (reduce)"]
+  Session --&gt; rollup
+  SessionHour --&gt; rollup
+  Filter["Filter (tab)"] --&gt; rollup
+  FilterSet["FilterSet (tab)"] --&gt; Filter
+  Panel["Panel (tab)"] --&gt; rollup
+  Range["Range (tab)"] --&gt; rollup
+  Grain["Grain (tab)"] --&gt; rollup
+  rollup --&gt; Topline["Topline (tab)"]
+  rollup --&gt; Bucket["Bucket (tab)"]
+  rollup --&gt; Tick["Tick (tab)"]
+  rollup --&gt; Scale["Scale (tab)"]
+  rollup --&gt; Breakdown["Breakdown (tab)"]
+  rollup --&gt; Chip["Chip (tab)"]
+  rollup --&gt; Fold["Fold (tab)"]
+  Metric["Metric (tab)"] --&gt; spec
+  Question["Question (tab)"] --&gt; spec
+  Corpus --&gt; index
+  Topline --&gt; dash
+  Breakdown --&gt; panel
+  Session --&gt; sessions
+  Event --&gt; log
+  index["index (screen: /)"]
+  dash["dash (screen: /f/:preset)"]
+  panel["panel (screen: /f/:preset/:panel)"]
+  sessions["sessions (screen: /sessions)"]
+  log["log (screen: /log)"]
+  spec["spec (screen: /spec)"]
+</div>
+
+<h2 id="entities">Entities</h2>
+
+<section id="Event" data-kind="entity" data-durability="tab" data-type-id="0xba279baa3624f69b">
+<h3>Event &mdash; tab</h3>
+
+<p>The log. 1 200 hits, eight columns, sorted by <code>(epoch, id)</code>, and
+the one artifact three readers share: this app seeds it, <code>oracle.sql</code>
+reads the same file through <code>read_json_auto</code>, and the sidecar was
+written from it. Seeded and never written &mdash; nothing anywhere in this app
+writes to the log, and no screen offers to.</p>
+<p><code>interactive</code> is the hit&rsquo;s own column and never a reading of
+its name: a custom event may declare itself non-interactive and then clears no
+bounce (<a href="#decision-06">decision-06</a>).</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 8</code></td><td>pk</td></tr>
+<tr data-ordinal="2"><td>epoch</td><td>bigint</td><td><code class="cel">this &gt; 0</code></td><td>UTC seconds; the only time type in the app</td></tr>
+<tr data-ordinal="3"><td>visitor</td><td>string</td><td><code class="cel">this.size() &lt;= 16</code></td><td>the partition key the stitch groups on</td></tr>
+<tr data-ordinal="4"><td>name</td><td>string</td><td><code class="cel">this in ['pageview', 'engagement', 'signup']</code></td><td>an engagement hit is the tracker&rsquo;s liveness ping and contributes to nothing but the boundary</td></tr>
+<tr data-ordinal="5"><td>interactive</td><td>bool</td><td>&mdash;</td><td>the hit&rsquo;s own claim; what clears a bounce</td></tr>
+<tr data-ordinal="6"><td>pathname</td><td>string</td><td><code class="cel">this.size() &lt;= 40</code></td><td>twelve distinct values</td></tr>
+<tr data-ordinal="7"><td>source</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>read only at a visit&rsquo;s FIRST hit</td></tr>
+<tr data-ordinal="8"><td>browser</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>the same</td></tr>
+</table>
+</section>
+<section id="Zone" data-kind="entity" data-durability="tab" data-type-id="0xd99338a824a5da9a">
+<h3>Zone &mdash; tab</h3>
+
+<p>The site&rsquo;s clock as three integer rows. A reduce has no
+<code>Date</code> and no <code>Intl</code>, and the terminal&rsquo;s only
+formatter is pinned to UTC &mdash; so a local day is arithmetic over the row
+with the greatest <code>starts_epoch</code> at or before the instant, and never
+a rendered string (<a href="#decision-04">decision-04</a>). Three rows are
+enough because the log spans one clock change.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 16</code></td><td>pk</td></tr>
+<tr data-ordinal="2"><td>starts_epoch</td><td>bigint</td><td><code class="cel">this &gt; 0</code></td><td>when this offset takes effect</td></tr>
+<tr data-ordinal="3"><td>offset_seconds</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>added to the instant to get local seconds</td></tr>
+<tr data-ordinal="4"><td>abbr</td><td>string</td><td><code class="cel">this.size() &lt;= 8</code></td><td>CET, CEST &mdash; the reader&rsquo;s name for it</td></tr>
+</table>
+</section>
+<section id="Session" data-kind="entity" data-durability="tab" data-type-id="0xbf4c20537de4272b">
+<h3>Session &mdash; tab, written by stitch</h3>
+
+<p>The visit. Its id is <code>&lt;visitor&gt;#&lt;ord&gt;</code> because a
+reduce has no <code>post</code>: it may only write where it can name the key, so
+a visit&rsquo;s identity has to be arithmetic over the log rather than a counter
+(<a href="#decision-03">decision-03</a>).</p>
+<p>Five of these columns are the ones two implementations most easily read
+differently, and each is a rule rather than a convenience: the boundary is the
+integer 1860; the entry page is the first page <em>viewed</em>; the duration
+runs to the last non-engagement hit; a visit bounces iff it viewed at most one
+page and carried no interactive hit that was not a page view; and the
+attribution is frozen at the first hit
+(<a href="#decision-06">decision-06</a>).</p>
+<p><code>pages</code> and <code>names</code> are delimiter-fenced sets so a
+containment test cannot match across two of them.
+<a href="#rollup">rollup</a> answers a page slot about a VISIT from that column
+rather than by re-deriving the partition, which is what keeps one sessionization
+in the app.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>pk, <code>&lt;visitor&gt;#&lt;ord&gt;</code></td></tr>
+<tr data-ordinal="2"><td>visitor</td><td>string</td><td><code class="cel">this.size() &lt;= 16</code></td><td></td></tr>
+<tr data-ordinal="3"><td>ord</td><td>int32</td><td><code class="cel">this &gt;= 1</code></td><td>this visitor&rsquo;s nth visit, in log order</td></tr>
+<tr data-ordinal="4"><td>start_epoch</td><td>bigint</td><td><code class="cel">this &gt; 0</code></td><td>the first hit; what a window match is decided on</td></tr>
+<tr data-ordinal="5"><td>last_epoch</td><td>bigint</td><td><code class="cel">this &gt; 0</code></td><td>the last hit of any name, engagement included</td></tr>
+<tr data-ordinal="6"><td>start_local</td><td>string</td><td><code class="cel">this.size() &lt;= 20</code></td><td>the same instant on the site&rsquo;s clock</td></tr>
+<tr data-ordinal="7"><td>last_local</td><td>string</td><td><code class="cel">this.size() &lt;= 20</code></td><td></td></tr>
+<tr data-ordinal="8"><td>entry_page</td><td>string</td><td><code class="cel">this.size() &lt;= 40</code></td><td>the first page VIEWED; empty until one is</td></tr>
+<tr data-ordinal="9"><td>exit_page</td><td>string</td><td><code class="cel">this.size() &lt;= 40</code></td><td>the last page viewed</td></tr>
+<tr data-ordinal="10"><td>pageviews</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>hits named pageview</td></tr>
+<tr data-ordinal="11"><td>events</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>every hit except engagement</td></tr>
+<tr data-ordinal="12"><td>bounce</td><td>string</td><td><code class="cel">this in ['yes', 'no']</code></td><td>at most one page viewed AND no interactive non-pageview hit</td></tr>
+<tr data-ordinal="13"><td>duration</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>last non-engagement hit minus first; zero for a one-hit visit</td></tr>
+<tr data-ordinal="14"><td>source</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>frozen at the first hit</td></tr>
+<tr data-ordinal="15"><td>browser</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>frozen at the first hit</td></tr>
+<tr data-ordinal="16"><td>pages</td><td>string</td><td><code class="cel">this.size() &lt;= 400</code></td><td>the visit&rsquo;s page set, fenced with <code>|</code></td></tr>
+<tr data-ordinal="17"><td>names</td><td>string</td><td><code class="cel">this.size() &lt;= 200</code></td><td>the visit&rsquo;s hit-name set, fenced</td></tr>
+<tr data-ordinal="18"><td>pages_text</td><td>string</td><td><code class="cel">this.size() &lt;= 400</code></td><td>the same set in a reader&rsquo;s punctuation: a screen binds a column and cannot re-punctuate one, and <code>|/|</code> is a storage form</td></tr>
+<tr data-ordinal="19"><td>names_text</td><td>string</td><td><code class="cel">this.size() &lt;= 200</code></td><td>likewise</td></tr>
+<tr data-ordinal="20"><td>day_key</td><td>string</td><td><code class="cel">this.size() &lt;= 10</code></td><td>the local civil day the visit started on</td></tr>
+<tr data-ordinal="21"><td>week_key</td><td>string</td><td><code class="cel">this.size() &lt;= 10</code></td><td>the local Monday of that week</td></tr>
+<tr data-ordinal="22"><td>hours_n</td><td>int32</td><td><code class="cel">this &gt;= 1</code></td><td>how many SessionHour rows this visit has</td></tr>
+</table>
+</section>
+<section id="SessionHour" data-kind="entity" data-durability="tab" data-type-id="0xf391a2c3bc6a61ee">
+<h3>SessionHour &mdash; tab, written by stitch</h3>
+
+<p>One row per visit per local hour it was open in. This is the whole of why the
+hourly visit counts do not sum to the day&rsquo;s figure: at hour granularity a
+visit is counted in <em>every</em> hour it spanned, while visitors and page views
+are counted over hits. The asymmetry is graded rather than hidden
+(<a href="#decision-08">decision-08</a>).</p>
+<p>It is also what makes the spring-forward day twenty-three buckets rather than
+twenty-four with a hole: the walk steps to the next local hour boundary, and the
+hour the calendar skips is never a key.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 40</code></td><td>pk, <code>&lt;session_id&gt;@&lt;hour&gt;</code></td></tr>
+<tr data-ordinal="2"><td>session_id</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>the visit</td></tr>
+<tr data-ordinal="3"><td>bucket_key</td><td>string</td><td><code class="cel">this.size() &lt;= 16</code></td><td>the local hour, as the grid stamps it</td></tr>
+<tr data-ordinal="4"><td>ord</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>the hour&rsquo;s place within the visit</td></tr>
+</table>
+</section>
+<section id="Corpus" data-kind="entity" data-durability="tab" data-type-id="0x884ec50b9f94765a">
+<h3>Corpus &mdash; tab, written by stitch</h3>
+
+<p>The signal, not the summary. Its figures are what the front door shows, but
+its job is the wake: <a href="#stitch">stitch</a> states this row LAST, so a
+corpus write means every Session and SessionHour row of this world has already
+landed, and <a href="#rollup">rollup</a>&rsquo;s second ear rides exactly that
+edge (<a href="#decision-09">decision-09</a>). Seeded with one row of zeroes,
+because a root region whose row is missing poses <code>empty</code> for the
+whole screen.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 4</code></td><td>pk; the singleton is <code>the</code></td></tr>
+<tr data-ordinal="2"><td>hits</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="3"><td>visits</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="4"><td>visitors</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="5"><td>first_epoch</td><td>bigint</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="6"><td>last_epoch</td><td>bigint</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="7"><td>first_local</td><td>string</td><td><code class="cel">this.size() &lt;= 20</code></td><td>on the site&rsquo;s clock</td></tr>
+<tr data-ordinal="8"><td>last_local</td><td>string</td><td><code class="cel">this.size() &lt;= 20</code></td><td></td></tr>
+<tr data-ordinal="9"><td>days</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>local civil days spanned</td></tr>
+</table>
+</section>
+<section id="Fold" data-kind="entity" data-durability="tab" data-type-id="0xb9fa5abdb9fcf355">
+<h3>Fold &mdash; tab, two rows</h3>
+
+<p>Each reduce&rsquo;s own row, and the seam a refusal comes out of. There is no
+store-side predicate at this tier to put a validation in &mdash; the platform has
+three Jessie roles and none of them is a validator, and a refusal is a
+<code>NonRetriableError</code> off a mutation round trip a browser-tier
+collection never makes. So the writer guards its own writes, and a violation
+becomes ONE update patching <code>error</code> and no sink write at all
+(<a href="#decision-12">decision-12</a>).</p>
+<p>Returned, never thrown: a reduce&rsquo;s writes ARE its return value, so a
+throw loses them and the error is never written.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this in ['stitch', 'rollup']</code></td><td>pk; the id is the reduce</td></tr>
+<tr data-ordinal="2"><td>note</td><td>string</td><td><code class="cel">this.size() &lt;= 200</code></td><td>what this reduce is for, in one line</td></tr>
+<tr data-ordinal="3"><td>error</td><td>string</td><td><code class="cel">this.size() &lt;= 400</code></td><td>the row and the clause that failed, or empty</td></tr>
+</table>
+</section>
+<section id="FilterSet" data-kind="entity" data-durability="tab" data-type-id="0xaa0a90242779ec9f">
+<h3>FilterSet &mdash; tab, eleven rows, written by nothing</h3>
+
+<p>The DECLARED cursor: what a URL means. Eleven rows because eleven different
+<em>shapes</em> is what changes the arithmetic &mdash; a twelfth value of an
+existing shape changes nothing. Its id IS the <code>:preset</code> route
+parameter, which is what makes the answerable set finite and enumerated
+(<a href="#decision-10">decision-10</a>).</p>
+<p>The last two shapes exist because a cursor slot no graded number depends on is
+a fossil: without <code>entry-page</code> and <code>goal</code>, a rollup that
+never reads <code>f_entry_page</code> or <code>f_name</code> would produce
+byte-identical output on every assertion in the apparatus.</p>
+<p><code>active_bucket</code> is carried here as well as on the live cursor,
+because a reset binds every cursor column off this row and a column the reset
+cannot name is a column a reset cannot restore. It is seeded to the first point
+for the same reason every form that moves the window states it: a window holding
+fewer points than the last one has no row where the caret was standing.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>pk, and the <code>:preset</code> route parameter</td></tr>
+<tr data-ordinal="2"><td>name</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td>what the front door calls it</td></tr>
+<tr data-ordinal="3"><td>says</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td>what this shape narrows to, in a sentence</td></tr>
+<tr data-ordinal="4"><td>slots</td><td>string</td><td><code class="cel">this.size() &lt;= 80</code></td><td>the same, as the slots themselves</td></tr>
+<tr data-ordinal="5"><td>pos</td><td>int32</td><td><code class="cel">this &gt;= 1</code></td><td>the order the front door lists them in</td></tr>
+<tr data-ordinal="6"><td>range</td><td>string</td><td><code class="cel">this in ['day', '7d', '28d', 'custom_21d', 'custom_dst_day']</code></td><td>every preset opens on 28d</td></tr>
+<tr data-ordinal="7"><td>grain</td><td>string</td><td><code class="cel">this in ['hour', 'day', 'week']</code></td><td>&hellip; at day</td></tr>
+<tr data-ordinal="8"><td>as_of_epoch</td><td>bigint</td><td><code class="cel">this &gt; 0</code></td><td>the instant every relative range is measured back from</td></tr>
+<tr data-ordinal="9"><td>active_bucket</td><td>string</td><td><code class="cel">this.size() &lt;= 8</code></td><td>the point a reset puts the caret back on</td></tr>
+<tr data-ordinal="10"><td>f_page</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td>event-scoped</td></tr>
+<tr data-ordinal="11"><td>f_entry_page</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td>visit-scoped</td></tr>
+<tr data-ordinal="12"><td>f_source</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td>visit-scoped</td></tr>
+<tr data-ordinal="13"><td>f_browser</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td>visit-scoped</td></tr>
+<tr data-ordinal="14"><td>f_name</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td>event-scoped</td></tr>
+</table>
+</section>
+<section id="Filter" data-kind="entity" data-durability="tab" data-type-id="0xb342c754449e3fb8">
+<h3>Filter &mdash; tab, eleven rows, written by forms</h3>
+
+<p>The LIVE cursor: what the reader has done to it. Eleven rows, each seeded
+identical to its declared twin, and the only table any form writes.
+<a href="#rollup">rollup</a> reads exactly one of them, through
+<code>data-read-cursor</code>, so there is no overlay, no composition and
+therefore no precedence branch inside the reduce
+(<a href="#decision-10">decision-10</a>).</p>
+<p>Two tables rather than one singleton plus a discriminator, because a
+discriminator is a branch and a stale discriminator is a silently dead picker.
+Eleven independent cursors also means drilling on one preset cannot move
+another, and <code>tab</code> durability means no earlier visit&rsquo;s
+drill-down leaks into a fresh one.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>pk, equal to its FilterSet twin</td></tr>
+<tr data-ordinal="2"><td>range</td><td>string</td><td><code class="cel">this in ['day', '7d', '28d', 'custom_21d', 'custom_dst_day']</code></td><td>the range the picker states, with the granularity it opens on</td></tr>
+<tr data-ordinal="3"><td>grain</td><td>string</td><td><code class="cel">this in ['hour', 'day', 'week']</code></td><td>the granularity, moved only to a pair the Grain rows admit</td></tr>
+<tr data-ordinal="4"><td>as_of_epoch</td><td>bigint</td><td><code class="cel">this &gt; 0</code></td><td></td></tr>
+<tr data-ordinal="5"><td>active_bucket</td><td>string</td><td><code class="cel">this.size() &lt;= 8</code></td><td>which point the caret is on</td></tr>
+<tr data-ordinal="6"><td>f_page</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td>the operator rides inside the value: <code>is:</code>, <code>not:</code>, <code>has:</code>, <code>|</code></td></tr>
+<tr data-ordinal="7"><td>f_entry_page</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+<tr data-ordinal="8"><td>f_source</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+<tr data-ordinal="9"><td>f_browser</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+<tr data-ordinal="10"><td>f_name</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+</table>
+</section>
+<section id="Topline" data-kind="entity" data-durability="tab" data-type-id="0xf3ff619043f60ad2">
+<h3>Topline &mdash; tab, one row, written by rollup</h3>
+
+<p>The divisors AND the displays, side by side. A wrong divisor cannot hide
+behind a quotient that rounds the same, so <code>sessions_n</code>,
+<code>bounce_denom</code>, <code>pv_sum</code> and <code>dur_sum</code> are
+graded columns rather than intermediates
+(<a href="#decision-07">decision-07</a>).</p>
+<p>The three quotients ship a <code>_text</code> column beside their numbers
+because the ROUNDING is part of the metric definition and the graded artifact is
+the rendered string. Only <code>bounce_rate</code> restricts its divisor: under a
+page filter <code>bounce_denom</code> counts the visits that ENTERED a matching
+page, while <code>sessions_n</code> counts the visits that matched at all.</p>
+<p>It is one row and its region is a leaf slot, which is why it must be seeded:
+a slot with no row binds nothing and, decisively, does not fire.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 4</code></td><td>pk; the singleton is <code>the</code></td></tr>
+<tr data-ordinal="2"><td>visitors_n</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>distinct visitors over matching hits</td></tr>
+<tr data-ordinal="3"><td>visits_n</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>matching visits, by start instant</td></tr>
+<tr data-ordinal="4"><td>pageviews_n</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>matching hits named pageview</td></tr>
+<tr data-ordinal="5"><td>events_n</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>matching hits not named engagement; no top-line cell, a panel column</td></tr>
+<tr data-ordinal="6"><td>sessions_n</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>divides views_per_visit and visit_duration</td></tr>
+<tr data-ordinal="7"><td>bounce_denom</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>the entry-restricted count; divides bounce_rate alone</td></tr>
+<tr data-ordinal="8"><td>bounce_n</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="9"><td>pv_sum</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>NOT pageviews_n: this sums the visits that STARTED in the window</td></tr>
+<tr data-ordinal="10"><td>dur_sum</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="11"><td>visitors_text</td><td>string</td><td><code class="cel">this.size() &lt;= 12</code></td><td></td></tr>
+<tr data-ordinal="12"><td>visits_text</td><td>string</td><td><code class="cel">this.size() &lt;= 12</code></td><td></td></tr>
+<tr data-ordinal="13"><td>pageviews_text</td><td>string</td><td><code class="cel">this.size() &lt;= 12</code></td><td></td></tr>
+<tr data-ordinal="14"><td>views_per_visit_text</td><td>string</td><td><code class="cel">this.size() &lt;= 12</code></td><td>two decimals</td></tr>
+<tr data-ordinal="15"><td>bounce_rate_text</td><td>string</td><td><code class="cel">this.size() &lt;= 12</code></td><td>a whole percent</td></tr>
+<tr data-ordinal="16"><td>visit_duration_text</td><td>string</td><td><code class="cel">this.size() &lt;= 12</code></td><td>whole seconds</td></tr>
+<tr data-ordinal="19"><td>current_visitors</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>the last five minutes of the log, and the one figure no filter narrows</td></tr>
+<tr data-ordinal="20"><td>window_from</td><td>bigint</td><td><code class="cel">this &gt;= 0</code></td><td>the resolved half-open window, so the arithmetic is on screen</td></tr>
+<tr data-ordinal="21"><td>window_to</td><td>bigint</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+</table>
+</section>
+<section id="Bucket" data-kind="entity" data-durability="tab" data-type-id="0x871e0fb7227939a5">
+<h3>Bucket &mdash; tab, written by rollup</h3>
+
+<p><code>b-00</code>&hellip;<code>b-27</code>. Twenty-eight is the largest bucket
+count any legal pair produces (<code>28d</code> at day granularity), and the
+bound is stated as that maximum rather than as a round number.</p>
+<p>A bucket exists for every grid step the window intersects, whether or not a
+hit falls in it: the grid is window arithmetic, never a group-by over the data,
+and it is walked on the site&rsquo;s clock. That is what gives the day the clock
+changed twenty-three hour buckets, and a Sunday-start week the wrong count
+&mdash; which is why the four wrong readings are caught as CARDINALITY and not as
+arithmetic.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() == 4</code></td><td>pk, <code>b-NN</code></td></tr>
+<tr data-ordinal="2"><td>ord</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>the step&rsquo;s place in the grid</td></tr>
+<tr data-ordinal="3"><td>bucket_key</td><td>string</td><td><code class="cel">this.size() &lt;= 16</code></td><td>the local hour, day or Monday</td></tr>
+<tr data-ordinal="4"><td>label</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>what the axis prints</td></tr>
+<tr data-ordinal="5"><td>grain</td><td>string</td><td><code class="cel">this in ['hour', 'day', 'week']</code></td><td></td></tr>
+<tr data-ordinal="6"><td>visitors</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>over hits, at every granularity</td></tr>
+<tr data-ordinal="7"><td>visits</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>over SessionHour at hour, over start instants otherwise</td></tr>
+<tr data-ordinal="8"><td>pageviews</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>over hits</td></tr>
+<tr data-ordinal="9"><td>share</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>per mille of the domain; a fold-computed number, never a string out of the log</td></tr>
+<tr data-ordinal="10"><td>on_caret</td><td>bool</td><td></td><td>whether the caret is on this point &mdash; a column, not a projection, because a projection&rsquo;s parameter is the cursor and a region carrying one re-hydrates on every arrow press</td></tr>
+</table>
+</section>
+<section id="Tick" data-kind="entity" data-durability="tab" data-type-id="0xb47c30099578a482">
+<h3>Tick &mdash; tab, five rows, written by rollup</h3>
+
+<p>The axis. Five rows from a 1/2/5 &times; 10<sup>k</sup> rounding rule over
+<code>domain_max</code>, written once in <a href="#rollup">rollup</a> and once,
+independently, in the ground truth &mdash; so the rule is graded rather than
+trusted. <code>at</code> is a per-mille position the stylesheet reads through
+<code>calc()</code>, which is what closes the &ldquo;computed axis ticks&rdquo;
+wall (<a href="#decision-15">decision-15</a>).</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() == 3</code></td><td>pk, <code>t-N</code></td></tr>
+<tr data-ordinal="2"><td>ord</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="3"><td>value</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>the number this line stands for</td></tr>
+<tr data-ordinal="4"><td>label</td><td>string</td><td><code class="cel">this.size() &lt;= 12</code></td><td>as printed</td></tr>
+<tr data-ordinal="5"><td>at</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>per mille up the plot</td></tr>
+</table>
+</section>
+<section id="Scale" data-kind="entity" data-durability="tab" data-type-id="0x98b48a3a9b3ac28f">
+<h3>Scale &mdash; tab, one row, written by rollup</h3>
+
+<p>The chart, as two strings. <code>path_d</code> is one closed column per bucket,
+computed by the fold and bound onto an authored
+<code>&lt;svg viewBox="0 0 1000 300"&gt;</code> inside a LEAF SLOT &mdash; the
+one region kind that binds attributes and texts without sweeping its children,
+so the element is stamped once for the life of the visit
+(<a href="#decision-14">decision-14</a>).</p>
+<p>Nothing in this tree has a bound <code>d</code> yet, which is why the check
+that pins it is written before the chart is.</p>
+<p>It carries the caret too, and that is where the caret&rsquo;s arrows are bound.
+A region pinned on the point the caret is on is one the terminal clears the
+bindings of the moment the window stops holding that point &mdash; the filter
+placeholder stands there unresolved and the forms write nothing, with no error
+anywhere. This row is written on every pass, so what the arrows read is the one
+row that cannot go away, and its read interpolates nothing so no gesture
+re-hydrates it.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 4</code></td><td>pk; the singleton is <code>the</code></td></tr>
+<tr data-ordinal="2"><td>domain_max</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>the top of the plot, and what the ticks round</td></tr>
+<tr data-ordinal="3"><td>points</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>one per bucket; the path has exactly this many closed columns</td></tr>
+<tr data-ordinal="4"><td>path_d</td><td>string</td><td><code class="cel">this.size() &lt;= 4000</code></td><td>one closed column per bucket, each anchored to the axis floor</td></tr>
+<tr data-ordinal="5"><td>floor_d</td><td>string</td><td><code class="cel">this.size() &lt;= 4000</code></td><td>one mark per bucket that measured nothing, at the axis floor. A second string because a column of no height paints nothing and no live region may sit inside the &lt;svg&gt;</td></tr>
+<tr data-ordinal="6"><td>caret_point</td><td>string</td><td><code class="cel">this.size() &lt;= 4</code></td><td>the Bucket the caret is on; the readout&rsquo;s <code>aria-activedescendant</code> names its element</td></tr>
+<tr data-ordinal="7"><td>caret_label</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>as the readout prints it</td></tr>
+<tr data-ordinal="8"><td>caret_prev</td><td>string</td><td><code class="cel">this.size() &lt;= 4</code></td><td>what the left arrow writes; an end names itself, so the graph does not wrap</td></tr>
+<tr data-ordinal="9"><td>caret_next</td><td>string</td><td><code class="cel">this.size() &lt;= 4</code></td><td>and the right</td></tr>
+</table>
+</section>
+<section id="Breakdown" data-kind="entity" data-durability="tab" data-type-id="0xbec76142cdb7e0e1">
+<h3>Breakdown &mdash; tab, written by rollup</h3>
+
+<p>One row per value per panel, keyed <code>&lt;panel&gt;|&lt;value&gt;</code>.
+<code>ord</code> is the row&rsquo;s place under <code>visitors desc, dim_value
+asc</code>, and it is graded: ranked by page views instead of visitors a panel
+shows a DIFFERENT set of nine in a different order, and every number in it is
+still a number the oracle answers correctly. Selection and order are therefore on
+the oracle, not only the values (<a href="#decision-11">decision-11</a>).</p>
+<p>The five <code>set_*</code> columns are the whole cursor this row would write,
+with this panel&rsquo;s slot replaced by this row&rsquo;s value. They must be
+real columns for two independent reasons, and both are the platform&rsquo;s: a
+nested item template binds against its OWN row, so <code>{f_source}</code> inside
+a breakdown item raises <code>binding {f_source} not in row</code>; and
+<code>upsertBy</code> PATCHES, so a form naming one slot would leave the other
+four standing and a reader would walk out of the graded space in one gesture
+(<a href="#decision-13">decision-13</a>).</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 64</code></td><td>pk, <code>&lt;panel&gt;|&lt;value&gt;</code></td></tr>
+<tr data-ordinal="2"><td>panel</td><td>string</td><td><code class="cel">this in ['page', 'entry_page', 'source', 'browser']</code></td><td></td></tr>
+<tr data-ordinal="3"><td>dim_value</td><td>string</td><td><code class="cel">this.size() &lt;= 40</code></td><td></td></tr>
+<tr data-ordinal="4"><td>ord</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>visitors desc, then the value asc &mdash; the tie leg decides membership across the ninth row</td></tr>
+<tr data-ordinal="5"><td>visitors</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="6"><td>visits</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="7"><td>pageviews</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="8"><td>events</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>a panel column with no top-line cell</td></tr>
+<tr data-ordinal="9"><td>bounce_n</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="10"><td>bounce_denom</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="11"><td>sessions_n</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="12"><td>dur_sum</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td></td></tr>
+<tr data-ordinal="13"><td>bounce_rate_text</td><td>string</td><td><code class="cel">this.size() &lt;= 12</code></td><td></td></tr>
+<tr data-ordinal="14"><td>visit_duration_text</td><td>string</td><td><code class="cel">this.size() &lt;= 12</code></td><td></td></tr>
+<tr data-ordinal="15"><td>share</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>per mille of the panel&rsquo;s leader</td></tr>
+<tr data-ordinal="16"><td>arc</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>the bounce arc&rsquo;s dash length; even the picture&rsquo;s geometry is on the oracle</td></tr>
+<tr data-ordinal="17"><td>set_page</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td>the cursor this row would write</td></tr>
+<tr data-ordinal="18"><td>set_entry_page</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+<tr data-ordinal="19"><td>set_source</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+<tr data-ordinal="20"><td>set_browser</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+<tr data-ordinal="21"><td>set_name</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+</table>
+</section>
+<section id="Chip" data-kind="entity" data-durability="tab" data-type-id="0xb216f2e41cfb1e71">
+<h3>Chip &mdash; tab, written by rollup</h3>
+
+<p>One row per cursor slot in force. The id IS the slot name, because a click
+carries no payload &mdash; <code>event.id</code> is the row&rsquo;s id and
+<code>event.from</code> is the nearest ancestor DOM id &mdash; so the row id has
+to be the datum. <code>slot</code> is declared unique so a per-slot region can be
+a SLOT at all: a slot&rsquo;s filter must pin a pk, a unique field, or every
+column of a declared unique, and <code>limit=1</code> is not a witness.</p>
+<p>It carries the same five <code>set_*</code> columns as a
+<a href="#Breakdown">Breakdown</a> row, with its own slot emptied &mdash; a chip
+removal is the drill-down form run backwards.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this in ['f_page', 'f_entry_page', 'f_source', 'f_browser', 'f_name']</code></td><td>pk; the id is the slot</td></tr>
+<tr data-ordinal="2"><td>slot</td><td>string</td><td><code class="cel">this in ['f_page', 'f_entry_page', 'f_source', 'f_browser', 'f_name']</code></td><td>unique; the slot region&rsquo;s cardinality witness</td></tr>
+<tr data-ordinal="3"><td>label</td><td>string</td><td><code class="cel">this.size() &lt;= 80</code></td><td>what the chip reads</td></tr>
+<tr data-ordinal="4"><td>value</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td>the slot&rsquo;s value, operator included</td></tr>
+<tr data-ordinal="5"><td>set_page</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td>the cursor removing this chip would write</td></tr>
+<tr data-ordinal="6"><td>set_entry_page</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+<tr data-ordinal="7"><td>set_source</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+<tr data-ordinal="8"><td>set_browser</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+<tr data-ordinal="9"><td>set_name</td><td>string</td><td><code class="cel">this.size() &lt;= 60</code></td><td></td></tr>
+</table>
+</section>
+<section id="Panel" data-kind="entity" data-durability="tab" data-type-id="0xd911e6d6d3021c35">
+<h3>Panel &mdash; tab, four rows</h3>
+
+<p>Four <em>kinds</em> of dimension, not four columns. <code>on</code> is the
+column that matters: it says whether the dimension is a property of the HIT or of
+the VISIT, and that decides both how a value is grouped and how a filter on it
+matches. It is what makes <code>page</code> and <code>entry_page</code> two
+different questions rather than two spellings of one &mdash; they disagree on
+every visit that reached a page without entering there.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this in ['page', 'entry_page', 'source', 'browser']</code></td><td>pk, and the <code>:panel</code> route parameter</td></tr>
+<tr data-ordinal="2"><td>title</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td></td></tr>
+<tr data-ordinal="3"><td>note</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td>what the dimension is, in the reader&rsquo;s words</td></tr>
+<tr data-ordinal="4"><td>slot</td><td>string</td><td><code class="cel">this in ['f_page', 'f_entry_page', 'f_source', 'f_browser']</code></td><td>the cursor slot a drill-down on this panel writes</td></tr>
+<tr data-ordinal="5"><td>column</td><td>string</td><td><code class="cel">this.size() &lt;= 16</code></td><td>the column it groups on</td></tr>
+<tr data-ordinal="6"><td>on</td><td>string</td><td><code class="cel">this in ['hit', 'visit']</code></td><td>hit-scoped or visit-scoped</td></tr>
+<tr data-ordinal="7"><td>pos</td><td>int32</td><td><code class="cel">this &gt;= 1</code></td><td></td></tr>
+</table>
+</section>
+<section id="Metric" data-kind="entity" data-durability="tab" data-type-id="0xc4961ace112bb6ff">
+<h3>Metric &mdash; tab, seven rows</h3>
+
+<p>The specification, as data. <code>says</code> is the published sentence,
+<code>formula</code> is the published expression verbatim, and
+<code>reads</code> is this app&rsquo;s own wording of what it computes. They are
+three columns and they are rendered side by side, never merged: rewording the
+reading leaves the sentence alone, so a departure cannot be tidied away
+(<a href="#decision-16">decision-16</a>). This is w3caria&rsquo;s move, and it is
+the only rung in the apparatus that grades the READING rather than the
+arithmetic.</p>
+<p>Three of the seven formulas are the vendor&rsquo;s own ClickHouse
+expressions, transcribed character for character, and all four facts about a
+quotient &mdash; the zero-divisor answer, the rounding, and which divisor is
+conditional &mdash; are read off one expression each. It only works as a
+mitigation if nobody tidies it, which is why it is set as an identifier rather
+than as prose.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 20</code></td><td>pk; the seven metric names</td></tr>
+<tr data-ordinal="2"><td>says</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td>the published sentence</td></tr>
+<tr data-ordinal="3"><td>formula</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td>the published expression, verbatim and monospace</td></tr>
+<tr data-ordinal="5"><td>reads</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td>what this app computes, in its own words</td></tr>
+<tr data-ordinal="6"><td>pos</td><td>int32</td><td><code class="cel">this &gt;= 1</code></td><td></td></tr>
+</table>
+</section>
+<section id="Range" data-kind="entity" data-durability="tab" data-type-id="0xc5d96d21f63c11a7">
+<h3>Range &mdash; tab, five rows</h3>
+
+<p>Three rolling ranges and two pinned, expressed without a second table:
+<code>from_days_back</code> and <code>to_days_back</code> are counted in LOCAL
+CIVIL DAYS back from the as-of day, and one boolean says whether the upper end is
+<code>as_of</code> itself.</p>
+<p><code>back(midnight(as_of), k)</code> is a subtraction of DATES and never of
+<code>k &times; 86400</code> seconds. Across the clock change the two differ by
+an hour, and that hour holds a hit &mdash; which is why a window computed by
+multiplication gives 28d twenty-nine day buckets rather than twenty-eight. The
+fifth row is the only way a reader reaches the twenty-three-hour day on an hourly
+axis.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this in ['day', '7d', '28d', 'custom_21d', 'custom_dst_day']</code></td><td>pk</td></tr>
+<tr data-ordinal="2"><td>label</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td>what the button reads</td></tr>
+<tr data-ordinal="3"><td>from_days_back</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>civil days back from the as-of day</td></tr>
+<tr data-ordinal="4"><td>to_days_back</td><td>int32</td><td><code class="cel">this &gt;= 0</code></td><td>0 on a rolling row, where nothing reads it</td></tr>
+<tr data-ordinal="5"><td>to_is_as_of</td><td>bool</td><td>&mdash;</td><td>the app&rsquo;s one range branch, and it is one boolean in one place</td></tr>
+<tr data-ordinal="7"><td>on_cursor</td><td>bool</td><td>&mdash;</td><td>whether the live cursor stands on this range; <a href="#mark-range">mark-range</a> stamps it and the segment binds it</td></tr>
+<tr data-ordinal="8"><td>pos</td><td>int32</td><td><code class="cel">this &gt;= 1</code></td><td></td></tr>
+</table>
+</section>
+<section id="Grain" data-kind="entity" data-durability="tab" data-type-id="0xe740e5f59fcb6494">
+<h3>Grain &mdash; tab, seven rows</h3>
+
+<p>The legal <code>(range, granularity)</code> pairs, as rows. Which
+granularities a range allows is enforced by these rows and by the nested
+<code>grain?range=eq.{range}</code> region&rsquo;s filter, never by a guard: an
+illegal pair is not merely hidden, its button does not exist, so no transition
+names it and nothing has to refuse it. A rule inside a handler is not a coverage
+axis; rows are (<a href="#decision-17">decision-17</a>).</p>
+<p><code>buckets</code> is the count the grid produces, stated here so the
+cardinality assertion has something to be wrong about.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td>pk, <code>&lt;range&gt;|&lt;grain&gt;</code></td></tr>
+<tr data-ordinal="2"><td>range</td><td>string</td><td><code class="cel">this in ['day', '7d', '28d', 'custom_21d', 'custom_dst_day']</code></td><td></td></tr>
+<tr data-ordinal="3"><td>grain</td><td>string</td><td><code class="cel">this in ['hour', 'day', 'week']</code></td><td></td></tr>
+<tr data-ordinal="4"><td>buckets</td><td>int32</td><td><code class="cel">this &gt;= 1</code></td><td>15, 7, 28, 5, 21, 4, 23 &mdash; 103 in all</td></tr>
+<tr data-ordinal="5"><td>on_cursor</td><td>bool</td><td>&mdash;</td><td>whether the cursor stands on this PAIR, on both legs; <a href="#mark-grain">mark-grain</a> stamps it</td></tr>
+<tr data-ordinal="6"><td>pos</td><td>int32</td><td><code class="cel">this &gt;= 1</code></td><td></td></tr>
+</table>
+</section>
+<section id="Question" data-kind="entity" data-durability="tab" data-type-id="0xcedb40dcd7016075">
+<h3>Question &mdash; tab, 312 rows</h3>
+
+<p>The published question set, one row each, thirteen columns. <strong>No row
+carries an expected value.</strong> A seeded expected value is a golden file, and
+a golden file is not an oracle &mdash; it grades the app against a number the
+same author wrote down while looking at the app. Every number comes from the
+ground truth at run time (<a href="#decision-18">decision-18</a>).</p>
+<p><code>departs</code> is three words and each is a different kind of honesty:
+<code>no</code> is as published, <code>approximates</code> is something the
+sentence permits but does not require, and <code>declined</code> is a question
+this app does not answer at all with the cost in <code>note</code>. It is
+reflected as an attribute and styled, rather than being a
+<code>data-when</code> arm &mdash; an attribute plus CSS has neither the
+discriminant-default hazard nor a template per value.</p>
+<p>The rows themselves are transcription and land with the specification screen;
+what this rung owes is the columns and the closed vocabularies above, which is
+what the coverage anti-joins read.</p>
+<table data-extract="fields">
+<tr><th>field</th><th>type</th><th>constraint</th><th>notes</th></tr>
+<tr data-ordinal="1"><td>id</td><td>string</td><td><code class="cel">this.size() &lt;= 64</code></td><td>pk, and what a driving case cites</td></tr>
+<tr data-ordinal="2"><td>metric</td><td>string</td><td><code class="cel">this.size() &lt;= 20</code></td><td></td></tr>
+<tr data-ordinal="3"><td>panel</td><td>string</td><td><code class="cel">this.size() &lt;= 16</code></td><td>empty on a top-line question</td></tr>
+<tr data-ordinal="4"><td>dimension</td><td>string</td><td><code class="cel">this.size() &lt;= 40</code></td><td></td></tr>
+<tr data-ordinal="5"><td>range</td><td>string</td><td><code class="cel">this.size() &lt;= 20</code></td><td></td></tr>
+<tr data-ordinal="6"><td>grain</td><td>string</td><td><code class="cel">this.size() &lt;= 8</code></td><td></td></tr>
+<tr data-ordinal="7"><td>filter_set</td><td>string</td><td><code class="cel">this.size() &lt;= 24</code></td><td></td></tr>
+<tr data-ordinal="8"><td>says</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td>the published sentence, verbatim</td></tr>
+<tr data-ordinal="9"><td>reads</td><td>string</td><td><code class="cel">this.size() &gt; 0</code></td><td>this app&rsquo;s own wording; never a reworded copy</td></tr>
+<tr data-ordinal="10"><td>departs</td><td>string</td><td><code class="cel">this in ['no', 'approximates', 'declined']</code></td><td></td></tr>
+<tr data-ordinal="11"><td>expects</td><td>string</td><td><code class="cel">this in ['nonzero', 'zero-by-ifNotFinite', 'zero-by-empty-window']</code></td><td>the non-degeneracy declaration: a green run over zeroes is not a green run</td></tr>
+<tr data-ordinal="12"><td>hard_case</td><td>string</td><td><code class="cel">this.size() &lt;= 4</code></td><td>which of the ten this row is, or empty</td></tr>
+<tr data-ordinal="13"><td>note</td><td>string</td><td><code class="cel">this.size() &lt;= 600</code></td><td>why it departs, and what it would have cost not to</td></tr>
+</table>
+</section>
+
+<h2 id="screens">Screens</h2>
+
+<section id="index" data-kind="screen" data-route="/">
+<h3>index &mdash; what the log is, and the eleven ways of asking about it</h3>
+<p data-extract="reads">
+Reads: <a href="#Corpus">Corpus</a> (filter <code>id=eq.the</code>) as the root
+list-of-one, which also carries <a href="#stitch">stitch</a>&rsquo;s seat; and
+<a href="#FilterSet">FilterSet</a> (order <code>pos.asc</code>) for the eleven
+shapes, each a link to its own address. The corpus figures come from the fold,
+not from a count in the template: a template binds a column and cannot compute
+one.</p>
+<p data-extract="mutations">
+Mutations: none. Every gesture here is a navigation
+(<a href="#open-shape">open-shape</a>). <code>keep: 1</code> &mdash; returning
+from a dashboard should return to where the reader was in the list.</p>
+<div class="storyboard frames">
+<figure id="index-loading" data-kind="state" data-state="loading">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The Answer Set</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">One log, in the tab.</text>
+<text x="12" y="86" class="muted">Stitching the log…</text>
+</g></svg>
+<figcaption>The masthead is right before the fold has run: the root row is seeded, so the frame is never blank.</figcaption>
+</figure>
+<figure id="index-empty" data-kind="state" data-state="empty">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The Answer Set</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">One log, in the tab.</text>
+<text x="12" y="86" class="muted">No filter shapes.</text>
+</g></svg>
+<figcaption>No filter shapes seeded. Unreachable in the shipped app — the rows are checked in — and drawn because the terminal owns the state whether or not this app can reach it.</figcaption>
+</figure>
+<figure id="index-populated" data-kind="state" data-state="populated">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The Answer Set</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">One log, in the tab. Eleven ways of asking about it.</text>
+<rect class="accent" x="8" y="72" width="65" height="34"/>
+<text x="12" y="84" class="sect ink">HITS</text>
+<text x="12" y="100" class="big ink">1 200</text>
+<text x="81" y="84" class="sect">VISITS</text>
+<text x="81" y="100" class="big">400</text>
+<text x="150" y="84" class="sect">VISITORS</text>
+<text x="150" y="100" class="big">250</text>
+<text x="219" y="84" class="sect">DAYS</text>
+<text x="219" y="100" class="big">35</text>
+<text x="12" y="132" class="sect">THE ELEVEN SHAPES</text>
+<text x="12" y="160">No filter</text><text x="12" y="172" class="muted">The whole log, over the window.</text><line class="rule" x1="12" x2="288" y1="178" y2="178"/>
+<text x="12" y="182">One visit dimension</text><text x="12" y="194" class="muted">Visits that began in Chrome.</text><line class="rule" x1="12" x2="288" y1="200" y2="200"/>
+<text x="12" y="204">One event dimension</text><text x="12" y="216" class="muted">Hits on /pricing.</text><line class="rule" x1="12" x2="288" y1="222" y2="222"/>
+<text x="12" y="226">The divergent divisors</text><text x="12" y="238" class="muted">A page no visit entered on.</text><line class="rule" x1="12" x2="288" y1="244" y2="244"/>
+<text x="12" y="248">The entry-page slot</text><text x="12" y="260" class="muted">Visits whose first page viewed was /docs.</text><line class="rule" x1="12" x2="288" y1="266" y2="266"/>
+<text x="12" y="270">The hit-name slot</text><text x="12" y="282" class="muted">Hits named signup.</text><line class="rule" x1="12" x2="288" y1="288" y2="288"/>
+</g></svg>
+<figcaption>What the log is, then the eleven shapes with the sentence saying what each narrows to. There is no filter box, and the page says why.</figcaption>
+</figure>
+<figure id="index-populated-dark" data-kind="state" data-state="populated-dark">
+<svg viewBox="0 0 300 420" width="215"><g class="dark">
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The Answer Set</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">One log, in the tab. Eleven ways of asking about it.</text>
+<rect class="accent" x="8" y="72" width="65" height="34"/>
+<text x="12" y="84" class="sect ink">HITS</text>
+<text x="12" y="100" class="big ink">1 200</text>
+<text x="81" y="84" class="sect">VISITS</text>
+<text x="81" y="100" class="big">400</text>
+<text x="150" y="84" class="sect">VISITORS</text>
+<text x="150" y="100" class="big">250</text>
+<text x="219" y="84" class="sect">DAYS</text>
+<text x="219" y="100" class="big">35</text>
+<text x="12" y="132" class="sect">THE ELEVEN SHAPES</text>
+<text x="12" y="160">No filter</text><text x="12" y="172" class="muted">The whole log, over the window.</text><line class="rule" x1="12" x2="288" y1="178" y2="178"/>
+<text x="12" y="182">One visit dimension</text><text x="12" y="194" class="muted">Visits that began in Chrome.</text><line class="rule" x1="12" x2="288" y1="200" y2="200"/>
+<text x="12" y="204">One event dimension</text><text x="12" y="216" class="muted">Hits on /pricing.</text><line class="rule" x1="12" x2="288" y1="222" y2="222"/>
+<text x="12" y="226">The divergent divisors</text><text x="12" y="238" class="muted">A page no visit entered on.</text><line class="rule" x1="12" x2="288" y1="244" y2="244"/>
+<text x="12" y="248">The entry-page slot</text><text x="12" y="260" class="muted">Visits whose first page viewed was /docs.</text><line class="rule" x1="12" x2="288" y1="266" y2="266"/>
+<text x="12" y="270">The hit-name slot</text><text x="12" y="282" class="muted">Hits named signup.</text><line class="rule" x1="12" x2="288" y1="288" y2="288"/>
+</g></svg>
+<figcaption>The same sheet on a dark ground. The accent re-resolves; nothing is redrawn.</figcaption>
+</figure>
+</div>
+<script type="application/json" data-kind="paths" data-of="index">
+{
+  "arrive": {"states": ["loading", "empty", "populated"], "accepts": ["accept-index-names-the-log", "accept-index-lists-the-shapes"]},
+  "choose_a_shape": {"states": ["populated"], "accepts": ["accept-shape-opens-dashboard", "accept-no-free-text-filter"]},
+  "night": {"states": ["populated", "populated-dark"], "accepts": ["accept-dark-twin"]}
+}
+</script>
+</section>
+<section id="dash" data-kind="screen" data-route="/f/:preset">
+<h3>dash &mdash; one cursor, and every number that follows from it</h3>
+<p data-extract="reads">
+Reads: <a href="#FilterSet">FilterSet</a> (filter
+<code>id=eq.{param.preset}</code>) as the root list-of-one, which hands
+<code>{range}</code>, <code>{grain}</code> and every <code>f_*</code> to every
+child for free; then, nested inside its item template,
+<a href="#Corpus">Corpus</a> twice &mdash; once carrying
+<a href="#stitch">stitch</a>&rsquo;s seat and once carrying
+<a href="#rollup">rollup</a>&rsquo;s corpus ear &mdash; and
+<a href="#Filter">Filter</a> (filter <code>id=eq.{param.preset}</code>) carrying
+rollup&rsquo;s cursor ear. The display regions carry no seat at all:
+<a href="#Topline">Topline</a> and <a href="#Scale">Scale</a> and each per-slot
+<a href="#Chip">Chip</a> as leaf slots pinned on a pk or a declared unique,
+<a href="#Tick">Tick</a>, <a href="#Bucket">Bucket</a> and four
+<a href="#Breakdown">Breakdown</a> regions as lists. They subscribe to their own
+tables and re-render when a reduce writes them, and that is the whole read
+path.</p>
+<p data-extract="mutations">
+Mutations: two reduces at the <code>data-on-mutation</code> seat and forms for
+everything a reader does &mdash; there is no <code>data-on-click</code> reduce
+anywhere in this app, which removes the whole class of silently dead controls
+(<a href="#decision-05">decision-05</a>). There is no <code>data-machine</code>
+either (<a href="#decision-22">decision-22</a>), so the two
+pickers are forms over the live cursor row (<a href="#pick-range">pick-range</a>,
+<a href="#pick-grain">pick-grain</a>); a drill-down is a form whose submit button
+is the row (<a href="#drill-down">drill-down</a>), a chip removal is the same
+form with one slot emptied (<a href="#remove-chip">remove-chip</a>), and the
+reset restores the declared cursor
+(<a href="#reset-cursor">reset-cursor</a>). <code>strip: false</code> and
+<code>keep: 0</code>: a parametrized route has no static href, and the first-run
+state is the point.</p>
+<div class="storyboard frames">
+<figure id="dash-loading" data-kind="state" data-state="loading">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">No filter</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">28d · day</text>
+<text x="12" y="86" class="muted">Folding 1 200 hits…</text>
+</g></svg>
+<figcaption>The cursor row is the route’s, so the heading and the shape’s sentence are already right; only the figures wait.</figcaption>
+</figure>
+<figure id="dash-empty" data-kind="state" data-state="empty">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">Unknown shape</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">—</text>
+<text x="12" y="86" class="muted">No filter shape by that name.</text>
+</g></svg>
+<figcaption>A preset the seed does not name. The root list-of-one matches no row and the screen poses empty — not gone, which is the slot branch’s pose and this root is a list.</figcaption>
+</figure>
+<figure id="dash-populated" data-kind="state" data-state="populated">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">No filter</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">28d · day · the whole log over the window</text>
+<rect class="accent" x="8" y="72" width="65" height="34"/>
+<text x="12" y="84" class="sect ink">VISITORS</text>
+<text x="12" y="100" class="big ink">250</text>
+<text x="81" y="84" class="sect">VISITS</text>
+<text x="81" y="100" class="big">400</text>
+<text x="150" y="84" class="sect">PAGE VIEWS</text>
+<text x="150" y="100" class="big">750</text>
+<text x="219" y="84" class="sect">V/VISIT</text>
+<text x="219" y="100" class="big">1.88</text>
+<text x="12" y="130" class="sect">BOUNCE</text>
+<text x="12" y="146" class="big">62%</text>
+<text x="81" y="130" class="sect">DURATION</text>
+<text x="81" y="146" class="big">412s</text>
+<text x="150" y="130" class="sect">NOW</text>
+<text x="150" y="146" class="big">3</text>
+<text x="219" y="130" class="sect"></text>
+<text x="219" y="146" class="big"></text>
+<text x="12" y="152" class="muted">over 400 visits · over 388 entered visits</text>
+<text x="12" y="176" class="sect">VISITORS OVER THE RANGE</text>
+<path class="columns accent" d="M 12 256 V 250 H 40.4 V 256 Z M 42.4 256 V 236 H 70.9 V 256 Z M 72.9 256 V 226 H 101.3 V 256 Z M 103.3 256 V 240 H 131.8 V 256 Z M 133.8 256 V 218 H 162.2 V 256 Z M 164.2 256 V 228 H 192.7 V 256 Z M 194.7 256 V 210 H 223.1 V 256 Z M 225.1 256 V 222 H 253.6 V 256 Z M 255.6 256 V 214 H 284 V 256 Z"/>
+<line class="rule" x1="12" x2="288" y1="256" y2="256"/>
+<text x="12" y="268" class="mono muted">28 buckets · 1/2/5 ticks</text>
+<rect data-panel="page" x="12" y="282" width="134" height="13"/>
+<text x="16" y="291" class="sect ink">TOP PAGES</text><text x="142" y="291" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="page" x="12" y="297" width="96" height="11"/><text x="15" y="305.5" class="mono">/</text><text x="131" y="305.5" class="mono num">132</text><circle class="ring" cx="139" cy="302.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="308.5" y2="308.5"/>
+<rect class="wash" data-panel="page" x="12" y="310" width="66" height="11"/><text x="15" y="318.5" class="mono">/pricing</text><text x="131" y="318.5" class="mono num">91</text><circle class="ring" cx="139" cy="315.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="321.5" y2="321.5"/>
+<rect class="wash" data-panel="page" x="12" y="323" width="56" height="11"/><text x="15" y="331.5" class="mono">/blog/why</text><text x="131" y="331.5" class="mono num">77</text><circle class="ring" cx="139" cy="328.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="334.5" y2="334.5"/>
+<rect data-panel="entry_page" x="154" y="282" width="134" height="13"/>
+<text x="158" y="291" class="sect ink">ENTRY PAGES</text><text x="284" y="291" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="entry_page" x="154" y="297" width="96" height="11"/><text x="157" y="305.5" class="mono">/</text><text x="273" y="305.5" class="mono num">121</text><circle class="ring" cx="281" cy="302.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="308.5" y2="308.5"/>
+<rect class="wash" data-panel="entry_page" x="154" y="310" width="51" height="11"/><text x="157" y="318.5" class="mono">/docs</text><text x="273" y="318.5" class="mono num">64</text><circle class="ring" cx="281" cy="315.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="321.5" y2="321.5"/>
+<rect class="wash" data-panel="entry_page" x="154" y="323" width="39" height="11"/><text x="157" y="331.5" class="mono">/pricing</text><text x="273" y="331.5" class="mono num">49</text><circle class="ring" cx="281" cy="328.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="334.5" y2="334.5"/>
+<rect data-panel="source" x="12" y="344" width="134" height="13"/>
+<text x="16" y="353" class="sect ink">SOURCES</text><text x="142" y="353" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="source" x="12" y="359" width="96" height="11"/><text x="15" y="367.5" class="mono">direct</text><text x="131" y="367.5" class="mono num">141</text><circle class="ring" cx="139" cy="364.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="370.5" y2="370.5"/>
+<rect class="wash" data-panel="source" x="12" y="372" width="67" height="11"/><text x="15" y="380.5" class="mono">google</text><text x="131" y="380.5" class="mono num">98</text><circle class="ring" cx="139" cy="377.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="383.5" y2="383.5"/>
+<rect class="wash" data-panel="source" x="12" y="385" width="42" height="11"/><text x="15" y="393.5" class="mono">hn</text><text x="131" y="393.5" class="mono num">62</text><circle class="ring" cx="139" cy="390.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="396.5" y2="396.5"/>
+<rect data-panel="browser" x="154" y="344" width="134" height="13"/>
+<text x="158" y="353" class="sect ink">BROWSERS</text><text x="284" y="353" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="browser" x="154" y="359" width="96" height="11"/><text x="157" y="367.5" class="mono">Chrome</text><text x="273" y="367.5" class="mono num">158</text><circle class="ring" cx="281" cy="364.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="370.5" y2="370.5"/>
+<rect class="wash" data-panel="browser" x="154" y="372" width="45" height="11"/><text x="157" y="380.5" class="mono">Safari</text><text x="273" y="380.5" class="mono num">74</text><circle class="ring" cx="281" cy="377.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="383.5" y2="383.5"/>
+<rect class="wash" data-panel="browser" x="154" y="385" width="25" height="11"/><text x="157" y="393.5" class="mono">Firefox</text><text x="273" y="393.5" class="mono num">41</text><circle class="ring" cx="281" cy="390.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="396.5" y2="396.5"/>
+</g></svg>
+<figcaption>Cold, before a gesture: the lead figure as a filled cell in the top-line band, the series as one column per bucket, and the four panels &mdash; each filled with the hue its dimension owns, every quantity in it a length.</figcaption>
+</figure>
+<figure id="dash-drilled" data-kind="state" data-state="drilled">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">No filter</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">28d · day · narrowed to one page</text>
+<rect class="chip" x="12" y="56" width="120" height="15" rx="2"/><text x="18" y="67" class="mono">page is /pricing ×</text>
+<rect class="accent" x="8" y="84" width="65" height="34"/>
+<text x="12" y="96" class="sect ink">VISITORS</text>
+<text x="12" y="112" class="big ink">41</text>
+<text x="81" y="96" class="sect">VISITS</text>
+<text x="81" y="112" class="big">52</text>
+<text x="150" y="96" class="sect">PAGE VIEWS</text>
+<text x="150" y="112" class="big">88</text>
+<text x="219" y="96" class="sect">V/VISIT</text>
+<text x="219" y="112" class="big">1.69</text>
+<text x="12" y="140" class="muted">Every number on the screen moved together.</text>
+<text x="12" y="176" class="sect">VISITORS OVER THE RANGE</text>
+<path class="columns accent" d="M 12 256 V 250 H 40.4 V 256 Z M 42.4 256 V 236 H 70.9 V 256 Z M 72.9 256 V 226 H 101.3 V 256 Z M 103.3 256 V 240 H 131.8 V 256 Z M 133.8 256 V 218 H 162.2 V 256 Z M 164.2 256 V 228 H 192.7 V 256 Z M 194.7 256 V 210 H 223.1 V 256 Z M 225.1 256 V 222 H 253.6 V 256 Z M 255.6 256 V 214 H 284 V 256 Z"/>
+<line class="rule" x1="12" x2="288" y1="256" y2="256"/>
+<text x="12" y="268" class="mono muted">28 buckets · 1/2/5 ticks</text>
+<rect data-panel="page" x="12" y="282" width="134" height="13"/>
+<text x="16" y="291" class="sect ink">TOP PAGES</text><text x="142" y="291" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="page" x="12" y="297" width="96" height="11"/><text x="15" y="305.5" class="mono">/</text><text x="131" y="305.5" class="mono num">132</text><circle class="ring" cx="139" cy="302.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="308.5" y2="308.5"/>
+<rect class="wash" data-panel="page" x="12" y="310" width="66" height="11"/><text x="15" y="318.5" class="mono">/pricing</text><text x="131" y="318.5" class="mono num">91</text><circle class="ring" cx="139" cy="315.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="321.5" y2="321.5"/>
+<rect class="wash" data-panel="page" x="12" y="323" width="56" height="11"/><text x="15" y="331.5" class="mono">/blog/why</text><text x="131" y="331.5" class="mono num">77</text><circle class="ring" cx="139" cy="328.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="334.5" y2="334.5"/>
+<rect data-panel="entry_page" x="154" y="282" width="134" height="13"/>
+<text x="158" y="291" class="sect ink">ENTRY PAGES</text><text x="284" y="291" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="entry_page" x="154" y="297" width="96" height="11"/><text x="157" y="305.5" class="mono">/</text><text x="273" y="305.5" class="mono num">121</text><circle class="ring" cx="281" cy="302.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="308.5" y2="308.5"/>
+<rect class="wash" data-panel="entry_page" x="154" y="310" width="51" height="11"/><text x="157" y="318.5" class="mono">/docs</text><text x="273" y="318.5" class="mono num">64</text><circle class="ring" cx="281" cy="315.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="321.5" y2="321.5"/>
+<rect class="wash" data-panel="entry_page" x="154" y="323" width="39" height="11"/><text x="157" y="331.5" class="mono">/pricing</text><text x="273" y="331.5" class="mono num">49</text><circle class="ring" cx="281" cy="328.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="334.5" y2="334.5"/>
+<rect data-panel="source" x="12" y="344" width="134" height="13"/>
+<text x="16" y="353" class="sect ink">SOURCES</text><text x="142" y="353" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="source" x="12" y="359" width="96" height="11"/><text x="15" y="367.5" class="mono">direct</text><text x="131" y="367.5" class="mono num">141</text><circle class="ring" cx="139" cy="364.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="370.5" y2="370.5"/>
+<rect class="wash" data-panel="source" x="12" y="372" width="67" height="11"/><text x="15" y="380.5" class="mono">google</text><text x="131" y="380.5" class="mono num">98</text><circle class="ring" cx="139" cy="377.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="383.5" y2="383.5"/>
+<rect class="wash" data-panel="source" x="12" y="385" width="42" height="11"/><text x="15" y="393.5" class="mono">hn</text><text x="131" y="393.5" class="mono num">62</text><circle class="ring" cx="139" cy="390.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="396.5" y2="396.5"/>
+<rect data-panel="browser" x="154" y="344" width="134" height="13"/>
+<text x="158" y="353" class="sect ink">BROWSERS</text><text x="284" y="353" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="browser" x="154" y="359" width="96" height="11"/><text x="157" y="367.5" class="mono">Chrome</text><text x="273" y="367.5" class="mono num">158</text><circle class="ring" cx="281" cy="364.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="370.5" y2="370.5"/>
+<rect class="wash" data-panel="browser" x="154" y="372" width="45" height="11"/><text x="157" y="380.5" class="mono">Safari</text><text x="273" y="380.5" class="mono num">74</text><circle class="ring" cx="281" cy="377.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="383.5" y2="383.5"/>
+<rect class="wash" data-panel="browser" x="154" y="385" width="25" height="11"/><text x="157" y="393.5" class="mono">Firefox</text><text x="273" y="393.5" class="mono num">41</text><circle class="ring" cx="281" cy="390.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="396.5" y2="396.5"/>
+</g></svg>
+<figcaption>One panel row submitted. Every slot of the cursor was written, not one, so the whole screen moved together and the chip says what is in force.</figcaption>
+</figure>
+<figure id="dash-populated-dark" data-kind="state" data-state="populated-dark">
+<svg viewBox="0 0 300 420" width="215"><g class="dark">
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">No filter</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">28d · day · the whole log over the window</text>
+<rect class="accent" x="8" y="72" width="65" height="34"/>
+<text x="12" y="84" class="sect ink">VISITORS</text>
+<text x="12" y="100" class="big ink">250</text>
+<text x="81" y="84" class="sect">VISITS</text>
+<text x="81" y="100" class="big">400</text>
+<text x="150" y="84" class="sect">PAGE VIEWS</text>
+<text x="150" y="100" class="big">750</text>
+<text x="219" y="84" class="sect">V/VISIT</text>
+<text x="219" y="100" class="big">1.88</text>
+<text x="12" y="130" class="sect">BOUNCE</text>
+<text x="12" y="146" class="big">62%</text>
+<text x="81" y="130" class="sect">DURATION</text>
+<text x="81" y="146" class="big">412s</text>
+<text x="150" y="130" class="sect">NOW</text>
+<text x="150" y="146" class="big">3</text>
+<text x="219" y="130" class="sect"></text>
+<text x="219" y="146" class="big"></text>
+<text x="12" y="152" class="muted">over 400 visits · over 388 entered visits</text>
+<text x="12" y="176" class="sect">VISITORS OVER THE RANGE</text>
+<path class="columns accent" d="M 12 256 V 250 H 40.4 V 256 Z M 42.4 256 V 236 H 70.9 V 256 Z M 72.9 256 V 226 H 101.3 V 256 Z M 103.3 256 V 240 H 131.8 V 256 Z M 133.8 256 V 218 H 162.2 V 256 Z M 164.2 256 V 228 H 192.7 V 256 Z M 194.7 256 V 210 H 223.1 V 256 Z M 225.1 256 V 222 H 253.6 V 256 Z M 255.6 256 V 214 H 284 V 256 Z"/>
+<line class="rule" x1="12" x2="288" y1="256" y2="256"/>
+<text x="12" y="268" class="mono muted">28 buckets · 1/2/5 ticks</text>
+<rect data-panel="page" x="12" y="282" width="134" height="13"/>
+<text x="16" y="291" class="sect ink">TOP PAGES</text><text x="142" y="291" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="page" x="12" y="297" width="96" height="11"/><text x="15" y="305.5" class="mono">/</text><text x="131" y="305.5" class="mono num">132</text><circle class="ring" cx="139" cy="302.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="308.5" y2="308.5"/>
+<rect class="wash" data-panel="page" x="12" y="310" width="66" height="11"/><text x="15" y="318.5" class="mono">/pricing</text><text x="131" y="318.5" class="mono num">91</text><circle class="ring" cx="139" cy="315.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="321.5" y2="321.5"/>
+<rect class="wash" data-panel="page" x="12" y="323" width="56" height="11"/><text x="15" y="331.5" class="mono">/blog/why</text><text x="131" y="331.5" class="mono num">77</text><circle class="ring" cx="139" cy="328.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="334.5" y2="334.5"/>
+<rect data-panel="entry_page" x="154" y="282" width="134" height="13"/>
+<text x="158" y="291" class="sect ink">ENTRY PAGES</text><text x="284" y="291" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="entry_page" x="154" y="297" width="96" height="11"/><text x="157" y="305.5" class="mono">/</text><text x="273" y="305.5" class="mono num">121</text><circle class="ring" cx="281" cy="302.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="308.5" y2="308.5"/>
+<rect class="wash" data-panel="entry_page" x="154" y="310" width="51" height="11"/><text x="157" y="318.5" class="mono">/docs</text><text x="273" y="318.5" class="mono num">64</text><circle class="ring" cx="281" cy="315.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="321.5" y2="321.5"/>
+<rect class="wash" data-panel="entry_page" x="154" y="323" width="39" height="11"/><text x="157" y="331.5" class="mono">/pricing</text><text x="273" y="331.5" class="mono num">49</text><circle class="ring" cx="281" cy="328.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="334.5" y2="334.5"/>
+<rect data-panel="source" x="12" y="344" width="134" height="13"/>
+<text x="16" y="353" class="sect ink">SOURCES</text><text x="142" y="353" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="source" x="12" y="359" width="96" height="11"/><text x="15" y="367.5" class="mono">direct</text><text x="131" y="367.5" class="mono num">141</text><circle class="ring" cx="139" cy="364.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="370.5" y2="370.5"/>
+<rect class="wash" data-panel="source" x="12" y="372" width="67" height="11"/><text x="15" y="380.5" class="mono">google</text><text x="131" y="380.5" class="mono num">98</text><circle class="ring" cx="139" cy="377.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="383.5" y2="383.5"/>
+<rect class="wash" data-panel="source" x="12" y="385" width="42" height="11"/><text x="15" y="393.5" class="mono">hn</text><text x="131" y="393.5" class="mono num">62</text><circle class="ring" cx="139" cy="390.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="396.5" y2="396.5"/>
+<rect data-panel="browser" x="154" y="344" width="134" height="13"/>
+<text x="158" y="353" class="sect ink">BROWSERS</text><text x="284" y="353" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="browser" x="154" y="359" width="96" height="11"/><text x="157" y="367.5" class="mono">Chrome</text><text x="273" y="367.5" class="mono num">158</text><circle class="ring" cx="281" cy="364.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="370.5" y2="370.5"/>
+<rect class="wash" data-panel="browser" x="154" y="372" width="45" height="11"/><text x="157" y="380.5" class="mono">Safari</text><text x="273" y="380.5" class="mono num">74</text><circle class="ring" cx="281" cy="377.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="383.5" y2="383.5"/>
+<rect class="wash" data-panel="browser" x="154" y="385" width="25" height="11"/><text x="157" y="393.5" class="mono">Firefox</text><text x="273" y="393.5" class="mono num">41</text><circle class="ring" cx="281" cy="390.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="396.5" y2="396.5"/>
+</g></svg>
+<figcaption>The dark twin. All four hues lift so the blocks stay separable against the ground, and the ink on a filled hue does not; the geometry is identical.</figcaption>
+</figure>
+<figure id="dash-network-error" data-kind="state" data-state="network-error">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">No filter</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">28d · day · the whole log over the window</text>
+<rect class="accent" x="8" y="72" width="65" height="34"/>
+<text x="12" y="84" class="sect ink">VISITORS</text>
+<text x="12" y="100" class="big ink">250</text>
+<text x="81" y="84" class="sect">VISITS</text>
+<text x="81" y="100" class="big">400</text>
+<text x="150" y="84" class="sect">PAGE VIEWS</text>
+<text x="150" y="100" class="big">750</text>
+<text x="219" y="84" class="sect">V/VISIT</text>
+<text x="219" y="100" class="big">1.88</text>
+<text x="12" y="130" class="sect">BOUNCE</text>
+<text x="12" y="146" class="big">62%</text>
+<text x="81" y="130" class="sect">DURATION</text>
+<text x="81" y="146" class="big">412s</text>
+<text x="150" y="130" class="sect">NOW</text>
+<text x="150" y="146" class="big">3</text>
+<text x="219" y="130" class="sect"></text>
+<text x="219" y="146" class="big"></text>
+<text x="12" y="152" class="muted">over 400 visits · over 388 entered visits</text>
+<text x="12" y="166" class="danger">rollup: topline · |views_per_visit × sessions_n − pv_sum| &gt; tolerance</text>
+<text x="12" y="176" class="sect">VISITORS OVER THE RANGE</text>
+<path class="columns accent" d="M 12 256 V 250 H 40.4 V 256 Z M 42.4 256 V 236 H 70.9 V 256 Z M 72.9 256 V 226 H 101.3 V 256 Z M 103.3 256 V 240 H 131.8 V 256 Z M 133.8 256 V 218 H 162.2 V 256 Z M 164.2 256 V 228 H 192.7 V 256 Z M 194.7 256 V 210 H 223.1 V 256 Z M 225.1 256 V 222 H 253.6 V 256 Z M 255.6 256 V 214 H 284 V 256 Z"/>
+<line class="rule" x1="12" x2="288" y1="256" y2="256"/>
+<text x="12" y="268" class="mono muted">28 buckets · 1/2/5 ticks</text>
+<rect data-panel="page" x="12" y="282" width="134" height="13"/>
+<text x="16" y="291" class="sect ink">TOP PAGES</text><text x="142" y="291" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="page" x="12" y="297" width="96" height="11"/><text x="15" y="305.5" class="mono">/</text><text x="131" y="305.5" class="mono num">132</text><circle class="ring" cx="139" cy="302.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="308.5" y2="308.5"/>
+<rect class="wash" data-panel="page" x="12" y="310" width="66" height="11"/><text x="15" y="318.5" class="mono">/pricing</text><text x="131" y="318.5" class="mono num">91</text><circle class="ring" cx="139" cy="315.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="321.5" y2="321.5"/>
+<rect class="wash" data-panel="page" x="12" y="323" width="56" height="11"/><text x="15" y="331.5" class="mono">/blog/why</text><text x="131" y="331.5" class="mono num">77</text><circle class="ring" cx="139" cy="328.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="334.5" y2="334.5"/>
+<rect data-panel="entry_page" x="154" y="282" width="134" height="13"/>
+<text x="158" y="291" class="sect ink">ENTRY PAGES</text><text x="284" y="291" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="entry_page" x="154" y="297" width="96" height="11"/><text x="157" y="305.5" class="mono">/</text><text x="273" y="305.5" class="mono num">121</text><circle class="ring" cx="281" cy="302.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="308.5" y2="308.5"/>
+<rect class="wash" data-panel="entry_page" x="154" y="310" width="51" height="11"/><text x="157" y="318.5" class="mono">/docs</text><text x="273" y="318.5" class="mono num">64</text><circle class="ring" cx="281" cy="315.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="321.5" y2="321.5"/>
+<rect class="wash" data-panel="entry_page" x="154" y="323" width="39" height="11"/><text x="157" y="331.5" class="mono">/pricing</text><text x="273" y="331.5" class="mono num">49</text><circle class="ring" cx="281" cy="328.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="334.5" y2="334.5"/>
+<rect data-panel="source" x="12" y="344" width="134" height="13"/>
+<text x="16" y="353" class="sect ink">SOURCES</text><text x="142" y="353" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="source" x="12" y="359" width="96" height="11"/><text x="15" y="367.5" class="mono">direct</text><text x="131" y="367.5" class="mono num">141</text><circle class="ring" cx="139" cy="364.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="370.5" y2="370.5"/>
+<rect class="wash" data-panel="source" x="12" y="372" width="67" height="11"/><text x="15" y="380.5" class="mono">google</text><text x="131" y="380.5" class="mono num">98</text><circle class="ring" cx="139" cy="377.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="383.5" y2="383.5"/>
+<rect class="wash" data-panel="source" x="12" y="385" width="42" height="11"/><text x="15" y="393.5" class="mono">hn</text><text x="131" y="393.5" class="mono num">62</text><circle class="ring" cx="139" cy="390.5" r="3.6"/><line class="rule" x1="12" x2="146" y1="396.5" y2="396.5"/>
+<rect data-panel="browser" x="154" y="344" width="134" height="13"/>
+<text x="158" y="353" class="sect ink">BROWSERS</text><text x="284" y="353" class="sect ink num">VISITORS</text>
+<rect class="wash" data-panel="browser" x="154" y="359" width="96" height="11"/><text x="157" y="367.5" class="mono">Chrome</text><text x="273" y="367.5" class="mono num">158</text><circle class="ring" cx="281" cy="364.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="370.5" y2="370.5"/>
+<rect class="wash" data-panel="browser" x="154" y="372" width="45" height="11"/><text x="157" y="380.5" class="mono">Safari</text><text x="273" y="380.5" class="mono num">74</text><circle class="ring" cx="281" cy="377.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="383.5" y2="383.5"/>
+<rect class="wash" data-panel="browser" x="154" y="385" width="25" height="11"/><text x="157" y="393.5" class="mono">Firefox</text><text x="273" y="393.5" class="mono num">41</text><circle class="ring" cx="281" cy="390.5" r="3.6"/><line class="rule" x1="154" x2="288" y1="396.5" y2="396.5"/>
+</g></svg>
+<figcaption>The coherence guard refused a row. No sink was written, so the last coherent numbers stand — beside an error that names the row and the clause.</figcaption>
+</figure>
+</div>
+<script type="application/json" data-kind="paths" data-of="dash">
+{
+  "arrive": {"states": ["loading", "empty", "populated"], "accepts": ["accept-dashboard-settles-cold", "accept-topline-six-numbers", "accept-four-panels"]},
+  "drill": {"states": ["populated", "drilled"], "accepts": ["accept-drilldown-narrows-all", "accept-chips-removable"]},
+  "pick_window": {"states": ["populated"], "accepts": ["accept-range-and-grain-pickers", "accept-graph-drawn", "accept-graph-caret-walks"]},
+  "fold_refuses": {"states": ["populated", "network-error"], "accepts": ["accept-dashboard-settles-cold"]},
+  "night": {"states": ["populated", "populated-dark"], "accepts": ["accept-dark-twin", "accept-no-numeric-motion"]}
+}
+</script>
+</section>
+<section id="panel" data-kind="screen" data-route="/f/:preset/:panel">
+<h3>panel &mdash; one dimension, in full</h3>
+<p data-extract="reads">
+Reads: the same three seat regions as <a href="#dash">dash</a>, so the numbers on
+this screen are the same numbers computed by the same run; then
+<a href="#Panel">Panel</a> (filter <code>id=eq.{param.panel}</code>) as a nested
+list-of-one, and <a href="#Breakdown">Breakdown</a> (filter
+<code>panel=eq.{id}</code>, order <code>ord.asc</code>) inside its item template
+&mdash; where <code>{id}</code> interpolates the ENCLOSING row, which is the
+panel&rsquo;s.</p>
+<p data-extract="mutations">
+Mutations: none of its own; the seats write, and the only gesture is going back.
+One route with two parameters, which no route in this tree carries today:
+<code>matchRoute</code> splits pattern and path on <code>/</code> and fills every
+<code>:name</code> segment, and each is pinned by its own region&rsquo;s
+<code>data-filter</code> so both are planned.</p>
+<div class="storyboard frames">
+<figure id="panel-loading" data-kind="state" data-state="loading">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">Top pages</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">No filter · 28d</text>
+<text x="12" y="86" class="muted">Ranking every value…</text>
+</g></svg>
+<figcaption>Both parameters resolved; the dimension’s own heading is up before its rows are.</figcaption>
+</figure>
+<figure id="panel-empty" data-kind="state" data-state="empty">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">Unknown panel</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">—</text>
+<text x="12" y="86" class="muted">No panel by that name.</text>
+</g></svg>
+<figcaption>A :panel the seed does not name. Four dimensions exist and nothing else is reachable by that address.</figcaption>
+</figure>
+<figure id="panel-populated" data-kind="state" data-state="populated">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">Top pages</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">No filter · 28d · every value the range holds</text>
+<text x="12" y="64" class="muted">Twelve pages, in the dashboard’s order, cut at nothing.</text>
+<text x="12" y="88" class="sect">VALUE</text><text x="120" y="88" class="sect">VIS</text><text x="155" y="88" class="sect">VISITS</text><text x="200" y="88" class="sect">VIEWS</text><text x="240" y="88" class="sect">BOUNCE</text>
+<line class="heavy" x1="12" x2="288" y1="92" y2="92"/>
+<text x="12" y="106" class="mono">/</text><text x="120" y="106" class="mono num">132</text><text x="155" y="106" class="mono num">168</text><text x="200" y="106" class="mono num">201</text><text x="240" y="106" class="mono num">58%</text><line class="rule" x1="12" x2="288" y1="110" y2="110"/>
+<text x="12" y="120" class="mono">/pricing</text><text x="120" y="120" class="mono num">91</text><text x="155" y="120" class="mono num">104</text><text x="200" y="120" class="mono num">118</text><text x="240" y="120" class="mono num">61%</text><line class="rule" x1="12" x2="288" y1="124" y2="124"/>
+<text x="12" y="134" class="mono">/blog/why</text><text x="120" y="134" class="mono num">77</text><text x="155" y="134" class="mono num">88</text><text x="200" y="134" class="mono num">96</text><text x="240" y="134" class="mono num">70%</text><line class="rule" x1="12" x2="288" y1="138" y2="138"/>
+<text x="12" y="148" class="mono">/docs</text><text x="120" y="148" class="mono num">64</text><text x="155" y="148" class="mono num">71</text><text x="200" y="148" class="mono num">83</text><text x="240" y="148" class="mono num">52%</text><line class="rule" x1="12" x2="288" y1="152" y2="152"/>
+<text x="12" y="162" class="mono">/signup</text><text x="120" y="162" class="mono num">48</text><text x="155" y="162" class="mono num">52</text><text x="200" y="162" class="mono num">55</text><text x="240" y="162" class="mono num">44%</text><line class="rule" x1="12" x2="288" y1="166" y2="166"/>
+<text x="12" y="176" class="mono">/checkout</text><text x="120" y="176" class="mono num">31</text><text x="155" y="176" class="mono num">34</text><text x="200" y="176" class="mono num">36</text><text x="240" y="176" class="mono num">0%</text><line class="rule" x1="12" x2="288" y1="180" y2="180"/>
+</g></svg>
+<figcaption>The dimension in full: every value the range holds, in the dashboard’s own order, with all six detailed metrics rather than the three a dashboard row collapses to.</figcaption>
+</figure>
+<figure id="panel-populated-dark" data-kind="state" data-state="populated-dark">
+<svg viewBox="0 0 300 420" width="215"><g class="dark">
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">Top pages</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">No filter · 28d · every value the range holds</text>
+<text x="12" y="64" class="muted">Twelve pages, in the dashboard’s order, cut at nothing.</text>
+<text x="12" y="88" class="sect">VALUE</text><text x="120" y="88" class="sect">VIS</text><text x="155" y="88" class="sect">VISITS</text><text x="200" y="88" class="sect">VIEWS</text><text x="240" y="88" class="sect">BOUNCE</text>
+<line class="heavy" x1="12" x2="288" y1="92" y2="92"/>
+<text x="12" y="106" class="mono">/</text><text x="120" y="106" class="mono num">132</text><text x="155" y="106" class="mono num">168</text><text x="200" y="106" class="mono num">201</text><text x="240" y="106" class="mono num">58%</text><line class="rule" x1="12" x2="288" y1="110" y2="110"/>
+<text x="12" y="120" class="mono">/pricing</text><text x="120" y="120" class="mono num">91</text><text x="155" y="120" class="mono num">104</text><text x="200" y="120" class="mono num">118</text><text x="240" y="120" class="mono num">61%</text><line class="rule" x1="12" x2="288" y1="124" y2="124"/>
+<text x="12" y="134" class="mono">/blog/why</text><text x="120" y="134" class="mono num">77</text><text x="155" y="134" class="mono num">88</text><text x="200" y="134" class="mono num">96</text><text x="240" y="134" class="mono num">70%</text><line class="rule" x1="12" x2="288" y1="138" y2="138"/>
+<text x="12" y="148" class="mono">/docs</text><text x="120" y="148" class="mono num">64</text><text x="155" y="148" class="mono num">71</text><text x="200" y="148" class="mono num">83</text><text x="240" y="148" class="mono num">52%</text><line class="rule" x1="12" x2="288" y1="152" y2="152"/>
+<text x="12" y="162" class="mono">/signup</text><text x="120" y="162" class="mono num">48</text><text x="155" y="162" class="mono num">52</text><text x="200" y="162" class="mono num">55</text><text x="240" y="162" class="mono num">44%</text><line class="rule" x1="12" x2="288" y1="166" y2="166"/>
+<text x="12" y="176" class="mono">/checkout</text><text x="120" y="176" class="mono num">31</text><text x="155" y="176" class="mono num">34</text><text x="200" y="176" class="mono num">36</text><text x="240" y="176" class="mono num">0%</text><line class="rule" x1="12" x2="288" y1="180" y2="180"/>
+</g></svg>
+<figcaption>The same table on a dark ground.</figcaption>
+</figure>
+</div>
+<script type="application/json" data-kind="paths" data-of="panel">
+{
+  "arrive": {"states": ["loading", "populated"], "accepts": ["accept-panel-every-value", "accept-panel-detailed-metrics", "accept-panel-keeps-filter"]},
+  "no_such_panel": {"states": ["empty"], "accepts": ["accept-panel-every-value"]},
+  "night": {"states": ["populated", "populated-dark"], "accepts": ["accept-dark-twin"]}
+}
+</script>
+</section>
+<section id="sessions" data-kind="screen" data-route="/sessions">
+<h3>sessions &mdash; the stitch, shown</h3>
+<p data-extract="reads">
+Reads: <a href="#Corpus">Corpus</a> (filter <code>id=eq.the</code>) as the root
+list-of-one carrying <a href="#stitch">stitch</a>&rsquo;s seat;
+<a href="#Session">Session</a> (order <code>start_epoch.asc,id.asc</code>) inside
+it, rendering EVERY column; and <a href="#SessionHour">SessionHour</a> (filter
+<code>session_id=eq.{id}</code>, order <code>ord.asc</code>) nested inside each
+visit&rsquo;s item template.</p>
+<p data-extract="mutations">
+Mutations: the stitch seat, and nothing else. This screen is the no-test-only-
+surface property made concrete: the ground truth grades exactly the rows the app
+shows, which is also what stops a column becoming the fossil nothing lints.</p>
+<div class="storyboard frames">
+<figure id="sessions-loading" data-kind="state" data-state="loading">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The visits</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">—</text>
+<text x="12" y="86" class="muted">Stitching the log…</text>
+</g></svg>
+<figcaption>The corpus row is seeded, so the count is zero rather than missing while the fold runs.</figcaption>
+</figure>
+<figure id="sessions-empty" data-kind="state" data-state="empty">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The visits</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">0 hits</text>
+<text x="12" y="86" class="muted">The log has not been stitched yet.</text>
+</g></svg>
+<figcaption>The log stitched into nothing. Reachable only with an empty seed, and drawn because the pose exists.</figcaption>
+</figure>
+<figure id="sessions-populated" data-kind="state" data-state="populated">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The visits</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">1 200 hits became 400 visits over 250 visitors.</text>
+<text x="12" y="64" class="muted">A visit ends when the gap from its last hit reaches 1860 s.</text>
+<line class="rule" x1="12" x2="288" y1="78" y2="78"/><text x="12" y="92" class="mono">v102#01</text><text x="120" y="92" class="mono muted">/</text><text x="12" y="104" class="mono muted">views 3 · events 3 · bounce no · 1500s</text><rect class="ctl" x="12" y="110" width="34" height="12" rx="2"/><text x="16" y="119" class="mono">03-06 09</text><rect class="ctl" x="50" y="110" width="34" height="12" rx="2"/><text x="54" y="119" class="mono">03-06 10</text>
+<line class="rule" x1="12" x2="288" y1="132" y2="132"/><text x="12" y="146" class="mono">v118#01</text><text x="120" y="146" class="mono muted">(none yet)</text><text x="12" y="158" class="mono muted">views 0 · events 1 · bounce no · 0s</text><rect class="ctl" x="12" y="164" width="34" height="12" rx="2"/><text x="16" y="173" class="mono">03-08 14</text><rect class="ctl" x="50" y="164" width="34" height="12" rx="2"/><text x="54" y="173" class="mono">03-08 15</text>
+<line class="rule" x1="12" x2="288" y1="186" y2="186"/><text x="12" y="200" class="mono">v204#02</text><text x="120" y="200" class="mono muted">/pricing</text><text x="12" y="212" class="mono muted">views 1 · events 1 · bounce yes · 0s</text><rect class="ctl" x="12" y="218" width="34" height="12" rx="2"/><text x="16" y="227" class="mono">03-29 01</text><rect class="ctl" x="50" y="218" width="34" height="12" rx="2"/><text x="54" y="227" class="mono">03-29 03</text>
+<line class="rule" x1="12" x2="288" y1="240" y2="240"/><text x="12" y="254" class="mono">v233#01</text><text x="120" y="254" class="mono muted">/blog/why</text><text x="12" y="266" class="mono muted">views 5 · events 7 · bounce no · 4820s</text><rect class="ctl" x="12" y="272" width="34" height="12" rx="2"/><text x="16" y="281" class="mono">04-02 11</text><rect class="ctl" x="50" y="272" width="34" height="12" rx="2"/><text x="54" y="281" class="mono">04-02 12</text>
+<line class="rule" x1="12" x2="288" y1="294" y2="294"/><text x="12" y="308" class="mono">v249#01</text><text x="120" y="308" class="mono muted">/docs</text><text x="12" y="320" class="mono muted">views 2 · events 2 · bounce no · 1859s</text><rect class="ctl" x="12" y="326" width="34" height="12" rx="2"/><text x="16" y="335" class="mono">04-08 08</text><rect class="ctl" x="50" y="326" width="34" height="12" rx="2"/><text x="54" y="335" class="mono">04-08 09</text>
+</g></svg>
+<figcaption>Every visit the log was cut into, every column the fold wrote, and the local hours each was open in. The third row is the day the clock changed: 01 then 03, with no 02.</figcaption>
+</figure>
+<figure id="sessions-populated-dark" data-kind="state" data-state="populated-dark">
+<svg viewBox="0 0 300 420" width="215"><g class="dark">
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The visits</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">1 200 hits became 400 visits over 250 visitors.</text>
+<text x="12" y="64" class="muted">A visit ends when the gap from its last hit reaches 1860 s.</text>
+<line class="rule" x1="12" x2="288" y1="78" y2="78"/><text x="12" y="92" class="mono">v102#01</text><text x="120" y="92" class="mono muted">/</text><text x="12" y="104" class="mono muted">views 3 · events 3 · bounce no · 1500s</text><rect class="ctl" x="12" y="110" width="34" height="12" rx="2"/><text x="16" y="119" class="mono">03-06 09</text><rect class="ctl" x="50" y="110" width="34" height="12" rx="2"/><text x="54" y="119" class="mono">03-06 10</text>
+<line class="rule" x1="12" x2="288" y1="132" y2="132"/><text x="12" y="146" class="mono">v118#01</text><text x="120" y="146" class="mono muted">(none yet)</text><text x="12" y="158" class="mono muted">views 0 · events 1 · bounce no · 0s</text><rect class="ctl" x="12" y="164" width="34" height="12" rx="2"/><text x="16" y="173" class="mono">03-08 14</text><rect class="ctl" x="50" y="164" width="34" height="12" rx="2"/><text x="54" y="173" class="mono">03-08 15</text>
+<line class="rule" x1="12" x2="288" y1="186" y2="186"/><text x="12" y="200" class="mono">v204#02</text><text x="120" y="200" class="mono muted">/pricing</text><text x="12" y="212" class="mono muted">views 1 · events 1 · bounce yes · 0s</text><rect class="ctl" x="12" y="218" width="34" height="12" rx="2"/><text x="16" y="227" class="mono">03-29 01</text><rect class="ctl" x="50" y="218" width="34" height="12" rx="2"/><text x="54" y="227" class="mono">03-29 03</text>
+<line class="rule" x1="12" x2="288" y1="240" y2="240"/><text x="12" y="254" class="mono">v233#01</text><text x="120" y="254" class="mono muted">/blog/why</text><text x="12" y="266" class="mono muted">views 5 · events 7 · bounce no · 4820s</text><rect class="ctl" x="12" y="272" width="34" height="12" rx="2"/><text x="16" y="281" class="mono">04-02 11</text><rect class="ctl" x="50" y="272" width="34" height="12" rx="2"/><text x="54" y="281" class="mono">04-02 12</text>
+<line class="rule" x1="12" x2="288" y1="294" y2="294"/><text x="12" y="308" class="mono">v249#01</text><text x="120" y="308" class="mono muted">/docs</text><text x="12" y="320" class="mono muted">views 2 · events 2 · bounce no · 1859s</text><rect class="ctl" x="12" y="326" width="34" height="12" rx="2"/><text x="16" y="335" class="mono">04-08 08</text><rect class="ctl" x="50" y="326" width="34" height="12" rx="2"/><text x="54" y="335" class="mono">04-08 09</text>
+</g></svg>
+<figcaption>The same list on a dark ground.</figcaption>
+</figure>
+</div>
+<script type="application/json" data-kind="paths" data-of="sessions">
+{
+  "arrive": {"states": ["loading", "empty", "populated"], "accepts": ["accept-visits-listed", "accept-visit-hours-shown", "accept-visit-spans-days"]},
+  "night": {"states": ["populated", "populated-dark"], "accepts": ["accept-dark-twin", "accept-tabular-figures"]}
+}
+</script>
+</section>
+<section id="log" data-kind="screen" data-route="/log">
+<h3>log &mdash; the eight columns, and no control at all</h3>
+<p data-extract="reads">
+Reads: <a href="#Corpus">Corpus</a> (filter <code>id=eq.the</code>) as the root
+list-of-one carrying the stitch seat, and <a href="#Event">Event</a> (order
+<code>epoch.asc,id.asc</code>) rendering every column of every hit.</p>
+<p data-extract="mutations">
+Mutations: none, and none is possible: there is no form and no button on this
+page, so read-only is a property of the markup rather than a rule something has
+to enforce.</p>
+<div class="storyboard frames">
+<figure id="log-loading" data-kind="state" data-state="loading">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The log</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">—</text>
+<text x="12" y="86" class="muted">Reading the log…</text>
+</g></svg>
+<figcaption>The header row is static; only the hits wait.</figcaption>
+</figure>
+<figure id="log-empty" data-kind="state" data-state="empty">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The log</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">0 hits</text>
+<text x="12" y="86" class="muted">The log is empty.</text>
+</g></svg>
+<figcaption>An empty log. Nothing on this screen writes, so this pose is reachable only from an empty seed.</figcaption>
+</figure>
+<figure id="log-populated" data-kind="state" data-state="populated">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The log</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">1 200 hits, 2026-03-05 to 2026-04-08.</text>
+<text x="12" y="64" class="muted">Every column the app reads is a column here. No form on the page.</text>
+<text x="12" y="86" class="sect">ID</text><text x="52" y="86" class="sect">EPOCH</text><text x="112" y="86" class="sect">VISITOR</text><text x="168" y="86" class="sect">NAME</text><text x="232" y="86" class="sect">PATH</text>
+<line class="heavy" x1="12" x2="288" y1="90" y2="90"/>
+<text x="12" y="102" class="mono">e0001</text><text x="52" y="102" class="mono num">1772665200</text><text x="112" y="102" class="mono">v102</text><text x="168" y="102" class="mono">pageview</text><text x="232" y="102" class="mono">/</text><line class="rule" x1="12" x2="288" y1="106" y2="106"/>
+<text x="12" y="115" class="mono">e0002</text><text x="52" y="115" class="mono num">1772665440</text><text x="112" y="115" class="mono">v102</text><text x="168" y="115" class="mono">engagement</text><text x="232" y="115" class="mono">/</text><line class="rule" x1="12" x2="288" y1="119" y2="119"/>
+<text x="12" y="128" class="mono">e0003</text><text x="52" y="128" class="mono num">1772665680</text><text x="112" y="128" class="mono">v102</text><text x="168" y="128" class="mono">engagement</text><text x="232" y="128" class="mono">/</text><line class="rule" x1="12" x2="288" y1="132" y2="132"/>
+<text x="12" y="141" class="mono">e0004</text><text x="52" y="141" class="mono num">1772666700</text><text x="112" y="141" class="mono">v102</text><text x="168" y="141" class="mono">pageview</text><text x="232" y="141" class="mono">/pricing</text><line class="rule" x1="12" x2="288" y1="145" y2="145"/>
+<text x="12" y="154" class="mono">e0005</text><text x="52" y="154" class="mono num">1772666940</text><text x="112" y="154" class="mono">v118</text><text x="168" y="154" class="mono">signup</text><text x="232" y="154" class="mono">/pricing</text><line class="rule" x1="12" x2="288" y1="158" y2="158"/>
+<text x="12" y="167" class="mono">e0006</text><text x="52" y="167" class="mono num">1772667180</text><text x="112" y="167" class="mono">v118</text><text x="168" y="167" class="mono">pageview</text><text x="232" y="167" class="mono">/docs</text><line class="rule" x1="12" x2="288" y1="171" y2="171"/>
+<text x="12" y="180" class="mono">e0007</text><text x="52" y="180" class="mono num">1772667420</text><text x="112" y="180" class="mono">v204</text><text x="168" y="180" class="mono">pageview</text><text x="232" y="180" class="mono">/blog/why</text><line class="rule" x1="12" x2="288" y1="184" y2="184"/>
+<text x="12" y="193" class="mono">e0008</text><text x="52" y="193" class="mono num">1772667660</text><text x="112" y="193" class="mono">v204</text><text x="168" y="193" class="mono">engagement</text><text x="232" y="193" class="mono">/blog/why</text><line class="rule" x1="12" x2="288" y1="197" y2="197"/>
+</g></svg>
+<figcaption>The eight columns, in log order. No control of any kind is on this page, which is how read-only is stated rather than guarded.</figcaption>
+</figure>
+<figure id="log-populated-dark" data-kind="state" data-state="populated-dark">
+<svg viewBox="0 0 300 420" width="215"><g class="dark">
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The log</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">1 200 hits, 2026-03-05 to 2026-04-08.</text>
+<text x="12" y="64" class="muted">Every column the app reads is a column here. No form on the page.</text>
+<text x="12" y="86" class="sect">ID</text><text x="52" y="86" class="sect">EPOCH</text><text x="112" y="86" class="sect">VISITOR</text><text x="168" y="86" class="sect">NAME</text><text x="232" y="86" class="sect">PATH</text>
+<line class="heavy" x1="12" x2="288" y1="90" y2="90"/>
+<text x="12" y="102" class="mono">e0001</text><text x="52" y="102" class="mono num">1772665200</text><text x="112" y="102" class="mono">v102</text><text x="168" y="102" class="mono">pageview</text><text x="232" y="102" class="mono">/</text><line class="rule" x1="12" x2="288" y1="106" y2="106"/>
+<text x="12" y="115" class="mono">e0002</text><text x="52" y="115" class="mono num">1772665440</text><text x="112" y="115" class="mono">v102</text><text x="168" y="115" class="mono">engagement</text><text x="232" y="115" class="mono">/</text><line class="rule" x1="12" x2="288" y1="119" y2="119"/>
+<text x="12" y="128" class="mono">e0003</text><text x="52" y="128" class="mono num">1772665680</text><text x="112" y="128" class="mono">v102</text><text x="168" y="128" class="mono">engagement</text><text x="232" y="128" class="mono">/</text><line class="rule" x1="12" x2="288" y1="132" y2="132"/>
+<text x="12" y="141" class="mono">e0004</text><text x="52" y="141" class="mono num">1772666700</text><text x="112" y="141" class="mono">v102</text><text x="168" y="141" class="mono">pageview</text><text x="232" y="141" class="mono">/pricing</text><line class="rule" x1="12" x2="288" y1="145" y2="145"/>
+<text x="12" y="154" class="mono">e0005</text><text x="52" y="154" class="mono num">1772666940</text><text x="112" y="154" class="mono">v118</text><text x="168" y="154" class="mono">signup</text><text x="232" y="154" class="mono">/pricing</text><line class="rule" x1="12" x2="288" y1="158" y2="158"/>
+<text x="12" y="167" class="mono">e0006</text><text x="52" y="167" class="mono num">1772667180</text><text x="112" y="167" class="mono">v118</text><text x="168" y="167" class="mono">pageview</text><text x="232" y="167" class="mono">/docs</text><line class="rule" x1="12" x2="288" y1="171" y2="171"/>
+<text x="12" y="180" class="mono">e0007</text><text x="52" y="180" class="mono num">1772667420</text><text x="112" y="180" class="mono">v204</text><text x="168" y="180" class="mono">pageview</text><text x="232" y="180" class="mono">/blog/why</text><line class="rule" x1="12" x2="288" y1="184" y2="184"/>
+<text x="12" y="193" class="mono">e0008</text><text x="52" y="193" class="mono num">1772667660</text><text x="112" y="193" class="mono">v204</text><text x="168" y="193" class="mono">engagement</text><text x="232" y="193" class="mono">/blog/why</text><line class="rule" x1="12" x2="288" y1="197" y2="197"/>
+</g></svg>
+<figcaption>The same table on a dark ground.</figcaption>
+</figure>
+</div>
+<script type="application/json" data-kind="paths" data-of="log">
+{
+  "arrive": {"states": ["loading", "empty", "populated"], "accepts": ["accept-log-shows-every-column", "accept-log-is-read-only", "accept-log-by-day"]},
+  "night": {"states": ["populated", "populated-dark"], "accepts": ["accept-dark-twin"]}
+}
+</script>
+</section>
+<section id="spec" data-kind="screen" data-route="/spec">
+<h3>spec &mdash; the specification, as rows</h3>
+<p data-extract="reads">
+Reads: <a href="#Corpus">Corpus</a> as the root list-of-one carrying the stitch
+seat; <a href="#Metric">Metric</a> (order <code>pos.asc</code>) for the three
+columns; <a href="#Range">Range</a> (order <code>pos.asc</code>) with
+<a href="#Grain">Grain</a> (filter <code>range=eq.{id}</code>) nested inside its
+item template, so the legal pairs are shown by the same rows the pickers obey;
+and <a href="#Question">Question</a> (order <code>departs.asc,id.asc</code>) for
+the whole published set.</p>
+<p data-extract="mutations">
+Mutations: none. <code>departs</code> is reflected as
+<code>data-departs="{departs}"</code> and styled, rather than being a
+<code>data-when</code> arm.</p>
+<div class="storyboard frames">
+<figure id="spec-loading" data-kind="state" data-state="loading">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The specification</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">—</text>
+<text x="12" y="86" class="muted">Reading the specification…</text>
+</g></svg>
+<figcaption>The headings are static; the three tables wait on the seed.</figcaption>
+</figure>
+<figure id="spec-empty" data-kind="state" data-state="empty">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The specification</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">—</text>
+<text x="12" y="86" class="muted">No metrics.</text>
+</g></svg>
+<figcaption>No metrics seeded. Unreachable in the shipped app.</figcaption>
+</figure>
+<figure id="spec-populated" data-kind="state" data-state="populated">
+<svg viewBox="0 0 300 420" width="215"><g>
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The specification</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">The published sentence, the published formula, this app's reading.</text>
+<text x="12" y="70" class="sect">METRIC</text><text x="80" y="70" class="sect">SAYS</text><text x="170" y="70" class="sect">FORMULA</text><text x="240" y="70" class="sect">READS</text>
+<line class="heavy" x1="12" x2="288" y1="74" y2="74"/>
+<text x="12" y="88" class="mono">visitors</text><text x="80" y="88" class="mono muted">unique …</text><text x="170" y="88" class="mono">uniq()</text><text x="240" y="88" class="mono muted">distinct</text><line class="rule" x1="12" x2="288" y1="92" y2="92"/>
+<text x="12" y="103" class="mono">visits</text><text x="80" y="103" class="mono muted">sessions …</text><text x="170" y="103" class="mono">&lt;= 30</text><text x="240" y="103" class="mono muted">1860 s</text><line class="rule" x1="12" x2="288" y1="107" y2="107"/>
+<text x="12" y="118" class="mono">pageviews</text><text x="80" y="118" class="mono muted">pages …</text><text x="170" y="118" class="mono">name=pv</text><text x="240" y="118" class="mono muted">hits</text><line class="rule" x1="12" x2="288" y1="122" y2="122"/>
+<text x="12" y="133" class="mono">events</text><text x="80" y="133" class="mono muted">events …</text><text x="170" y="133" class="mono">&lt;&gt; engag</text><text x="240" y="133" class="mono muted">751</text><line class="rule" x1="12" x2="288" y1="137" y2="137"/>
+<text x="12" y="148" class="mono">v/visit</text><text x="80" y="148" class="mono muted">pages ÷ …</text><text x="170" y="148" class="mono">round(,2)</text><text x="240" y="148" class="mono muted">pv_sum</text><line class="rule" x1="12" x2="288" y1="152" y2="152"/>
+<text x="12" y="163" class="mono">bounce</text><text x="80" y="163" class="mono muted">one page …</text><text x="170" y="163" class="mono">ifNotFin</text><text x="240" y="163" class="mono muted">entered</text><line class="rule" x1="12" x2="288" y1="167" y2="167"/>
+<text x="12" y="178" class="mono">duration</text><text x="80" y="178" class="mono muted">average …</text><text x="170" y="178" class="mono">round()</text><text x="240" y="178" class="mono muted">dur_sum</text><line class="rule" x1="12" x2="288" y1="182" y2="182"/>
+<text x="12" y="212" class="sect">THE QUESTION SET</text>
+<line class="heavy" x1="12" x2="288" y1="216" y2="216"/>
+<text x="12" y="230" class="mono">visitors · none · 28d · day</text><text x="215" y="230" class="mono muted">no</text><line class="rule" x1="12" x2="288" y1="234" y2="234"/>
+<text x="12" y="245" class="mono">bounce · page · 28d · unentered</text><text x="215" y="245" class="mono muted">no</text><line class="rule" x1="12" x2="288" y1="249" y2="249"/>
+<text x="12" y="260" class="mono">duration · hour bucket</text><text x="215" y="260" class="mono danger">declined</text><line class="rule" x1="12" x2="288" y1="264" y2="264"/>
+<text x="12" y="275" class="mono">visits · week · summed</text><text x="215" y="275" class="mono warn">approximates</text><line class="rule" x1="12" x2="288" y1="279" y2="279"/>
+</g></svg>
+<figcaption>Three columns that are never merged, the formula set as an identifier rather than tidied into prose, and the question set grouped by how this app departs.</figcaption>
+</figure>
+<figure id="spec-populated-dark" data-kind="state" data-state="populated-dark">
+<svg viewBox="0 0 300 420" width="215"><g class="dark">
+<rect class="page" width="300" height="420"/>
+<text x="12" y="18" class="h">The specification</text>
+<line class="rule" x1="0" x2="300" y1="26" y2="26"/>
+<text x="12" y="44" class="muted">The published sentence, the published formula, this app's reading.</text>
+<text x="12" y="70" class="sect">METRIC</text><text x="80" y="70" class="sect">SAYS</text><text x="170" y="70" class="sect">FORMULA</text><text x="240" y="70" class="sect">READS</text>
+<line class="heavy" x1="12" x2="288" y1="74" y2="74"/>
+<text x="12" y="88" class="mono">visitors</text><text x="80" y="88" class="mono muted">unique …</text><text x="170" y="88" class="mono">uniq()</text><text x="240" y="88" class="mono muted">distinct</text><line class="rule" x1="12" x2="288" y1="92" y2="92"/>
+<text x="12" y="103" class="mono">visits</text><text x="80" y="103" class="mono muted">sessions …</text><text x="170" y="103" class="mono">&lt;= 30</text><text x="240" y="103" class="mono muted">1860 s</text><line class="rule" x1="12" x2="288" y1="107" y2="107"/>
+<text x="12" y="118" class="mono">pageviews</text><text x="80" y="118" class="mono muted">pages …</text><text x="170" y="118" class="mono">name=pv</text><text x="240" y="118" class="mono muted">hits</text><line class="rule" x1="12" x2="288" y1="122" y2="122"/>
+<text x="12" y="133" class="mono">events</text><text x="80" y="133" class="mono muted">events …</text><text x="170" y="133" class="mono">&lt;&gt; engag</text><text x="240" y="133" class="mono muted">751</text><line class="rule" x1="12" x2="288" y1="137" y2="137"/>
+<text x="12" y="148" class="mono">v/visit</text><text x="80" y="148" class="mono muted">pages ÷ …</text><text x="170" y="148" class="mono">round(,2)</text><text x="240" y="148" class="mono muted">pv_sum</text><line class="rule" x1="12" x2="288" y1="152" y2="152"/>
+<text x="12" y="163" class="mono">bounce</text><text x="80" y="163" class="mono muted">one page …</text><text x="170" y="163" class="mono">ifNotFin</text><text x="240" y="163" class="mono muted">entered</text><line class="rule" x1="12" x2="288" y1="167" y2="167"/>
+<text x="12" y="178" class="mono">duration</text><text x="80" y="178" class="mono muted">average …</text><text x="170" y="178" class="mono">round()</text><text x="240" y="178" class="mono muted">dur_sum</text><line class="rule" x1="12" x2="288" y1="182" y2="182"/>
+<text x="12" y="212" class="sect">THE QUESTION SET</text>
+<line class="heavy" x1="12" x2="288" y1="216" y2="216"/>
+<text x="12" y="230" class="mono">visitors · none · 28d · day</text><text x="215" y="230" class="mono muted">no</text><line class="rule" x1="12" x2="288" y1="234" y2="234"/>
+<text x="12" y="245" class="mono">bounce · page · 28d · unentered</text><text x="215" y="245" class="mono muted">no</text><line class="rule" x1="12" x2="288" y1="249" y2="249"/>
+<text x="12" y="260" class="mono">duration · hour bucket</text><text x="215" y="260" class="mono danger">declined</text><line class="rule" x1="12" x2="288" y1="264" y2="264"/>
+<text x="12" y="275" class="mono">visits · week · summed</text><text x="215" y="275" class="mono warn">approximates</text><line class="rule" x1="12" x2="288" y1="279" y2="279"/>
+</g></svg>
+<figcaption>The same sheet on a dark ground. A departure is marked in attention or danger and never in red-as-error.</figcaption>
+</figure>
+</div>
+<script type="application/json" data-kind="paths" data-of="spec">
+{
+  "arrive": {"states": ["loading", "empty", "populated"], "accepts": ["accept-spec-three-columns", "accept-formula-verbatim", "accept-spec-ranges-and-grains"]},
+  "read_the_departures": {"states": ["populated"], "accepts": ["accept-spec-question-set", "accept-departure-stated", "accept-departure-not-an-error"]},
+  "night": {"states": ["populated", "populated-dark"], "accepts": ["accept-dark-twin"]}
+}
+</script>
+</section>
+
+<h2 id="handlers">Handlers</h2>
+
+<section id="stitch" data-kind="handler">
+<h3>stitch &mdash; the log becomes visits</h3>
+<p>Reads <code>event, zone, session, session_hour, corpus, fold</code> and writes
+<code>session</code>, then <code>session_hour</code>, then <code>corpus</code> &mdash;
+in that order, because <code>applyUpdates</code> batches only consecutive runs of the
+same op against the same collection, so the stated order is the written order and the
+<code>corpus</code> write is the signal the whole wake graph hangs on.</p>
+<p>It recomputes absolutely and writes differentially, so a pass over an unchanged
+world writes nothing and therefore does not re-wake: the fixpoint is structural rather
+than counted. That second pass is not redundant &mdash; it is the executable proof that
+the fold is absolute.</p>
+<div class="mermaid">
+graph LR
+  E[event rows] --&gt; S[partition by visitor]
+  Z[zone rows] --&gt; L[local hour walk]
+  S --&gt; V[gap at 1860 s]
+  V --&gt; W[session rows]
+  L --&gt; H[session_hour rows]
+  W --&gt; H
+  H --&gt; C[corpus, stated last]
+</div>
+</section>
+<section id="rollup" data-kind="handler">
+<h3>rollup &mdash; one cursor row becomes every number on the screen</h3>
+<p>Reads the fourteen tables its seat declares plus the ONE cursor row
+<code>data-read-cursor</code> puts in <code>state.rows.cursor</code>, and writes
+<code>topline, bucket, tick, scale, breakdown, chip</code>. It computes only the active
+cursor position and deletes every row it did not recompute, which is what makes the
+write total and keeps the breakdown bounded.</p>
+<p>It is live on none of its own sinks, so it never self-wakes and one run per input
+change is all it gets &mdash; which is only correct because the write is differential.
+A run where the cursor is not exactly one row is a broken precondition and raises.</p>
+<div class="mermaid">
+graph LR
+  F[one filter row] --&gt; R[resolve the window]
+  R --&gt; M[match hits and visits]
+  M --&gt; T[topline, with its divisors]
+  R --&gt; G[bucket grid, window arithmetic]
+  G --&gt; K[scale and tick]
+  M --&gt; B[breakdown, ranked and cut at nine]
+  F --&gt; P[chip per slot in force]
+</div>
+</section>
+
+<h2 id="flows">Flows</h2>
+
+<section id="open-shape" data-kind="flow">
+<h3>open-shape &mdash; a shape is an address</h3>
+<div class="mermaid">
+graph LR
+  A[a link on the front door] --&gt; B[navigate to /f/:preset]
+  B --&gt; C[the root list-of-one binds that FilterSet row]
+  C --&gt; D[the cursor ear reads the LIVE row of the same id]
+</div>
+</section>
+<section id="stitch-visits" data-kind="flow">
+<h3>stitch-visits &mdash; the log is cut into visits</h3>
+<div class="mermaid">
+graph LR
+  A[the seat wakes on its own corpus read] --&gt; B[partition the log by visitor]
+  B --&gt; C[cut where the gap reaches 1860 s]
+  C --&gt; D[session rows, written differentially]
+</div>
+</section>
+<section id="stitch-hours" data-kind="flow">
+<h3>stitch-hours &mdash; and into the local hours it was open in</h3>
+<div class="mermaid">
+graph LR
+  A[each visit] --&gt; B[walk to the next LOCAL hour boundary]
+  B --&gt; C[the hour the clock skips is never a key]
+  C --&gt; D[session_hour rows]
+</div>
+</section>
+<section id="signal-corpus" data-kind="flow">
+<h3>signal-corpus &mdash; the write that means the rest has landed</h3>
+<div class="mermaid">
+graph LR
+  A[session and session_hour written] --&gt; B[corpus stated LAST]
+  B --&gt; C[both corpus ears wake]
+  C --&gt; D[rollup re-runs over a complete world]
+</div>
+</section>
+<section id="roll-topline" data-kind="flow">
+<h3>roll-topline &mdash; six figures and the divisors they were reached by</h3>
+<div class="mermaid">
+graph LR
+  A[the one cursor row] --&gt; B[resolve the window as civil dates]
+  B --&gt; C[match hits and visits]
+  C --&gt; D[topline: numerators, divisors, rendered strings]
+</div>
+</section>
+<section id="roll-buckets" data-kind="flow">
+<h3>roll-buckets &mdash; the grid is window arithmetic</h3>
+<div class="mermaid">
+graph LR
+  A[from, to, granularity] --&gt; B[walk the grid on the site clock]
+  B --&gt; C[a bucket per step, hit or no hit]
+  C --&gt; D[visits from session_hour at hour granularity]
+</div>
+</section>
+<section id="draw-axis" data-kind="flow">
+<h3>draw-axis &mdash; five ticks from a stated rule</h3>
+<div class="mermaid">
+graph LR
+  A[domain_max] --&gt; B[round up to 1, 2 or 5 times a power of ten]
+  B --&gt; C[five tick rows with a per-mille position]
+</div>
+</section>
+<section id="draw-graph" data-kind="flow">
+<h3>draw-graph &mdash; one column per bucket, on one coordinate system</h3>
+<div class="mermaid">
+graph LR
+  A[the bucket values] --&gt; B[two path strings on a 1000 by 300 box]
+  B --&gt; C[bound onto the authored svg inside a leaf slot]
+  C --&gt; D[the element survives every root refresh]
+</div>
+</section>
+<section id="rank-panels" data-kind="flow">
+<h3>rank-panels &mdash; selection and order are graded, not only values</h3>
+<div class="mermaid">
+graph LR
+  A[matching hits and visits] --&gt; B[group by the panel column]
+  B --&gt; C[rank visitors desc, then the value asc]
+  C --&gt; D[ord written; the dashboard keeps nine, the full panel keeps all]
+</div>
+</section>
+<section id="raise-chips" data-kind="flow">
+<h3>raise-chips &mdash; a chip is a row whose id is its slot</h3>
+<div class="mermaid">
+graph LR
+  A[the cursor slots in force] --&gt; B[one chip row per non-empty slot]
+  B --&gt; C[carrying the cursor its removal would write]
+</div>
+</section>
+<section id="report-refusal" data-kind="flow">
+<h3>report-refusal &mdash; a refusal has to BE an update</h3>
+<div class="mermaid">
+graph LR
+  A[a derived row fails a coherence clause] --&gt; B[return ONE Fold patch]
+  B --&gt; C[no sink write, so no re-wake]
+  C --&gt; D[the last coherent numbers stand beside the error]
+</div>
+</section>
+<section id="pick-range" data-kind="flow">
+<h3>pick-range &mdash; a form stating the whole triple</h3>
+<div class="mermaid">
+graph LR
+  A[submit a range row's form] --&gt; B[range, Range.opens_on and the caret's home together]
+  B --&gt; C[Filter.range, grain and active_bucket written on the pinned key]
+  C --&gt; D[the nested grain region re-hydrates on the new value]
+</div>
+</section>
+<section id="pick-grain" data-kind="flow">
+<h3>pick-grain &mdash; and the pairs it may take are rows</h3>
+<div class="mermaid">
+graph LR
+  A["the buttons come from grain?range=eq. the live range"] --&gt; B[an illegal pair has no button]
+  B --&gt; C[Filter.grain and the caret's home written by the row's own form]
+  C --&gt; D[rollup re-runs on the cursor ear]
+</div>
+</section>
+<section id="mark-range" data-kind="flow">
+<h3>mark-range &mdash; a picker that cannot say where it is standing</h3>
+<div class="mermaid">
+graph LR
+  A[the one cursor row] --&gt; B[Range.on_cursor patched true on the row the cursor names, false on the rest]
+  B --&gt; C[the segment binds it through aria-current]
+  C --&gt; D[one marked segment of five, in the picture and in the a11y tree]
+</div>
+<p>A segment binds a column and cannot compare two, so a mark inferred in markup
+is not available at all: five identically rendered buttons are the only picker
+this app could otherwise build, and the range in force would be stated nowhere
+but in a seat&rsquo;s line of prose in another row. It is patched rather than put
+because this fold authors ONE column of a seeded vocabulary row, and it is the
+ACTIVE cursor&rsquo;s mark &mdash; the same scope every other row
+<a href="#rollup">rollup</a> writes has.</p>
+</section>
+<section id="mark-grain" data-kind="flow">
+<h3>mark-grain &mdash; the same mark, on both legs of the pair</h3>
+<div class="mermaid">
+graph LR
+  A[the cursor's range and granularity] --&gt; B[Grain.on_cursor patched on the matching pair]
+  B --&gt; C[the nested grain region already shows the live range's rows]
+</div>
+<p>Both legs, and not the granularity alone: the region shows one range&rsquo;s
+rows today, and a column true on a row of some other range would be a mark
+waiting for the day something renders the pairs unfiltered.</p>
+</section>
+<section id="walk-the-graph" data-kind="flow">
+<h3>walk-the-graph &mdash; the caret is a column</h3>
+<div class="mermaid">
+graph LR
+  A[an arrow key on the readout, the one tabstop] --&gt; B[a form carrying Scale.caret_prev or caret_next]
+  B --&gt; C[Filter.active_bucket written]
+  C --&gt; D[rollup marks the point and names its neighbours]
+  D --&gt; E[an end names itself; the graph does not wrap]
+</div>
+</section>
+<section id="drill-down" data-kind="flow">
+<h3>drill-down &mdash; the row IS the form</h3>
+<div class="mermaid">
+graph LR
+  A[submit a breakdown row] --&gt; B[five hidden inputs, one per slot]
+  B --&gt; C[upsert on filter with id from param.preset]
+  C --&gt; D[every number on the screen moves together]
+</div>
+</section>
+<section id="remove-chip" data-kind="flow">
+<h3>remove-chip &mdash; the same form, one slot emptied</h3>
+<div class="mermaid">
+graph LR
+  A[submit a chip] --&gt; B[the same five inputs, this slot blank]
+  B --&gt; C[upsert on filter]
+  C --&gt; D[the dashboard widens back]
+</div>
+</section>
+<section id="reset-cursor" data-kind="flow">
+<h3>reset-cursor &mdash; the declared cursor restores the live one</h3>
+<div class="mermaid">
+graph LR
+  A[the reset at screen root] --&gt; B[every cursor column bound off the FilterSet row]
+  B --&gt; C[upsert on filter]
+  C --&gt; D[the preset is what the URL named again]
+</div>
+</section>
+<section id="open-panel" data-kind="flow">
+<h3>open-panel &mdash; a dimension has its own address</h3>
+<div class="mermaid">
+graph LR
+  A[a panel heading] --&gt; B[navigate to /f/:preset/:panel]
+  B --&gt; C[two parameters, each pinned by its own region]
+</div>
+</section>
+<section id="back-to-dashboard" data-kind="flow">
+<h3>back-to-dashboard &mdash; and back again</h3>
+<div class="mermaid">
+graph LR
+  A[the back link] --&gt; B[navigate to /f/:preset]
+  B --&gt; C[the reader's cursor is restored, not the preset's]
+</div>
+</section>
+
+<h2 id="invariants">Invariants &amp; test pairs</h2>
+
+<p id="test-ground-truth" data-kind="test" data-of="Question" data-accepts="accept-every-anti-join">
+
+The ground truth answers every graded position in ONE DuckDB invocation, with no
+precondition degraded:
+<code class="cel">output.documents == 1 &amp;&amp; output.violations == 0 &amp;&amp; output.everyWrongReadingDiffers</code>.
+Twenty-five preconditions raise rather than degrade, because a ground truth that
+quietly answers a narrower question than it was asked is worse than no ground
+truth &mdash; every assertion under it stays green while the thing being graded
+walks away.
+</p>
+<p id="test-fixture" data-kind="test" data-of="Event" data-accepts="accept-log-shows-every-column">
+
+The committed log is the artifact its sha names, and three independent
+sessionizations of it agree column for column:
+<code class="cel">output.shaMatches &amp;&amp; output.partitionsAgree &amp;&amp; output.columnsAgree</code>.
+The three are compared PAIRWISE inside one suite, so regenerating one of them
+cannot launder a break in another; and the vendor&rsquo;s own asserted numbers
+reproduce over the transcribed cohorts before anything else runs.
+</p>
+<p id="test-stitch" data-kind="test" data-of="Session" data-accepts="accept-visits-listed accept-visit-spans-days accept-entry-page-waits accept-bounce-rule accept-views-vs-events accept-zero-duration-counts">
+
+Mounted cold with only the seed, the app stitches the log into exactly the visits
+DuckDB cuts it into: <code class="cel">output.sessions == output.duckdbSessions &amp;&amp; output.everyColumnAgrees</code>,
+cardinality asserted BEFORE any column, so a missing visit fails as a missing
+visit. A visit that opened on something other than a page view has no entry page
+until it views one, a one-hit visit lasts zero seconds and stays in the divisor,
+and an interaction clears a bounce that a second page view would also have
+cleared.
+</p>
+<p id="test-boundary" data-kind="test" data-of="Session" data-accepts="accept-visit-gap-boundary">
+
+The boundary is the integer 1860 and the four planted gaps walk it:
+<code class="cel">output.visitsPerGap == [1, 1, 1, 2]</code>. Not 1800, and not
+the phrase &ldquo;thirty minutes&rdquo;: the vendor&rsquo;s own diff truncates to
+whole minutes, so 1859 s reads as 30 and continues while 1860 s reads as 31 and
+starts a new visit. A clone reading the sentence rather than the source gets this
+wrong and nothing else in the suite would say so.
+</p>
+<p id="test-hours" data-kind="test" data-of="SessionHour" data-accepts="accept-visit-hours-shown accept-local-day-stamped accept-hourly-visits-overlap">
+
+A visit is materialized in every local hour it was open in, and the hour the
+clock skips is absent rather than empty:
+<code class="cel">output.hoursOnDstDay == 23 &amp;&amp; output.hourlyVisitsSum != output.dailyVisits</code>.
+The inequality is the assertion, not a tolerance: the hourly visit counts are NOT
+supposed to sum to the day&rsquo;s figure, and a suite that let them would be
+grading a different app.
+</p>
+<p id="test-window" data-kind="test" data-of="Range" data-accepts="accept-dst-day-23-bars accept-visitors-not-summed">
+
+Each of the five ranges resolves to the pair of integers the arithmetic states,
+walked as civil dates:
+<code class="cel">output.windowSeconds == 1810800 &amp;&amp; output.buckets == 103</code>.
+The bucket total is the discriminator: a Sunday-start week, a window opened by
+multiplying 86 400, days cut in UTC and a 24-hour DST day each change one of the
+seven counts, so all four wrong readings are caught as cardinality rather than as
+arithmetic.
+</p>
+<p id="test-topline" data-kind="test" data-of="Topline" data-accepts="accept-topline-six-numbers accept-rounding-as-defined accept-two-divisors-shown accept-unentered-page-zero-bounce accept-current-visitors-unfiltered">
+
+The six figures, their divisors and their rendered strings all agree with the
+ground truth, and only bounce rate restricts its divisor:
+<code class="cel">output.agreesWithOracle &amp;&amp; output.bounceDenom != output.sessionsN &amp;&amp; output.bounceRateText == "0%"</code>.
+The <code>unentered</code> preset is the case that separates them: a page nobody
+entered on has visits above zero and a bounce rate of exactly zero, and both
+divisors are on the screen beside their quotients.
+</p>
+<p id="test-panels" data-kind="test" data-of="Breakdown" data-accepts="accept-four-panels accept-panel-nine-by-visitors accept-panel-ties-by-value accept-panel-every-value accept-panel-detailed-metrics accept-panel-keeps-filter">
+
+Each panel ranks by visitors descending with ties broken by the value ascending,
+the dashboard keeps the first nine and the full panel keeps them all:
+<code class="cel">output.ordAgrees &amp;&amp; output.dashboardRows &lt;= 9 &amp;&amp; output.fullPanelRows == output.oracleRows</code>.
+The tie leg decides membership and not merely order &mdash; twenty-seven panels
+are tied across the ninth row &mdash; so <code>ord</code> is in the coverage key
+on both sides.
+</p>
+<p id="test-drilldown" data-kind="test" data-of="Filter" data-accepts="accept-drilldown-narrows-all accept-chips-removable accept-routes-distinct accept-shape-opens-dashboard">
+
+A drill-down submits all five slots, so the reachable cursor space is the graded
+one: <code class="cel">output.slotsWritten == 5 &amp;&amp; output.backToStart &amp;&amp; output.presetsIndependent</code>.
+Every position is reached by mounting the route and submitting the row&rsquo;s own
+form, never by writing the cursor from the test &mdash; a test that writes the row
+directly grades a cursor no reader has.
+</p>
+<p id="test-graph" data-kind="test" data-of="Scale" data-accepts="accept-graph-drawn accept-graph-table-is-meaning accept-graph-caret-walks accept-dst-day-23-bars accept-empty-bucket-marked">
+
+The series is one column per bucket over one coordinate system, a bucket that
+measured nothing is a mark on the axis floor rather than a column of no height,
+every column is a row of the table beside it, and the arrows walk those rows one
+at a time:
+<code class="cel">output.columns == output.points &amp;&amp; output.floorMarks == output.emptyBuckets &amp;&amp; output.ticks == 5 &amp;&amp; output.tableRows == output.points &amp;&amp; output.caretMarked == 1 &amp;&amp; output.caretWraps == false</code>.
+This one is written FIRST, because nothing in this tree has a bound
+<code>d</code> yet and because linkedom serializes a wrong-namespace element and
+a clipped-to-nothing element identically to a correct one &mdash; so every tier
+below a real browser passes on a blank chart. The caret leg walks past where a
+shorter axis reaches and then shortens the axis, which is the gesture both
+declined spellings break on (<a href="#decision-23">decision-23</a>).
+</p>
+<p id="test-coherent" data-kind="test" data-of="Fold" data-accepts="accept-departure-not-an-error">
+
+An incoherent derived row is refused as ONE update naming the clause, with no
+sink written:
+<code class="cel">output.clausesNamed == 6 &amp;&amp; output.sinkWrites == 0 &amp;&amp; output.boundaryRowsPass</code>.
+The two boundary rows &mdash; a bounce rate of exactly 0 and exactly 100 &mdash;
+must pass, and the arithmetic suite must stay RED for the arithmetic reason while
+the guard is firing: a guard that hides a wrong number is worse than no
+guard.
+</p>
+<p id="test-questions" data-kind="test" data-of="Question" data-accepts="accept-spec-three-columns accept-formula-verbatim accept-spec-question-set accept-departure-stated accept-spec-ranges-and-grains">
+
+Every published question is driven through the app&rsquo;s own forms and the
+number is read off the RENDERED TEXT rather than off the row:
+<code class="cel">output.driven == 312 &amp;&amp; output.readFromDom &amp;&amp; output.saysAndReadsNeverMerged</code>.
+Reading the DOM grades the binding and the rounding along with the arithmetic,
+which is the only way a metric whose definition includes its rounding can be
+graded at all.
+</p>
+<p id="test-sweep" data-kind="test" data-of="Bucket" data-accepts="accept-answers-without-network">
+
+The mechanical cross of the vocabularies is generated from the app&rsquo;s OWN
+rows, never from a literal list in the test, and swept with cardinality asserted
+before value:
+<code class="cel">output.cardinalityBeforeValue &amp;&amp; output.networkRequests == 0</code>.
+A literal list is a second copy of the vocabulary and it will drift; the zero is
+the offline claim, and it holds because the log and the arithmetic are both
+already in the tab.
+</p>
+<p id="test-coverage" data-kind="test" data-of="Metric" data-accepts="accept-every-anti-join">
+
+Every anti-join closes:
+<code class="cel">output.undriven == [] &amp;&amp; output.ungraded == [] &amp;&amp; output.unshown == [] &amp;&amp; output.everySlotMovesANumber</code>.
+The forward one finds a published question nothing drove; the reverse one finds a
+number the app renders that nothing grades, which is the app-level stand-in for a
+platform lint that does not exist; the unrendered one walks the graded space from
+the other side and finds a number the oracle answers that no screen showed
+(<a href="#decision-21">decision-21</a>). The slot leg is what refuses a cursor
+column no graded number depends on.
+</p>
+<p id="test-appearance" data-kind="test" data-of="dash" data-accepts="accept-dark-twin accept-no-numeric-motion accept-reduced-motion accept-tabular-figures accept-index-names-the-log accept-index-lists-the-shapes accept-no-free-text-filter accept-log-is-read-only accept-log-by-day">
+
+Both appearances render, nothing animates, and every figure is set in a fixed
+advance:
+<code class="cel">output.loopingAnimations == 0 &amp;&amp; output.smallestTarget &gt;= 24 &amp;&amp; output.tabularFigures &amp;&amp; output.horizontalOverflow == 0</code>.
+No bar grows from zero, because two readings of the same number must look the
+same; the only motion in the app is the caret, and it arrives without travelling
+under reduced motion.
+The fourth is the one claim about the page rather than about an element on it:
+the document is never wider than the viewport at either width, so a sheet too
+wide for a phone scrolls inside its own box and the page does not slide under
+the reader. Every claim above can hold of every element while the page slides,
+which is why it is measured on the document.
+</p>
+
+<h2 id="decisions">Decisions</h2>
+
+<p id="decision-01" data-kind="decision"><strong>01 &mdash; everything is
+<code>tab</code>, and that is the load-bearing decision rather than a
+shortcut.</strong> No Postgres, no Electric, no conduit, no bloblang, no
+migration, no policy, no publication, no pipeline. The reason is the grader, not
+the size: a raw pipeline has no browser-tier form at all, and the only check any
+app in this tree declares over a bloblang mapping is a lint. For an app whose
+oracle IS arithmetic, putting the arithmetic in the one seat no fixture harness
+reaches destroys the grader before it is written. Nothing is at
+<code>device</code> either: a device collection persists across program versions
+and nothing backfills a new column, so a returning reader would get
+<code>binding {x} not in row</code> on a schema that is certain to move.</p>
+<p id="decision-02" data-kind="decision"><strong>02 &mdash; the aggregation is two reduces
+at the mutation seat.</strong> That seat is the one an off-disk mount executes,
+so every graded assertion runs at the test verb with no cluster up. Two rather
+than one because they have different worlds and different wake conditions:
+<a href="#stitch">stitch</a> depends on the log and the clock alone and is
+cursor-independent, <a href="#rollup">rollup</a> depends on the cursor and would
+otherwise re-derive the partition on every gesture. Splitting them is also what
+lets the visits be graded against DuckDB BEFORE any aggregate is, which is the
+one place a shared misunderstanding of the sessionization would show.</p>
+<p id="decision-03" data-kind="decision"><strong>03 &mdash; a visit’s id is
+arithmetic, because a reduce has no <code>post</code>.</strong> A reduce may only
+write where it can name the key, so <code>&lt;visitor&gt;#&lt;ord&gt;</code> is
+not a convenience: it is the only way a derived row can exist at all. The same
+constraint gives a session-hour <code>&lt;session_id&gt;@&lt;hour&gt;</code> and
+a breakdown row <code>&lt;panel&gt;|&lt;value&gt;</code>. It costs the freedom to
+key on anything the log does not already determine, and it buys the property that
+a recomputation lands on the same rows rather than beside them.</p>
+<p id="decision-04" data-kind="decision"><strong>04 &mdash; the clock is three integer rows
+and a civil-from-days algorithm.</strong> A reduce is denied
+<code>Date</code>, and the terminal’s only formatter is pinned to UTC, so a
+local day cannot be a rendered string. It is a subtraction of DATES over the
+<a href="#Zone">Zone</a> row covering the instant, and never
+<code>k × 86400</code> seconds &mdash; across the clock change the two
+differ by an hour and that hour holds a hit. The independent witness is
+DuckDB’s ICU: the ground truth asks a real tz database the same question and
+the two must agree.</p>
+<p id="decision-05" data-kind="decision"><strong>05 &mdash; every mutation is a form and
+every derivation is a fold; there is no <code>data-on-click</code> reduce
+anywhere.</strong> That removes the whole class of silently dead controls: a
+handler one level above its region still resolves, so a control wired one tag too
+high is inert under the finger with no error anywhere. A form either submits or
+it does not. The cost is that a gesture cannot compute &mdash; which is why a
+breakdown row carries the five <code>set_*</code> columns it would write
+(<a href="#decision-13">decision-13</a>).</p>
+<p id="decision-06" data-kind="decision"><strong>06 &mdash; the five rules two
+implementations read differently are literals, not phrases.</strong> The boundary
+is the integer 1860 and appears as that integer in the fold, in the ground truth,
+in <a href="#Metric">Metric.reads</a> and in the test that walks it. Page views
+count only <code>pageview</code>; events count every hit except
+<code>engagement</code>. The entry page is the first page VIEWED. Duration runs to
+the last non-engagement hit. A bounce needs at most one page view AND no
+interactive non-pageview hit, read off the hit’s own column rather than off
+its name. &ldquo;Thirty minutes&rdquo; appears only in the published sentence,
+where it is a quotation and not a rule.</p>
+<p id="decision-07" data-kind="decision"><strong>07 &mdash; the divisors are graded columns,
+not intermediates.</strong> <code>sessions_n</code>, <code>bounce_denom</code>,
+<code>pv_sum</code> and <code>dur_sum</code> sit beside the quotients they
+produce, and both are on the screen. Without them a wrong divisor hides behind a
+quotient that rounds the same, and the one case in the whole app where two
+metrics divide by DIFFERENT counts &mdash; bounce rate restricting its divisor to
+the visits that entered a matching page, while views per visit does not &mdash;
+would be invisible rather than demonstrated.</p>
+<p id="decision-08" data-kind="decision"><strong>08 &mdash; the hourly visit counts do not
+sum to the day’s, and the screen says so rather than reconciling
+it.</strong> At hour granularity a visit is counted in every local hour it was
+open in, which is what <a href="#SessionHour">SessionHour</a> materialises, while
+visitors and page views are counted over hits. Two implementations can agree on
+every visit and still disagree here, so the asymmetry is stated in the ir, on the
+screen, and in an assertion that requires the two NOT to be equal. Presenting it
+as a sum would be the most plausible wrong app this brief admits.</p>
+<p id="decision-09" data-kind="decision"><strong>09 &mdash; the wake graph closes on one
+edge, and the edge is a write order.</strong> A <code>data-on-mutation</code>
+seat wakes when its OWN region’s read changes and at no other time &mdash;
+<code>data-reads</code> fills the world and subscribes to nothing. So the second
+run of <a href="#rollup">rollup</a>, the one over a complete session set, exists
+only because <a href="#stitch">stitch</a> states <code>corpus</code> LAST and
+rollup keeps an ear on that row. Reordering those three writes silently gives
+rollup a partial world with no second wake to correct it, and every number would
+be zero with nothing red. Each mount settles at two runs of stitch and three of
+rollup; an assertion written to any other pair goes red on correct code.</p>
+<p id="decision-10" data-kind="decision"><strong>10 &mdash; two cursor tables, and
+therefore no precedence branch.</strong> <a href="#FilterSet">FilterSet</a> is
+what a URL MEANS and is written by nothing; <a href="#Filter">Filter</a> is what
+the reader has done to it and is the only table a form writes. The reduce reads
+exactly one row of the second, through
+<code>data-read-cursor="filter?id=eq.{param.preset}"</code>, so there is no
+overlay to compose and no discriminator to go stale &mdash; a discriminator is a
+branch, and a stale one is a silently dead picker. This is also how a route
+parameter reaches arithmetic without a write, which no app in this tree does
+today. It costs the ability to name a cursor the eleven rows do not materialise,
+and that cost is what makes the answerable set finite.</p>
+<p id="decision-11" data-kind="decision"><strong>11 &mdash; a panel’s SELECTION and
+ORDER are graded, not only its numbers.</strong> Ranked by page views instead of
+visitors, the page panel shows a different set of nine in a different order
+&mdash; and every number in it is a number this oracle answers, and answers
+correctly. So <code>ord</code> is a real column on the oracle’s side and in
+the coverage key on both sides. The tie leg decides membership rather than merely
+order: twenty-seven panels are tied on visitors across the ninth row, so a
+fixture that lost its ties would silently weaken this.</p>
+<p id="decision-12" data-kind="decision"><strong>12 &mdash; the coherence guard lives in
+the reduce, because there is no store-side predicate to put it in.</strong> The
+platform has exactly three Jessie roles and none is a validator;
+<code>#Entity</code> declares no validations field; and a <code>tab</code> entity
+could not reach one anyway, since a refusal is an error off a mutation round trip
+a browser-tier collection never makes. So the writer guards its own writes: it
+fails at the same moment, in the seat where it happened, and costs a call. What
+is genuinely lost is a FORM’s write &mdash; the cursor is form-written and
+ungated, so a malformed cursor is caught by arithmetic rather than refused at the
+door. That is the honest cost, and it is what the platform is being asked
+for.</p>
+<p id="decision-13" data-kind="decision"><strong>13 &mdash; a drill-down writes every slot,
+not one.</strong> <code>upsertBy</code> PATCHES an existing row with only the
+submitted fields, so a form carrying one <code>f_*</code> would leave the other
+four standing and a reader would reach a two-slot cursor no question grades
+&mdash; in one gesture, silently. Hence five <code>set_*</code> columns per
+breakdown and chip row, submitted together. They have to be real columns rather
+than bindings reached upward, because a nested item template binds against its
+own row and nothing else is in scope there.</p>
+<p id="decision-14" data-kind="decision"><strong>14 &mdash; the chart is a leaf slot, and
+that is the design’s one real bet.</strong> A list region sweeps its markup
+on every refresh, so an authored element inside one cannot survive; a slot binds
+attributes and texts without sweeping, and across a root refresh the root’s
+item node is keyed by row id and survives, so the nested slot is re-stated rather
+than re-hydrated. <code>&lt;svg&gt;</code> in HTML content is the parser’s
+own breakout into foreign content, and <code>d</code> is neither a region
+attribute nor a URL attribute, so it takes the plain interpolate path. Nothing in
+this tree has a bound <code>d</code> yet, which is why the check that pins it is
+written before the chart is.</p>
+<p id="decision-15" data-kind="decision"><strong>15 &mdash; every geometry number is a
+fold-computed column, never a string out of the log.</strong> The axis positions,
+the bar shares and the bounce arcs all ride custom properties, and nothing
+validates that channel: a value carrying its own <code>;</code> is a second
+declaration nobody wrote. So each is an integer column with a stated range, which
+also puts the picture’s geometry on the oracle &mdash; the arc is graded
+like any other number.</p>
+<p id="decision-16" data-kind="decision"><strong>16 &mdash; the citation and the claim are
+different columns.</strong> <code>says</code> is the published sentence and
+<code>formula</code> the published expression; <code>reads</code> is what this
+app actually computes. They sit in adjacent cells and are never merged, so
+rewording the app’s reading to match the specification would be a diff on a
+column that is supposed to be a quotation. Three of the seven formulas are the
+vendor’s own expressions transcribed character for character, and four
+separate facts &mdash; the zero-divisor answer, three roundings, and which
+divisor is conditional &mdash; are read off them rather than restated.</p>
+<p id="decision-17" data-kind="decision"><strong>17 &mdash; which granularities a range
+allows is rows, not a guard.</strong> The seven legal pairs are
+<a href="#Grain">Grain</a> rows, and the granularity buttons come from a nested
+region filtered on the live range. An illegal pair is therefore not merely
+hidden: its button does not exist, so no transition names it and nothing has to
+refuse it. A rule inside a handler is not a coverage axis; rows are, and the
+coverage anti-join can ask whether every one of the seven was driven.</p>
+<p id="decision-18" data-kind="decision"><strong>18 &mdash; no question row carries an
+expected value.</strong> A seeded expected value is a golden file, and a golden
+file grades the app against a number the same author wrote down while looking at
+the app. Every number comes from the ground truth at run time. The one class of
+number this author did not compute &mdash; the vendor’s own asserted values
+over transcribed cohorts &mdash; is not a question row either: those are
+assertions on the GROUND TRUTH, checked before the app is asked anything, because
+a ground truth that disagrees with the vendor is wrong regardless of what the app
+does.</p>
+<p id="decision-19" data-kind="decision"><strong>19 &mdash; no auth, and the cost is
+stated.</strong> Nothing here is per-person: the log is a checked-in artifact
+rather than anybody’s traffic, and there is no second reader to keep apart
+from the first. Declining it costs the two things a real analytics product needs
+most &mdash; a site is somebody’s, and a dashboard is shared &mdash; and
+neither is approximable at this tier: they need the cluster, a passkey and row
+policies, which is a different app and not a bigger local store. Scoped out
+rather than faked.</p>
+<p id="decision-20" data-kind="decision"><strong>20 &mdash; escape hatches: none, and one
+platform hole named instead.</strong> No container, no WASM unit, no vendored
+component, no external endpoint. The two pieces of app code are reduces in the
+terminal’s own compartment, with <code>window</code>, <code>document</code>,
+<code>fetch</code>, <code>eval</code>, <code>Date</code> and
+<code>Math.random</code> all denied. The hole worth naming is the other way
+round: a browser-tier route parameter is UNLINTABLE, because the visual battery
+resolves a parameter by fetching its planned table over PostgREST and an all-tab
+app has no such table. Both parametrized routes come back unresolved, each a
+major finding, and the route is dropped from the live set &mdash; so the battery
+stays green and photographs neither. Reading that green as coverage is the
+mistake; the two routes are opened by hand instead, once each, with the console
+open.</p>
+<p id="decision-21" data-kind="decision"><strong>21 &mdash; the graded space is
+walked from BOTH sides, because one side is half an oracle.</strong> The reverse
+anti-join walks the numbers the app RENDERED, so it can only fire on something a
+screen showed: an app that shows nothing, or drops a whole panel, or cuts a panel
+to its top three rows, produces no finding anywhere in it. The forward anti-join
+does not close that gap either &mdash; it grades the question ROSTER and never
+sees a rendered or a graded position at all. So a third anti-join walks the
+oracle’s own answers and asks which of them no screen showed, and the gap
+it closes is measured rather than argued: before it existed, deleting an entire
+panel produced zero findings. There is no declined region on that side, because
+what the oracle chose to answer is exactly what some screen owes.</p>
+<p id="decision-22" data-kind="decision"><strong>22 &mdash; there is no
+<code>data-machine</code> anywhere, and that is a finding rather than a
+preference.</strong> A chart narrows a transition as
+<code>click@&lt;dom-id&gt;</code> and the wiring lint resolves that id as a
+LITERAL, so no chart can answer a button generated from rows. “The legal
+pairs are rows” (<a href="#decision-17">decision-17</a>) and “the
+transitions are narrowed to affordances” are therefore mutually exclusive
+at this tier, and only one of them can be had. The rows win: an illegal pair has
+no button to narrow to, and every gesture on the dashboard is a form like every
+other mutation in the app. What it costs is the platform’s own
+<code>machines</code> check, which walks every arrow of every emitted chart
+against XState &mdash; a whole check the app forfeits, stated here rather than
+left as an absence.</p>
+<p id="decision-23" data-kind="decision"><strong>23 &mdash; the caret rides the
+chart’s singleton, not the point it is on.</strong> Two platform walls, one
+shape. <code>data-rove</code> would put the tabstop on the point row, and the
+terminal counts a row on its way out: the one gesture that shortens the axis past
+the caret leaves the departing row reading <code>true</code> beside the arriving
+one, and the refresh throws <em>a set has one current member</em> on correct app
+code. A region pinned on that point fails the other way &mdash; when the window
+stops holding it the terminal clears the region’s bindings, so the filter
+placeholder stands there unresolved while the forms write nothing, with no error
+anywhere. So the readout is the ONE tabstop, it hangs on
+<a href="#Scale">Scale</a> at <code>id=eq.the</code> whose read interpolates
+nothing, and the walk is <code>caret_prev</code> and <code>caret_next</code> off
+that row; the point rows carry <a href="#Bucket">on_caret</a> as an ordinary
+bound attribute, where a stale <code>true</code> on a node about to vanish is a
+stale class and nothing more. <code>aria-activedescendant</code> is APG’s
+other focus model and the one this reaches. Both walls were found by performing
+them.</p>
+
+
+</body>
+</html>

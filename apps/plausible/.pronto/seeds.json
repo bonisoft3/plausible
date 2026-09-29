@@ -1,0 +1,721 @@
+{
+  "event": [
+    {
+      "id": "event_0001",
+      "epoch": "2026-09-23T23:00:00Z",
+      "visitor": "seed_visitor_1",
+      "name": "pageview",
+      "interactive": "yes",
+      "pathname": "Sample pathname 1",
+      "source": "seed_source_1",
+      "browser": "seed_browser_1"
+    },
+    {
+      "id": "event_0002",
+      "epoch": "2026-09-23T22:00:00Z",
+      "visitor": "seed_visitor_2",
+      "name": "engagement",
+      "interactive": "no",
+      "pathname": "Sample pathname 2",
+      "source": "seed_source_2",
+      "browser": "seed_browser_2"
+    },
+    {
+      "id": "event_0003",
+      "epoch": "2026-09-23T21:00:00Z",
+      "visitor": "seed_visitor_3",
+      "name": "signup",
+      "interactive": "yes",
+      "pathname": "Sample pathname 3",
+      "source": "seed_source_3",
+      "browser": "seed_browser_3"
+    }
+  ],
+  "zone": [
+    {
+      "id": "zone_0001",
+      "starts_epoch": "2026-09-23T23:00:00Z",
+      "offset_seconds": 10,
+      "abbr": "seed_abbr_1"
+    },
+    {
+      "id": "zone_0002",
+      "starts_epoch": "2026-09-23T22:00:00Z",
+      "offset_seconds": 20,
+      "abbr": "seed_abbr_2"
+    },
+    {
+      "id": "zone_0003",
+      "starts_epoch": "2026-09-23T21:00:00Z",
+      "offset_seconds": 30,
+      "abbr": "seed_abbr_3"
+    }
+  ],
+  "session": [
+    {
+      "id": "session_0001",
+      "visitor": "seed_visitor_1",
+      "ord": 10,
+      "start_epoch": "2026-09-23T23:00:00Z",
+      "last_epoch": "2026-09-23T23:00:00Z",
+      "start_local": "seed_start_local_1",
+      "last_local": "seed_last_local_1",
+      "entry_page": "seed_entry_page_1",
+      "exit_page": "seed_exit_page_1",
+      "pageviews": 10,
+      "events": 10,
+      "bounce": "yes",
+      "duration": 10,
+      "source": "seed_source_1",
+      "browser": "seed_browser_1",
+      "pages": "seed_pages_1",
+      "names": "Sample names 1",
+      "pages_text": "seed_pages_text_1",
+      "names_text": "Sample names_text 1",
+      "day_key": "seed_day_key_1",
+      "week_key": "seed_week_key_1",
+      "hours_n": 10
+    },
+    {
+      "id": "session_0002",
+      "visitor": "seed_visitor_2",
+      "ord": 20,
+      "start_epoch": "2026-09-23T22:00:00Z",
+      "last_epoch": "2026-09-23T22:00:00Z",
+      "start_local": "seed_start_local_2",
+      "last_local": "seed_last_local_2",
+      "entry_page": "seed_entry_page_2",
+      "exit_page": "seed_exit_page_2",
+      "pageviews": 20,
+      "events": 20,
+      "bounce": "no",
+      "duration": 20,
+      "source": "seed_source_2",
+      "browser": "seed_browser_2",
+      "pages": "seed_pages_2",
+      "names": "Sample names 2",
+      "pages_text": "seed_pages_text_2",
+      "names_text": "Sample names_text 2",
+      "day_key": "seed_day_key_2",
+      "week_key": "seed_week_key_2",
+      "hours_n": 20
+    },
+    {
+      "id": "session_0003",
+      "visitor": "seed_visitor_3",
+      "ord": 30,
+      "start_epoch": "2026-09-23T21:00:00Z",
+      "last_epoch": "2026-09-23T21:00:00Z",
+      "start_local": "seed_start_local_3",
+      "last_local": "seed_last_local_3",
+      "entry_page": "seed_entry_page_3",
+      "exit_page": "seed_exit_page_3",
+      "pageviews": 30,
+      "events": 30,
+      "bounce": "yes",
+      "duration": 30,
+      "source": "seed_source_3",
+      "browser": "seed_browser_3",
+      "pages": "seed_pages_3",
+      "names": "Sample names 3",
+      "pages_text": "seed_pages_text_3",
+      "names_text": "Sample names_text 3",
+      "day_key": "seed_day_key_3",
+      "week_key": "seed_week_key_3",
+      "hours_n": 30
+    }
+  ],
+  "session_hour": [
+    {
+      "id": "session_hour_0001",
+      "session_id": "session_0002",
+      "bucket_key": "seed_bucket_key_1",
+      "ord": 10
+    },
+    {
+      "id": "session_hour_0002",
+      "session_id": "session_0002",
+      "bucket_key": "seed_bucket_key_2",
+      "ord": 20
+    },
+    {
+      "id": "session_hour_0003",
+      "session_id": "session_0001",
+      "bucket_key": "seed_bucket_key_3",
+      "ord": 30
+    }
+  ],
+  "corpus": [
+    {
+      "id": "corpus_0001",
+      "hits": 10,
+      "visits": 10,
+      "visitors": 10,
+      "first_epoch": "2026-09-23T23:00:00Z",
+      "last_epoch": "2026-09-23T23:00:00Z",
+      "first_local": "seed_first_local_1",
+      "last_local": "seed_last_local_1",
+      "days": 10
+    },
+    {
+      "id": "corpus_0002",
+      "hits": 20,
+      "visits": 20,
+      "visitors": 20,
+      "first_epoch": "2026-09-23T22:00:00Z",
+      "last_epoch": "2026-09-23T22:00:00Z",
+      "first_local": "seed_first_local_2",
+      "last_local": "seed_last_local_2",
+      "days": 20
+    },
+    {
+      "id": "corpus_0003",
+      "hits": 30,
+      "visits": 30,
+      "visitors": 30,
+      "first_epoch": "2026-09-23T21:00:00Z",
+      "last_epoch": "2026-09-23T21:00:00Z",
+      "first_local": "seed_first_local_3",
+      "last_local": "seed_last_local_3",
+      "days": 30
+    }
+  ],
+  "fold": [
+    {
+      "id": "fold_0001",
+      "note": "seed_note_1",
+      "error": "seed_error_1"
+    },
+    {
+      "id": "fold_0002",
+      "note": "seed_note_2",
+      "error": "seed_error_2"
+    },
+    {
+      "id": "fold_0003",
+      "note": "seed_note_3",
+      "error": "seed_error_3"
+    }
+  ],
+  "filter_set": [
+    {
+      "id": "filter_set_0001",
+      "name": "Sample name 1",
+      "says": "seed_says_1",
+      "slots": "seed_slots_1",
+      "pos": 10,
+      "range": "day",
+      "grain": "hour",
+      "as_of_epoch": "2026-09-23T23:00:00Z",
+      "active_bucket": "seed_active_bucket_1",
+      "f_page": "seed_f_page_1",
+      "f_entry_page": "seed_f_entry_page_1",
+      "f_source": "seed_f_source_1",
+      "f_browser": "seed_f_browser_1",
+      "f_name": "Sample f_name 1"
+    },
+    {
+      "id": "filter_set_0002",
+      "name": "Sample name 2",
+      "says": "seed_says_2",
+      "slots": "seed_slots_2",
+      "pos": 20,
+      "range": "7d",
+      "grain": "day",
+      "as_of_epoch": "2026-09-23T22:00:00Z",
+      "active_bucket": "seed_active_bucket_2",
+      "f_page": "seed_f_page_2",
+      "f_entry_page": "seed_f_entry_page_2",
+      "f_source": "seed_f_source_2",
+      "f_browser": "seed_f_browser_2",
+      "f_name": "Sample f_name 2"
+    },
+    {
+      "id": "filter_set_0003",
+      "name": "Sample name 3",
+      "says": "seed_says_3",
+      "slots": "seed_slots_3",
+      "pos": 30,
+      "range": "28d",
+      "grain": "week",
+      "as_of_epoch": "2026-09-23T21:00:00Z",
+      "active_bucket": "seed_active_bucket_3",
+      "f_page": "seed_f_page_3",
+      "f_entry_page": "seed_f_entry_page_3",
+      "f_source": "seed_f_source_3",
+      "f_browser": "seed_f_browser_3",
+      "f_name": "Sample f_name 3"
+    }
+  ],
+  "filter": [
+    {
+      "id": "filter_0001",
+      "range": "day",
+      "grain": "hour",
+      "as_of_epoch": "2026-09-23T23:00:00Z",
+      "active_bucket": "seed_active_bucket_1",
+      "f_page": "seed_f_page_1",
+      "f_entry_page": "seed_f_entry_page_1",
+      "f_source": "seed_f_source_1",
+      "f_browser": "seed_f_browser_1",
+      "f_name": "Sample f_name 1"
+    },
+    {
+      "id": "filter_0002",
+      "range": "7d",
+      "grain": "day",
+      "as_of_epoch": "2026-09-23T22:00:00Z",
+      "active_bucket": "seed_active_bucket_2",
+      "f_page": "seed_f_page_2",
+      "f_entry_page": "seed_f_entry_page_2",
+      "f_source": "seed_f_source_2",
+      "f_browser": "seed_f_browser_2",
+      "f_name": "Sample f_name 2"
+    },
+    {
+      "id": "filter_0003",
+      "range": "28d",
+      "grain": "week",
+      "as_of_epoch": "2026-09-23T21:00:00Z",
+      "active_bucket": "seed_active_bucket_3",
+      "f_page": "seed_f_page_3",
+      "f_entry_page": "seed_f_entry_page_3",
+      "f_source": "seed_f_source_3",
+      "f_browser": "seed_f_browser_3",
+      "f_name": "Sample f_name 3"
+    }
+  ],
+  "topline": [
+    {
+      "id": "topline_0001",
+      "visitors_n": 10,
+      "visits_n": 10,
+      "pageviews_n": 10,
+      "events_n": 10,
+      "sessions_n": 10,
+      "bounce_denom": 10,
+      "bounce_n": 10,
+      "pv_sum": 10,
+      "dur_sum": 10,
+      "visitors_text": "seed_visitors_text_1",
+      "visits_text": "seed_visits_text_1",
+      "pageviews_text": "seed_pageviews_text_1",
+      "views_per_visit_text": "seed_views_per_visit_text_1",
+      "bounce_rate_text": "seed_bounce_rate_text_1",
+      "visit_duration_text": "seed_visit_duration_text_1",
+      "range_text": "seed_range_text_1",
+      "grain_text": "seed_grain_text_1",
+      "current_visitors": 10,
+      "window_from": "2026-09-23T23:00:00Z",
+      "window_to": "2026-09-23T23:00:00Z"
+    },
+    {
+      "id": "topline_0002",
+      "visitors_n": 20,
+      "visits_n": 20,
+      "pageviews_n": 20,
+      "events_n": 20,
+      "sessions_n": 20,
+      "bounce_denom": 20,
+      "bounce_n": 20,
+      "pv_sum": 20,
+      "dur_sum": 20,
+      "visitors_text": "seed_visitors_text_2",
+      "visits_text": "seed_visits_text_2",
+      "pageviews_text": "seed_pageviews_text_2",
+      "views_per_visit_text": "seed_views_per_visit_text_2",
+      "bounce_rate_text": "seed_bounce_rate_text_2",
+      "visit_duration_text": "seed_visit_duration_text_2",
+      "range_text": "seed_range_text_2",
+      "grain_text": "seed_grain_text_2",
+      "current_visitors": 20,
+      "window_from": "2026-09-23T22:00:00Z",
+      "window_to": "2026-09-23T22:00:00Z"
+    },
+    {
+      "id": "topline_0003",
+      "visitors_n": 30,
+      "visits_n": 30,
+      "pageviews_n": 30,
+      "events_n": 30,
+      "sessions_n": 30,
+      "bounce_denom": 30,
+      "bounce_n": 30,
+      "pv_sum": 30,
+      "dur_sum": 30,
+      "visitors_text": "seed_visitors_text_3",
+      "visits_text": "seed_visits_text_3",
+      "pageviews_text": "seed_pageviews_text_3",
+      "views_per_visit_text": "seed_views_per_visit_text_3",
+      "bounce_rate_text": "seed_bounce_rate_text_3",
+      "visit_duration_text": "seed_visit_duration_text_3",
+      "range_text": "seed_range_text_3",
+      "grain_text": "seed_grain_text_3",
+      "current_visitors": 30,
+      "window_from": "2026-09-23T21:00:00Z",
+      "window_to": "2026-09-23T21:00:00Z"
+    }
+  ],
+  "bucket": [
+    {
+      "id": "bucket_0001",
+      "ord": 10,
+      "bucket_key": "seed_bucket_key_1",
+      "label": "seed_label_1",
+      "grain": "hour",
+      "visitors": 10,
+      "visits": 10,
+      "pageviews": 10,
+      "share": 10,
+      "on_caret": "yes"
+    },
+    {
+      "id": "bucket_0002",
+      "ord": 20,
+      "bucket_key": "seed_bucket_key_2",
+      "label": "seed_label_2",
+      "grain": "day",
+      "visitors": 20,
+      "visits": 20,
+      "pageviews": 20,
+      "share": 20,
+      "on_caret": "no"
+    },
+    {
+      "id": "bucket_0003",
+      "ord": 30,
+      "bucket_key": "seed_bucket_key_3",
+      "label": "seed_label_3",
+      "grain": "week",
+      "visitors": 30,
+      "visits": 30,
+      "pageviews": 30,
+      "share": 30,
+      "on_caret": "yes"
+    }
+  ],
+  "tick": [
+    {
+      "id": "tick_0001",
+      "ord": 10,
+      "value": 10,
+      "label": "seed_label_1",
+      "at": 10
+    },
+    {
+      "id": "tick_0002",
+      "ord": 20,
+      "value": 20,
+      "label": "seed_label_2",
+      "at": 20
+    },
+    {
+      "id": "tick_0003",
+      "ord": 30,
+      "value": 30,
+      "label": "seed_label_3",
+      "at": 30
+    }
+  ],
+  "scale": [
+    {
+      "id": "scale_0001",
+      "domain_max": 10,
+      "points": 10,
+      "path_d": "seed_path_d_1",
+      "floor_d": "seed_floor_d_1",
+      "caret_point": "seed_caret_point_1",
+      "caret_label": "seed_caret_label_1",
+      "caret_prev": "seed_caret_prev_1",
+      "caret_next": "seed_caret_next_1"
+    },
+    {
+      "id": "scale_0002",
+      "domain_max": 20,
+      "points": 20,
+      "path_d": "seed_path_d_2",
+      "floor_d": "seed_floor_d_2",
+      "caret_point": "seed_caret_point_2",
+      "caret_label": "seed_caret_label_2",
+      "caret_prev": "seed_caret_prev_2",
+      "caret_next": "seed_caret_next_2"
+    },
+    {
+      "id": "scale_0003",
+      "domain_max": 30,
+      "points": 30,
+      "path_d": "seed_path_d_3",
+      "floor_d": "seed_floor_d_3",
+      "caret_point": "seed_caret_point_3",
+      "caret_label": "seed_caret_label_3",
+      "caret_prev": "seed_caret_prev_3",
+      "caret_next": "seed_caret_next_3"
+    }
+  ],
+  "breakdown": [
+    {
+      "id": "breakdown_0001",
+      "panel": "page",
+      "dim_value": "seed_dim_value_1",
+      "ord": 10,
+      "visitors": 10,
+      "visits": 10,
+      "pageviews": 10,
+      "events": 10,
+      "bounce_n": 10,
+      "bounce_denom": 10,
+      "sessions_n": 10,
+      "dur_sum": 10,
+      "bounce_rate_text": "seed_bounce_rate_text_1",
+      "visit_duration_text": "seed_visit_duration_text_1",
+      "share": 10,
+      "arc": 10,
+      "set_page": "seed_set_page_1",
+      "set_entry_page": "seed_set_entry_page_1",
+      "set_source": "seed_set_source_1",
+      "set_browser": "seed_set_browser_1",
+      "set_name": "Sample set_name 1"
+    },
+    {
+      "id": "breakdown_0002",
+      "panel": "entry_page",
+      "dim_value": "seed_dim_value_2",
+      "ord": 20,
+      "visitors": 20,
+      "visits": 20,
+      "pageviews": 20,
+      "events": 20,
+      "bounce_n": 20,
+      "bounce_denom": 20,
+      "sessions_n": 20,
+      "dur_sum": 20,
+      "bounce_rate_text": "seed_bounce_rate_text_2",
+      "visit_duration_text": "seed_visit_duration_text_2",
+      "share": 20,
+      "arc": 20,
+      "set_page": "seed_set_page_2",
+      "set_entry_page": "seed_set_entry_page_2",
+      "set_source": "seed_set_source_2",
+      "set_browser": "seed_set_browser_2",
+      "set_name": "Sample set_name 2"
+    },
+    {
+      "id": "breakdown_0003",
+      "panel": "source",
+      "dim_value": "seed_dim_value_3",
+      "ord": 30,
+      "visitors": 30,
+      "visits": 30,
+      "pageviews": 30,
+      "events": 30,
+      "bounce_n": 30,
+      "bounce_denom": 30,
+      "sessions_n": 30,
+      "dur_sum": 30,
+      "bounce_rate_text": "seed_bounce_rate_text_3",
+      "visit_duration_text": "seed_visit_duration_text_3",
+      "share": 30,
+      "arc": 30,
+      "set_page": "seed_set_page_3",
+      "set_entry_page": "seed_set_entry_page_3",
+      "set_source": "seed_set_source_3",
+      "set_browser": "seed_set_browser_3",
+      "set_name": "Sample set_name 3"
+    }
+  ],
+  "chip": [
+    {
+      "id": "chip_0001",
+      "slot": "f_page",
+      "label": "seed_label_1",
+      "value": "seed_value_1",
+      "set_page": "seed_set_page_1",
+      "set_entry_page": "seed_set_entry_page_1",
+      "set_source": "seed_set_source_1",
+      "set_browser": "seed_set_browser_1",
+      "set_name": "Sample set_name 1"
+    },
+    {
+      "id": "chip_0002",
+      "slot": "f_entry_page",
+      "label": "seed_label_2",
+      "value": "seed_value_2",
+      "set_page": "seed_set_page_2",
+      "set_entry_page": "seed_set_entry_page_2",
+      "set_source": "seed_set_source_2",
+      "set_browser": "seed_set_browser_2",
+      "set_name": "Sample set_name 2"
+    },
+    {
+      "id": "chip_0003",
+      "slot": "f_source",
+      "label": "seed_label_3",
+      "value": "seed_value_3",
+      "set_page": "seed_set_page_3",
+      "set_entry_page": "seed_set_entry_page_3",
+      "set_source": "seed_set_source_3",
+      "set_browser": "seed_set_browser_3",
+      "set_name": "Sample set_name 3"
+    }
+  ],
+  "panel": [
+    {
+      "id": "panel_0001",
+      "title": "Sample title 1",
+      "note": "seed_note_1",
+      "slot": "f_page",
+      "column": "seed_column_1",
+      "on": "hit",
+      "pos": 10
+    },
+    {
+      "id": "panel_0002",
+      "title": "Sample title 2",
+      "note": "seed_note_2",
+      "slot": "f_entry_page",
+      "column": "seed_column_2",
+      "on": "visit",
+      "pos": 20
+    },
+    {
+      "id": "panel_0003",
+      "title": "Sample title 3",
+      "note": "seed_note_3",
+      "slot": "f_source",
+      "column": "seed_column_3",
+      "on": "hit",
+      "pos": 30
+    }
+  ],
+  "metric": [
+    {
+      "id": "metric_0001",
+      "says": "seed_says_1",
+      "formula": "seed_formula_1",
+      "source": "seed_source_1",
+      "reads": "seed_reads_1",
+      "pos": 10
+    },
+    {
+      "id": "metric_0002",
+      "says": "seed_says_2",
+      "formula": "seed_formula_2",
+      "source": "seed_source_2",
+      "reads": "seed_reads_2",
+      "pos": 20
+    },
+    {
+      "id": "metric_0003",
+      "says": "seed_says_3",
+      "formula": "seed_formula_3",
+      "source": "seed_source_3",
+      "reads": "seed_reads_3",
+      "pos": 30
+    }
+  ],
+  "range": [
+    {
+      "id": "range_0001",
+      "label": "seed_label_1",
+      "from_days_back": 10,
+      "to_days_back": 10,
+      "to_is_as_of": "yes",
+      "opens_on": "hour",
+      "on_cursor": "yes",
+      "pos": 10
+    },
+    {
+      "id": "range_0002",
+      "label": "seed_label_2",
+      "from_days_back": 20,
+      "to_days_back": 20,
+      "to_is_as_of": "no",
+      "opens_on": "day",
+      "on_cursor": "no",
+      "pos": 20
+    },
+    {
+      "id": "range_0003",
+      "label": "seed_label_3",
+      "from_days_back": 30,
+      "to_days_back": 30,
+      "to_is_as_of": "yes",
+      "opens_on": "week",
+      "on_cursor": "yes",
+      "pos": 30
+    }
+  ],
+  "grain": [
+    {
+      "id": "grain_0001",
+      "range": "day",
+      "grain": "hour",
+      "buckets": 10,
+      "on_cursor": "yes",
+      "pos": 10
+    },
+    {
+      "id": "grain_0002",
+      "range": "7d",
+      "grain": "day",
+      "buckets": 20,
+      "on_cursor": "no",
+      "pos": 20
+    },
+    {
+      "id": "grain_0003",
+      "range": "28d",
+      "grain": "week",
+      "buckets": 30,
+      "on_cursor": "yes",
+      "pos": 30
+    }
+  ],
+  "question": [
+    {
+      "id": "question_0001",
+      "metric": "seed_metric_1",
+      "panel": "seed_panel_1",
+      "dimension": "seed_dimension_1",
+      "range": "seed_range_1",
+      "grain": "seed_grain_1",
+      "filter_set": "seed_filter_set_1",
+      "says": "seed_says_1",
+      "reads": "seed_reads_1",
+      "departs": "no",
+      "expects": "nonzero",
+      "hard_case": "seed_hard_case_1",
+      "note": "seed_note_1"
+    },
+    {
+      "id": "question_0002",
+      "metric": "seed_metric_2",
+      "panel": "seed_panel_2",
+      "dimension": "seed_dimension_2",
+      "range": "seed_range_2",
+      "grain": "seed_grain_2",
+      "filter_set": "seed_filter_set_2",
+      "says": "seed_says_2",
+      "reads": "seed_reads_2",
+      "departs": "approximates",
+      "expects": "zero-by-ifNotFinite",
+      "hard_case": "seed_hard_case_2",
+      "note": "seed_note_2"
+    },
+    {
+      "id": "question_0003",
+      "metric": "seed_metric_3",
+      "panel": "seed_panel_3",
+      "dimension": "seed_dimension_3",
+      "range": "seed_range_3",
+      "grain": "seed_grain_3",
+      "filter_set": "seed_filter_set_3",
+      "says": "seed_says_3",
+      "reads": "seed_reads_3",
+      "departs": "declined",
+      "expects": "zero-by-empty-window",
+      "hard_case": "seed_hard_case_3",
+      "note": "seed_note_3"
+    }
+  ]
+}

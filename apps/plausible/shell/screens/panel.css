@@ -1,0 +1,72 @@
+@import url("shared/instrument.css");
+
+/* One dimension in full: every value the range holds, in the dashboard's
+   order, with all six detailed metrics per row rather than the three the
+   dashboard collapses a row to. */
+
+[data-screen="panel"] {
+  padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
+  max-width: 74rem;
+  margin: 0 auto;
+}
+
+/* The dashboard's twelve-column band, for the reason dash.css gives, and the
+   three seats ride it the same way. */
+[data-screen="panel"] .full { display: grid; align-content: start;
+                              grid-template-columns: repeat(12, minmax(0, 1fr));
+                              gap: var(--sp-lg) var(--sp-xl); }
+[data-screen="panel"] .full > * { grid-column: 1 / -1; }
+[data-screen="panel"] .seat { grid-column: span 3; }
+[data-screen="panel"] .one { display: grid; gap: var(--sp-md);
+                             align-content: start; }
+/* The dimension's own hue fills its title block, which is the same claim the
+   dashboard's panel header makes: this screen IS that panel, opened. */
+[data-screen="panel"] .dimension-head { display: grid; gap: var(--sp-sm);
+                                        background: var(--hue);
+                                        padding: var(--sp-md) var(--sp-lg); }
+[data-screen="panel"] .dimension-head :is(h1, .note) { color: var(--block-ink); }
+[data-screen="panel"] .back { font-size: 0.75rem; }
+/* The filled block is this title's edge, so it carries no rule of its own. */
+[data-screen="panel"] h1 { font-size: 1.375rem; letter-spacing: -0.015em;
+                           border-bottom: 0; padding-bottom: 0; }
+
+/* Every metric column is the same width whatever it holds, so a figure sits
+   under the figure it is compared with. The value column takes what is left,
+   because a path is the one cell whose length is the log's business. */
+[data-screen="panel"] .rows { overflow-x: auto; }
+[data-screen="panel"] table { table-layout: fixed; min-width: 48rem; }
+[data-screen="panel"] :is(th, td):not(:first-child) { text-align: right; width: 6.5rem; }
+[data-screen="panel"] tbody td { color: var(--primary); }
+/* The unit is never inside the graded element. On the dashboard it is a sibling
+   span; here the cell IS the figure, so it is drawn as a pseudo-element and
+   stays out of the text the sweep reads. */
+[data-screen="panel"] td[data-metric="bounce_rate"]::after { content: "%"; }
+[data-screen="panel"] td[data-metric="visit_duration"]::after { content: "s"; }
+[data-screen="panel"] td:is([data-metric="bounce_rate"],
+                            [data-metric="visit_duration"])::after {
+  color: var(--secondary); font-size: 0.75rem;
+}
+
+/* The row's own gesture is its first cell: the whole cell, so the target is
+   the width of the column rather than the width of a word. */
+[data-screen="panel"] tbody th { padding: 0; }
+[data-screen="panel"] tbody th form { display: block; }
+[data-screen="panel"] tbody th button {
+  display: block; position: relative; z-index: 0; width: 100%; min-height: 28px;
+  padding: 0.3125rem var(--sp-md); text-align: left; font-size: 0.8125rem;
+  font-weight: 500; color: var(--primary); background: transparent; border: 0;
+  border-radius: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* The dashboard's own share bar, in the dimension's own hue: the two screens
+   rank the same rows, so a value's block is the same colour on both. */
+[data-screen="panel"] tbody th button::before {
+  content: ""; position: absolute; z-index: -1; inset: 1px auto;
+  left: 0; width: calc(var(--share) / 1000 * 100%);
+  background: color-mix(in oklab, var(--hue) 22%, transparent);
+}
+[data-screen="panel"] tbody th button:hover { background: var(--surface-muted); }
+
+@media (max-width: 60rem) {
+  [data-screen="panel"] { padding: var(--sp-lg) var(--sp-md) var(--sp-xl); }
+}

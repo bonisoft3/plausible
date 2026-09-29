@@ -1,0 +1,576 @@
+[
+  {
+    "case": "H1",
+    "rule": "a visit ends when the gap from its last hit reaches 1860 seconds; a hit of any name resets it",
+    "probes": [
+      {
+        "metric": "visits",
+        "filter_set": "none",
+        "range": "28d",
+        "grain": "day",
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v001",
+        "v002"
+      ],
+      "events": [
+        "e0417",
+        "e0419",
+        "e0420",
+        "e0427",
+        "e0428",
+        "e0445",
+        "e0446",
+        "e0447"
+      ]
+    },
+    "present": [
+      [
+        "gap",
+        "e0417",
+        "e0419",
+        1799
+      ],
+      [
+        "gap",
+        "e0419",
+        "e0420",
+        1800
+      ],
+      [
+        "gap",
+        "e0420",
+        "e0427",
+        1859
+      ],
+      [
+        "gap",
+        "e0445",
+        "e0446",
+        1500
+      ],
+      [
+        "gap",
+        "e0446",
+        "e0447",
+        1500
+      ],
+      [
+        "boundary-band-holds-only-this-plant",
+        1800,
+        1860,
+        2
+      ]
+    ],
+    "wrong": [
+      "gap_ge_1800",
+      "gap_from_start",
+      "engagement_does_not_hold"
+    ]
+  },
+  {
+    "case": "H2",
+    "rule": "at hour granularity a visit is counted in every local hour it was open",
+    "probes": [
+      {
+        "metric": "visits",
+        "filter_set": "none",
+        "range": "custom_dst_day",
+        "grain": "hour",
+        "panel": null,
+        "dim_value": null
+      },
+      {
+        "metric": "session_hours",
+        "filter_set": "none",
+        "range": "28d",
+        "grain": null,
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v003",
+        "v004"
+      ],
+      "events": [
+        "e0758",
+        "e0759",
+        "e0766",
+        "e0767",
+        "e0768",
+        "e0769",
+        "e0770",
+        "e0771",
+        "e1133",
+        "e1137",
+        "e1139",
+        "e1141",
+        "e1142",
+        "e1149",
+        "e1152",
+        "e1160"
+      ]
+    },
+    "present": [
+      [
+        "spans-local-hours",
+        "v003",
+        4
+      ],
+      [
+        "spans-local-hours",
+        "v004",
+        4
+      ]
+    ],
+    "wrong": [
+      "hourly_visits_summed",
+      "hours_from_nonengagement"
+    ],
+    "note": "the second probe is over the whole log and reads neither range nor grain, which is ORACLE §4.2's `SessionHour rows over the log`: ending a visit's open span at its last non-engagement hit moves that count and moves no window aggregate, because `visits` counts visits and not the hours they were open in."
+  },
+  {
+    "case": "H3",
+    "rule": "visitors is a distinct count over the window, never a sum of the buckets'",
+    "probes": [
+      {
+        "metric": "visitors",
+        "filter_set": "none",
+        "range": "28d",
+        "grain": "day",
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v005",
+        "v006",
+        "v007",
+        "v008"
+      ],
+      "events": [
+        "e0388",
+        "e0609",
+        "e0407",
+        "e0408",
+        "e0481",
+        "e0482",
+        "e0483",
+        "e0484"
+      ]
+    },
+    "present": [
+      [
+        "visitor-on-two-local-days",
+        "v005",
+        "2026-03-17",
+        "2026-03-24"
+      ],
+      [
+        "visit-straddles-utc-midnight",
+        "v006"
+      ],
+      [
+        "interleaved-visitor-keys",
+        "v007",
+        "v008"
+      ]
+    ],
+    "wrong": [
+      "visitors_summed"
+    ]
+  },
+  {
+    "case": "H4",
+    "rule": "bounce rate under a page filter is over the visits that entered a matching page",
+    "probes": [
+      {
+        "metric": "bounce_rate",
+        "filter_set": "event-1",
+        "range": "28d",
+        "grain": null,
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v010",
+        "v011",
+        "v012",
+        "v013"
+      ],
+      "events": [
+        "e0501",
+        "e0502",
+        "e0503",
+        "e0504",
+        "e0505",
+        "e0506",
+        "e0507"
+      ]
+    },
+    "present": [
+      [
+        "viewed-not-entered",
+        "v010",
+        "/pricing"
+      ],
+      [
+        "viewed-not-entered",
+        "v011",
+        "/pricing"
+      ],
+      [
+        "entered",
+        "v012",
+        "/pricing"
+      ],
+      [
+        "entered",
+        "v013",
+        "/pricing"
+      ]
+    ],
+    "wrong": [
+      "bounce_on_viewed_page"
+    ]
+  },
+  {
+    "case": "H5",
+    "rule": "pageviews counts hits named pageview; events counts every hit except engagement",
+    "probes": [
+      {
+        "metric": "events",
+        "filter_set": "none",
+        "range": "28d",
+        "grain": null,
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v020",
+        "v021"
+      ],
+      "events": [
+        "e0537",
+        "e0539",
+        "e0540",
+        "e0542",
+        "e0543",
+        "e0545"
+      ]
+    },
+    "present": [
+      [
+        "one-view-three-pings",
+        "v020"
+      ],
+      [
+        "same-page-twice",
+        "v021"
+      ]
+    ],
+    "wrong": [
+      "events_count_every_hit"
+    ]
+  },
+  {
+    "case": "H6",
+    "rule": "visit duration is the last non-engagement hit minus the first, over all matching visits",
+    "probes": [
+      {
+        "metric": "visit_duration",
+        "filter_set": "none",
+        "range": "28d",
+        "grain": null,
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v030",
+        "v031",
+        "v032",
+        "v033",
+        "v034",
+        "v035",
+        "v036",
+        "v037",
+        "v038",
+        "v039",
+        "v040",
+        "v041",
+        "v042"
+      ],
+      "events": [
+        "e0625",
+        "e0626",
+        "e0633",
+        "e0634",
+        "e0635",
+        "e0636",
+        "e0637",
+        "e0638",
+        "e0639",
+        "e0643",
+        "e0644",
+        "e0648",
+        "e0649",
+        "e0650",
+        "e0651"
+      ]
+    },
+    "present": [
+      [
+        "one-hit-visits",
+        12
+      ],
+      [
+        "last-hit-is-a-ping",
+        "v042"
+      ]
+    ],
+    "wrong": [
+      "duration_drops_zero",
+      "duration_includes_engagement"
+    ]
+  },
+  {
+    "case": "H7",
+    "rule": "an event-dimension filter matches hits and then answers about their visits",
+    "probes": [
+      {
+        "metric": "visits",
+        "filter_set": "unentered",
+        "range": "28d",
+        "grain": null,
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v050",
+        "v051",
+        "v052"
+      ],
+      "events": [
+        "e0663",
+        "e0664",
+        "e0666",
+        "e0668",
+        "e0672",
+        "e0673",
+        "e0674"
+      ]
+    },
+    "present": [
+      [
+        "viewed-by",
+        "/checkout",
+        3
+      ],
+      [
+        "entered-by",
+        "/checkout",
+        0
+      ]
+    ],
+    "wrong": [
+      "visit_row_filtered_on_page"
+    ]
+  },
+  {
+    "case": "H8",
+    "rule": "buckets are cut on the site's clock and read in UTC; N days back is N calendar days back",
+    "probes": [
+      {
+        "metric": "bucket_count",
+        "filter_set": "none",
+        "range": "custom_dst_day",
+        "grain": "hour",
+        "panel": null,
+        "dim_value": null
+      },
+      {
+        "metric": "bucket_count",
+        "filter_set": "none",
+        "range": "custom_21d",
+        "grain": "week",
+        "panel": null,
+        "dim_value": null
+      },
+      {
+        "metric": "bucket_count",
+        "filter_set": "none",
+        "range": "28d",
+        "grain": "day",
+        "panel": null,
+        "dim_value": null
+      },
+      {
+        "metric": "visitors",
+        "filter_set": "none",
+        "range": "28d",
+        "grain": "day",
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v060",
+        "v061",
+        "v062",
+        "v063"
+      ],
+      "events": [
+        "e0217",
+        "e0332",
+        "e0929",
+        "e0745",
+        "e0748",
+        "e0753",
+        "e0754"
+      ]
+    },
+    "present": [
+      [
+        "local-day-has-23-hours",
+        "2026-03-29"
+      ],
+      [
+        "no-hit-in-the-skipped-hour",
+        "2026-03-29 02"
+      ],
+      [
+        "hit-in-the-hour-a-multiplied-window-start-includes",
+        "2026-03-11 23"
+      ],
+      [
+        "hit-on-a-sunday",
+        "2026-03-15"
+      ],
+      [
+        "hit-whose-utc-day-precedes-its-local-day",
+        "2026-04-02 00"
+      ],
+      [
+        "visit-open-across-the-skipped-hour",
+        "v063"
+      ]
+    ],
+    "wrong": [
+      "utc_day_buckets",
+      "week_starts_sunday",
+      "window_by_multiplication",
+      "twenty_four_bars"
+    ]
+  },
+  {
+    "case": "H9",
+    "rule": "views per visit and visit duration divide by the matching visits; bounce rate does not",
+    "probes": [
+      {
+        "metric": "views_per_visit",
+        "filter_set": "event-1",
+        "range": "28d",
+        "grain": null,
+        "panel": null,
+        "dim_value": null
+      },
+      {
+        "metric": "visit_duration",
+        "filter_set": "event-1",
+        "range": "28d",
+        "grain": null,
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v014",
+        "v015",
+        "v016",
+        "v017"
+      ],
+      "events": [
+        "e0510",
+        "e0512",
+        "e0513",
+        "e0519",
+        "e0521",
+        "e0522",
+        "e0523",
+        "e0524"
+      ]
+    },
+    "present": [
+      [
+        "divisors-diverge-by-at-least",
+        2
+      ]
+    ],
+    "wrong": [
+      "one_divisor_for_both"
+    ],
+    "note": "graded on the two averages, not on the bounce rate: reusing the entry-restricted divisor for all three is what 'one divisor' means, and the bounce rate is the one number it leaves alone. H4 is the other direction."
+  },
+  {
+    "case": "H10",
+    "rule": "current visitors is [as_of − 300, as_of) and ignores every filter",
+    "probes": [
+      {
+        "metric": "current_visitors",
+        "filter_set": "visit-1",
+        "range": "day",
+        "grain": null,
+        "panel": null,
+        "dim_value": null
+      }
+    ],
+    "rows": {
+      "visitors": [
+        "v070",
+        "v071",
+        "v072",
+        "v073",
+        "v074",
+        "v075"
+      ],
+      "events": [
+        "e1195",
+        "e1196",
+        "e1197",
+        "e1198",
+        "e1199",
+        "e1200"
+      ]
+    },
+    "present": [
+      [
+        "distinct-visitors-in-the-last-300s",
+        6
+      ],
+      [
+        "last-hit-at",
+        1775650740
+      ]
+    ],
+    "wrong": [
+      "current_visitors_filtered"
+    ]
+  }
+]

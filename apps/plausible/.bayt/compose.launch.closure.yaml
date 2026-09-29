@@ -1,0 +1,12 @@
+# generated from bayt.cue — do not edit
+include:
+- path: ../../../apps/plausible/.bayt/compose.launch.yaml
+  required: false
+- path: ../../../apps/plausible/.bayt/compose.caddy.yaml
+  required: false
+services:
+  bayt:
+    extends:
+      file: ./compose.launch.yaml
+      service: apps_plausible-launch
+    scale: 1

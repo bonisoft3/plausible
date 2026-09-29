@@ -1,0 +1,270 @@
+@import url("shared/instrument.css");
+
+/* The dashboard: the top line, the plot under it, the points as a table, the
+   four panels under that. One left edge for the whole page, because comparison
+   is destroyed by misalignment before it is destroyed by anything else. */
+
+[data-screen="dash"] {
+  padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
+  max-width: 78rem;
+  margin: 0 auto;
+}
+
+/* The article is the layout, not the section: the section holds one region and
+   the region stamps the article, so a gap declared on the section would be a
+   gap between one child and nothing. Twelve columns, and every band claims all
+   of them unless it says otherwise — which is how the three seats and the
+   three control fields sit on a line each without a wrapper apiece. */
+[data-screen="dash"] .dash {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--sp-lg) var(--sp-xl); align-content: start;
+}
+[data-screen="dash"] .dash > * { grid-column: 1 / -1; }
+[data-screen="dash"] .masthead { display: flex; align-items: baseline;
+                                 flex-wrap: wrap; gap: var(--sp-md) var(--sp-lg); }
+[data-screen="dash"] .masthead .note { margin-left: auto; }
+
+/* The seat regions carry the arithmetic and show only what they concluded, so
+   a reader can see the fold is running without a spinner that means nothing. */
+[data-screen="dash"] .seat { grid-column: span 3; }
+[data-screen="dash"] .ranges { grid-column: span 8; }
+[data-screen="dash"] .pickers { grid-column: span 2; }
+[data-screen="dash"] .reset { grid-column: span 2; justify-self: start; }
+[data-screen="dash"] .reset button { min-height: 32px; padding: 0.375rem 0.6875rem;
+                                     font-size: 0.75rem; text-transform: uppercase;
+                                     letter-spacing: 0.06em; }
+
+/* One band divided by hairlines, and the cells are what carry the surface: the
+   1px gap over a ruled ground is the division, so the seven read as one
+   instrument and the lead figure can be a block of colour inside it rather
+   than a number floating on the ground. */
+[data-screen="dash"] .topline {
+  display: grid; margin: 0;
+  /* The six windowed figures are one band read across, so they share a width
+     whatever each one's label costs. The seventh is compared with none of them
+     and carries the longest label and the longest qualification, so it takes a
+     wider track rather than pulling the other six down to its measure. */
+  grid-template-columns: repeat(6, minmax(0, 1fr)) minmax(0, 1.4fr);
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+[data-screen="dash"] .cell { display: grid; gap: 1px; align-content: start;
+                             background: var(--surface);
+                             padding: var(--sp-md) 0.6875rem; }
+[data-screen="dash"] .cell dt { white-space: nowrap; }
+[data-screen="dash"] .cell dd { margin: 0; font-size: 1.5rem; line-height: 1.1;
+                                font-weight: 600; letter-spacing: -0.02em; }
+/* The lead figure is the one the whole page is about, so it is a filled block
+   and not merely a larger number. */
+[data-screen="dash"] .cell:first-child { background: var(--accent); }
+[data-screen="dash"] .cell:first-child :is(dt, dd) { color: var(--block-ink); }
+[data-screen="dash"] .cell:first-child dd { font-size: 2.25rem; }
+/* The digits are what the column is made of and the suffix is not, so it is set
+   down beside them rather than with them. It carries no label role: a suffix
+   rides the figure's own baseline in the figure's own case. */
+[data-screen="dash"] .cell .suffix { font-size: 0.875rem; font-weight: 400;
+                                     letter-spacing: normal;
+                                     color: var(--secondary); }
+/* A divisor is a sentence under its figure, so it sheds the weight and the
+   tracking it would otherwise inherit from `dd` — an em tracking resolves at
+   the figure's size and then follows the sentence down as an absolute length.
+   Every divisor reserves the two lines the longest of them takes. They are one
+   band of the instrument, read across: a cell that ends a line above its
+   neighbour makes the row's bottom edge the ragged thing a reader's eye
+   follows instead of the figures. */
+[data-screen="dash"] .cell .divisor { display: block; font-size: 0.625rem;
+                                      font-weight: 400; letter-spacing: normal;
+                                      line-height: 1.35; min-height: 2.7em;
+                                      color: var(--secondary); }
+
+/* The plot is set one step down from the table under it, because the table is
+   the meaning and this is a summary of it. */
+[data-screen="dash"] .plot {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: var(--sp-lg);
+  display: grid; gap: var(--sp-md);
+}
+/* One box for two regions. The value axis is a list and the drawing is a leaf
+   slot, and they have to be superimposed: there is no CSS that puts two
+   siblings in one box, so the frame is authored around them.
+   The two carry the SAME geometry, and must: a value maps to a position inside
+   whichever box it is measured in, so a gridline whose box is a pixel taller
+   than the drawing's labels a column the drawing put elsewhere. */
+[data-screen="dash"] .frame { position: relative; height: 13.5rem; }
+[data-screen="dash"] .graph { position: absolute; inset: 0 0 0 2.5rem; }
+[data-screen="dash"] .graph svg { width: 100%; height: 100%; display: block; }
+[data-screen="dash"] .graph .columns { fill: var(--accent); stroke: none; }
+/* A bucket that measured nothing. Never a series hue: hue names which dimension,
+   and this names no quantity at all. Never --border either — that is the at=0
+   gridline's own colour, and the gridline paints over this band. */
+[data-screen="dash"] .graph .floor { fill: var(--secondary); stroke: none; }
+[data-screen="dash"] .axis { list-style: none; margin: 0; padding: 0;
+                             position: absolute; inset: 0; }
+/* A tick is a value, so its box has no height: the label centres on the line
+   it names and the line itself is the pseudo-element, which starts past the
+   label's gutter. */
+[data-screen="dash"] .tick { position: absolute; left: 0; right: 0;
+                             bottom: calc(var(--at) * 0.1%); height: 0;
+                             display: flex; align-items: center;
+                             font-size: 0.6875rem; color: var(--secondary); }
+[data-screen="dash"] .tick::after { content: ""; position: absolute; top: 0;
+                                    left: 2.5rem; right: 0;
+                                    border-top: 1px solid var(--rule-inner); }
+
+/* Every point as a row, and the time axis is this column rather than a strip
+   under the drawing: at hourly granularity the window holds hundreds of
+   points, and a horizontal axis would have to drop all but a dozen labels to
+   hold them. Held to a measure a reader can cross in one movement, because a
+   bar and the figure it stands for are one object. */
+[data-screen="dash"] .points { display: grid; gap: 0; max-width: 54rem; }
+[data-screen="dash"] .buckets { list-style: none; margin: 0; padding: 0; }
+[data-screen="dash"] .bucket-head, [data-screen="dash"] .bucket {
+  display: grid; grid-template-columns: 7rem minmax(0, 1fr) 4rem 4rem 5.5rem;
+  gap: var(--sp-md); align-items: center;
+  padding: 0.125rem var(--sp-md) 0.125rem 0;
+}
+[data-screen="dash"] .bucket-head { border-bottom: 2px solid var(--primary);
+                                    padding-bottom: var(--sp-sm); }
+[data-screen="dash"] .bucket { font-size: 0.75rem;
+                               border-bottom: 1px solid var(--rule-inner); }
+[data-screen="dash"] .bucket:last-child { border-bottom: 0; }
+[data-screen="dash"] .bucket-head .n, [data-screen="dash"] .bucket .n { text-align: right; }
+/* Bars carry their own domain: --share is a fold-computed number per row, so
+   the scale is a column and never a compile-time constant. */
+[data-screen="dash"] .bucket .bar { height: 0.625rem; border-radius: var(--r-sm);
+                                    background: var(--accent);
+                                    width: calc(var(--share) / 1000 * 100%); }
+
+/* The caret. Its two forms carry only hidden inputs and are submitted by an
+   arrow key, so neither is ever laid out. */
+[data-screen="dash"] .caret-step { display: none; }
+/* The readout is the graph's one tab stop, so its box carries the same 24px
+   floor every other target does. */
+[data-screen="dash"] .caret-says { justify-self: start; display: inline-flex;
+                                   align-items: center; min-height: 24px; }
+[data-screen="dash"] .bucket { position: relative; }
+/* The marker rides a PSEUDO-ELEMENT, which `settle()`'s geometry fingerprint
+   does not walk — an animation on the row itself would report the route as
+   still moving and blind every visual check under it. Its arrival is the only
+   motion in the app, and both channels it travels on collapse to zero under
+   reduced motion, so it then arrives without travelling. */
+[data-screen="dash"] .bucket[data-caret="true"] { color: var(--primary);
+  background: color-mix(in oklab, var(--accent) 12%, transparent); }
+[data-screen="dash"] .bucket[data-caret="true"]::before {
+  content: "\25B8"; position: absolute; left: -0.75rem; color: var(--accent);
+  animation: dash-caret-arrive var(--motion-base) ease-out;
+}
+@keyframes dash-caret-arrive {
+  from { transform: translateY(var(--motion-shift)); opacity: 0; }
+}
+
+/* A heading is a label for a list, so it goes with the list: over the single
+   sentence "No filter is in force." it labels nothing, and that sentence
+   already says the whole state. A chip's `data-empty=""` renders no note, so
+   an occupied slot is a non-empty label and there is nothing else to test.
+   Two rules rather than one `:not(:has(…))`: a `:has()` inside a `:has()` is
+   invalid, and an invalid selector is dropped in silence. */
+[data-screen="dash"] h2:has(+ .chips) { display: none; }
+[data-screen="dash"] h2:has(+ .chips .chip-label:not(:empty)) { display: block; }
+[data-screen="dash"] .chips { display: flex; flex-wrap: wrap; gap: var(--sp-sm);
+                              align-items: center; min-height: 1.75rem; }
+[data-screen="dash"] .chip { display: inline-flex; align-items: center;
+                             gap: var(--sp-sm); font-size: 0.75rem;
+                             padding: 0.125rem 0.125rem 0.125rem 0.625rem;
+                             background: var(--surface-muted);
+                             border: 1px solid var(--border);
+                             border-radius: var(--r-sm); }
+/* An unoccupied slot is a leaf slot whose bindings resolved to nothing, so its
+   label is empty and its remove form writes nothing — the probe stays in the
+   DOM, where the sweep reads it, and off the screen, where it would otherwise
+   offer to remove a filter that is not in force. */
+[data-screen="dash"] .chip:has(.chip-label:empty) { display: none; }
+[data-screen="dash"] .chips:has(.chip-label:not(:empty)) .arm-none { display: none; }
+[data-screen="dash"] [data-state="loading"] .arm-none { visibility: hidden; }
+/* The target is a 24px square around a single glyph, and the radius is what
+   says the glyph is its centre rather than something sitting inside a box. */
+[data-screen="dash"] .chip-remove button { border: 0; background: transparent;
+                                           border-radius: var(--r-full);
+                                           min-width: 24px; padding: 0;
+                                           line-height: 1; }
+
+/* A panel takes the height of its own rows and not of its tallest neighbour: a
+   dimension the window holds five values of would otherwise be stretched to a
+   nine-row sibling, and the footer link would float in the middle of a box with
+   dead ground under it. */
+[data-screen="dash"] .panels { display: grid; gap: var(--sp-lg); align-items: start;
+                               grid-template-columns: repeat(2, minmax(0, 1fr)); }
+[data-screen="dash"] .panel { display: grid; align-content: start;
+                              background: var(--surface);
+                              border: 1px solid var(--border);
+                              border-radius: var(--r-md); overflow: hidden; }
+/* The header is the panel's own hue, filled: the block IS which dimension this
+   is, and the words in it are the same claim for a reader who cannot use the
+   colour. Both wear block-ink at full strength and differ by weight — an ink
+   set back with alpha would put the unit under 3:1 on the two lightest hues. */
+[data-screen="dash"] .panel > header { display: flex; align-items: center;
+                                       gap: var(--sp-md);
+                                       padding: 0.4375rem var(--sp-lg);
+                                       background: var(--hue); }
+[data-screen="dash"] .panel > header h3 { color: var(--block-ink); }
+[data-screen="dash"] .panel > header .unit { margin-left: auto; font-weight: 500;
+                                             color: var(--block-ink); }
+[data-screen="dash"] .panel > footer { padding: var(--sp-md) var(--sp-lg);
+                                       border-top: 1px solid var(--border);
+                                       font-size: 0.75rem; }
+[data-screen="dash"] .panel > footer a::after { content: " \2192"; }
+[data-screen="dash"] .rows { list-style: none; margin: 0; padding: 0; }
+[data-screen="dash"] .row { border-bottom: 1px solid var(--rule-inner); }
+[data-screen="dash"] .row:last-child { border-bottom: 0; }
+[data-screen="dash"] .row .share { display: grid; width: 100%; min-height: 30px;
+                                   grid-template-columns: minmax(0, 1fr) 3.25rem 1.75rem;
+                                   gap: var(--sp-md); align-items: center;
+                                   padding: 0 var(--sp-lg); text-align: left;
+                                   font-size: 0.8125rem; font-weight: 500;
+                                   color: var(--primary);
+                                   background: transparent; border: 0;
+                                   border-radius: 0; }
+[data-screen="dash"] .row .share:hover { background: var(--surface-muted); }
+/* The share rides BEHIND the value it is the share of, not beside it: a bar in
+   a column of its own is a second thing to read, where a bar behind the label
+   is the label's own weight. It is the panel's hue at low mix, so the block
+   behind a row and the block over the panel are one dimension's colour.
+   z-index 0 is what makes the row's own hover ground an ancestor of the bar
+   rather than a sibling that covers it. */
+[data-screen="dash"] .row .dim { position: relative; z-index: 0; overflow: hidden;
+                                 text-overflow: ellipsis; white-space: nowrap; }
+[data-screen="dash"] .row .dim::before {
+  content: ""; position: absolute; z-index: -1; top: -0.3125rem; bottom: -0.3125rem;
+  left: -0.375rem; width: calc(var(--share) / 1000 * 100% + 0.375rem);
+  background: color-mix(in oklab, var(--hue) 22%, transparent);
+}
+[data-screen="dash"] .row .n { text-align: right; }
+[data-screen="dash"] .row .arc { width: 1.75rem; height: 1.75rem; }
+[data-screen="dash"] .row .arc circle { fill: none; stroke: var(--border); stroke-width: 3; }
+/* The rotation is what makes the arc read from twelve o'clock, where a reader
+   starts one: the dash array runs clockwise from three without it. DESIGN.md
+   argues the pulled-back stroke. */
+[data-screen="dash"] .row .arc .cut {
+  stroke: color-mix(in oklab, var(--attention) 78%, var(--surface));
+  transform: rotate(-90deg); transform-origin: 50% 50%;
+}
+
+[data-screen="dash"] .fold-error { margin: 0; color: var(--danger); }
+[data-screen="dash"] .fold-error:empty { display: none; }
+
+/* Below the measure a twelfth is narrower than anything it would hold, so every
+   band takes the width and the figures wrap instead of the words. */
+@media (max-width: 60rem) {
+  [data-screen="dash"] { padding: var(--sp-lg) var(--sp-md) var(--sp-xl); }
+  [data-screen="dash"] .dash > * { grid-column: 1 / -1; }
+  /* The floor decides how many cells share a phone's width, and a cell holding
+     a figure over a divisor sentence needs half of it: at 7rem three still fit
+     and each becomes a column of one-word lines. Two fit; three do not. */
+  [data-screen="dash"] .topline { grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
+  /* The band's ground is what shows through a track no cell claimed, so the
+     seventh figure takes the row it would otherwise half-fill. */
+  [data-screen="dash"] .cell:last-child { grid-column: 1 / -1; }
+  [data-screen="dash"] .panels { grid-template-columns: minmax(0, 1fr); }
+  [data-screen="dash"] .bucket-head, [data-screen="dash"] .bucket {
+    grid-template-columns: 5.5rem minmax(0, 1fr) 3rem 3rem 3.5rem;
+  }
+}

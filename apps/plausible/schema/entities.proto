@@ -1,0 +1,252 @@
+syntax = "proto3";
+package pronto.entities;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+
+message Breakdown {
+  optional string id = 1 [json_name = "id"];
+  optional string panel = 2 [json_name = "panel"];
+  optional string dim_value = 3 [json_name = "dim_value"];
+  optional int32 ord = 4 [json_name = "ord"];
+  optional int32 visitors = 5 [json_name = "visitors"];
+  optional int32 visits = 6 [json_name = "visits"];
+  optional int32 pageviews = 7 [json_name = "pageviews"];
+  optional int32 events = 8 [json_name = "events"];
+  optional int32 bounce_n = 9 [json_name = "bounce_n"];
+  optional int32 bounce_denom = 10 [json_name = "bounce_denom"];
+  optional int32 sessions_n = 11 [json_name = "sessions_n"];
+  optional int32 dur_sum = 12 [json_name = "dur_sum"];
+  optional string bounce_rate_text = 13 [json_name = "bounce_rate_text"];
+  optional string visit_duration_text = 14 [json_name = "visit_duration_text"];
+  optional int32 share = 15 [json_name = "share"];
+  optional int32 arc = 16 [json_name = "arc"];
+  optional string set_page = 17 [json_name = "set_page"];
+  optional string set_entry_page = 18 [json_name = "set_entry_page"];
+  optional string set_source = 19 [json_name = "set_source"];
+  optional string set_browser = 20 [json_name = "set_browser"];
+  optional string set_name = 21 [json_name = "set_name"];
+}
+
+message Bucket {
+  optional string id = 1 [json_name = "id"];
+  optional int32 ord = 2 [json_name = "ord"];
+  optional string bucket_key = 3 [json_name = "bucket_key"];
+  optional string label = 4 [json_name = "label"];
+  optional string grain = 5 [json_name = "grain"];
+  optional int32 visitors = 6 [json_name = "visitors"];
+  optional int32 visits = 7 [json_name = "visits"];
+  optional int32 pageviews = 8 [json_name = "pageviews"];
+  optional int32 share = 9 [json_name = "share"];
+  optional bool on_caret = 10 [json_name = "on_caret"];
+}
+
+message Chip {
+  optional string id = 1 [json_name = "id"];
+  optional string slot = 2 [json_name = "slot"];
+  optional string label = 3 [json_name = "label"];
+  optional string value = 4 [json_name = "value"];
+  optional string set_page = 5 [json_name = "set_page"];
+  optional string set_entry_page = 6 [json_name = "set_entry_page"];
+  optional string set_source = 7 [json_name = "set_source"];
+  optional string set_browser = 8 [json_name = "set_browser"];
+  optional string set_name = 9 [json_name = "set_name"];
+}
+
+message Corpus {
+  optional string id = 1 [json_name = "id"];
+  optional int32 hits = 2 [json_name = "hits"];
+  optional int32 visits = 3 [json_name = "visits"];
+  optional int32 visitors = 4 [json_name = "visitors"];
+  google.protobuf.Timestamp first_epoch = 5 [json_name = "first_epoch"];
+  google.protobuf.Timestamp last_epoch = 6 [json_name = "last_epoch"];
+  optional string first_local = 7 [json_name = "first_local"];
+  optional string last_local = 8 [json_name = "last_local"];
+  optional int32 days = 9 [json_name = "days"];
+}
+
+message Event {
+  optional string id = 1 [json_name = "id"];
+  google.protobuf.Timestamp epoch = 2 [json_name = "epoch"];
+  optional string visitor = 3 [json_name = "visitor"];
+  optional string name = 4 [json_name = "name"];
+  optional bool interactive = 5 [json_name = "interactive"];
+  optional string pathname = 6 [json_name = "pathname"];
+  optional string source = 7 [json_name = "source"];
+  optional string browser = 8 [json_name = "browser"];
+}
+
+message Filter {
+  optional string id = 1 [json_name = "id"];
+  optional string range = 2 [json_name = "range"];
+  optional string grain = 3 [json_name = "grain"];
+  google.protobuf.Timestamp as_of_epoch = 4 [json_name = "as_of_epoch"];
+  optional string active_bucket = 5 [json_name = "active_bucket"];
+  optional string f_page = 6 [json_name = "f_page"];
+  optional string f_entry_page = 7 [json_name = "f_entry_page"];
+  optional string f_source = 8 [json_name = "f_source"];
+  optional string f_browser = 9 [json_name = "f_browser"];
+  optional string f_name = 10 [json_name = "f_name"];
+}
+
+message FilterSet {
+  optional string id = 1 [json_name = "id"];
+  optional string name = 2 [json_name = "name"];
+  optional string says = 3 [json_name = "says"];
+  optional string slots = 4 [json_name = "slots"];
+  optional int32 pos = 5 [json_name = "pos"];
+  optional string range = 6 [json_name = "range"];
+  optional string grain = 7 [json_name = "grain"];
+  google.protobuf.Timestamp as_of_epoch = 8 [json_name = "as_of_epoch"];
+  optional string active_bucket = 9 [json_name = "active_bucket"];
+  optional string f_page = 10 [json_name = "f_page"];
+  optional string f_entry_page = 11 [json_name = "f_entry_page"];
+  optional string f_source = 12 [json_name = "f_source"];
+  optional string f_browser = 13 [json_name = "f_browser"];
+  optional string f_name = 14 [json_name = "f_name"];
+}
+
+message Fold {
+  optional string id = 1 [json_name = "id"];
+  optional string note = 2 [json_name = "note"];
+  optional string error = 3 [json_name = "error"];
+}
+
+message Grain {
+  optional string id = 1 [json_name = "id"];
+  optional string range = 2 [json_name = "range"];
+  optional string grain = 3 [json_name = "grain"];
+  optional int32 buckets = 4 [json_name = "buckets"];
+  optional bool on_cursor = 5 [json_name = "on_cursor"];
+  optional int32 pos = 6 [json_name = "pos"];
+}
+
+message Metric {
+  optional string id = 1 [json_name = "id"];
+  optional string says = 2 [json_name = "says"];
+  optional string formula = 3 [json_name = "formula"];
+  optional string source = 4 [json_name = "source"];
+  optional string reads = 5 [json_name = "reads"];
+  optional int32 pos = 6 [json_name = "pos"];
+}
+
+message Panel {
+  optional string id = 1 [json_name = "id"];
+  optional string title = 2 [json_name = "title"];
+  optional string note = 3 [json_name = "note"];
+  optional string slot = 4 [json_name = "slot"];
+  optional string column = 5 [json_name = "column"];
+  optional string on = 6 [json_name = "on"];
+  optional int32 pos = 7 [json_name = "pos"];
+}
+
+message Question {
+  optional string id = 1 [json_name = "id"];
+  optional string metric = 2 [json_name = "metric"];
+  optional string panel = 3 [json_name = "panel"];
+  optional string dimension = 4 [json_name = "dimension"];
+  optional string range = 5 [json_name = "range"];
+  optional string grain = 6 [json_name = "grain"];
+  optional string filter_set = 7 [json_name = "filter_set"];
+  optional string says = 8 [json_name = "says"];
+  optional string reads = 9 [json_name = "reads"];
+  optional string departs = 10 [json_name = "departs"];
+  optional string expects = 11 [json_name = "expects"];
+  optional string hard_case = 12 [json_name = "hard_case"];
+  optional string note = 13 [json_name = "note"];
+}
+
+message Range {
+  optional string id = 1 [json_name = "id"];
+  optional string label = 2 [json_name = "label"];
+  optional int32 from_days_back = 3 [json_name = "from_days_back"];
+  optional int32 to_days_back = 4 [json_name = "to_days_back"];
+  optional bool to_is_as_of = 5 [json_name = "to_is_as_of"];
+  optional string opens_on = 6 [json_name = "opens_on"];
+  optional bool on_cursor = 7 [json_name = "on_cursor"];
+  optional int32 pos = 8 [json_name = "pos"];
+}
+
+message Scale {
+  optional string id = 1 [json_name = "id"];
+  optional int32 domain_max = 2 [json_name = "domain_max"];
+  optional int32 points = 3 [json_name = "points"];
+  optional string path_d = 4 [json_name = "path_d"];
+  optional string floor_d = 5 [json_name = "floor_d"];
+  optional string caret_point = 6 [json_name = "caret_point"];
+  optional string caret_label = 7 [json_name = "caret_label"];
+  optional string caret_prev = 8 [json_name = "caret_prev"];
+  optional string caret_next = 9 [json_name = "caret_next"];
+}
+
+message Session {
+  optional string id = 1 [json_name = "id"];
+  optional string visitor = 2 [json_name = "visitor"];
+  optional int32 ord = 3 [json_name = "ord"];
+  google.protobuf.Timestamp start_epoch = 4 [json_name = "start_epoch"];
+  google.protobuf.Timestamp last_epoch = 5 [json_name = "last_epoch"];
+  optional string start_local = 6 [json_name = "start_local"];
+  optional string last_local = 7 [json_name = "last_local"];
+  optional string entry_page = 8 [json_name = "entry_page"];
+  optional string exit_page = 9 [json_name = "exit_page"];
+  optional int32 pageviews = 10 [json_name = "pageviews"];
+  optional int32 events = 11 [json_name = "events"];
+  optional string bounce = 12 [json_name = "bounce"];
+  optional int32 duration = 13 [json_name = "duration"];
+  optional string source = 14 [json_name = "source"];
+  optional string browser = 15 [json_name = "browser"];
+  optional string pages = 16 [json_name = "pages"];
+  optional string names = 17 [json_name = "names"];
+  optional string pages_text = 18 [json_name = "pages_text"];
+  optional string names_text = 19 [json_name = "names_text"];
+  optional string day_key = 20 [json_name = "day_key"];
+  optional string week_key = 21 [json_name = "week_key"];
+  optional int32 hours_n = 22 [json_name = "hours_n"];
+}
+
+message SessionHour {
+  optional string id = 1 [json_name = "id"];
+  optional string session_id = 2 [json_name = "session_id"];
+  optional string bucket_key = 3 [json_name = "bucket_key"];
+  optional int32 ord = 4 [json_name = "ord"];
+}
+
+message Tick {
+  optional string id = 1 [json_name = "id"];
+  optional int32 ord = 2 [json_name = "ord"];
+  optional int32 value = 3 [json_name = "value"];
+  optional string label = 4 [json_name = "label"];
+  optional int32 at = 5 [json_name = "at"];
+}
+
+message Topline {
+  optional string id = 1 [json_name = "id"];
+  optional int32 visitors_n = 2 [json_name = "visitors_n"];
+  optional int32 visits_n = 3 [json_name = "visits_n"];
+  optional int32 pageviews_n = 4 [json_name = "pageviews_n"];
+  optional int32 events_n = 5 [json_name = "events_n"];
+  optional int32 sessions_n = 6 [json_name = "sessions_n"];
+  optional int32 bounce_denom = 7 [json_name = "bounce_denom"];
+  optional int32 bounce_n = 8 [json_name = "bounce_n"];
+  optional int32 pv_sum = 9 [json_name = "pv_sum"];
+  optional int32 dur_sum = 10 [json_name = "dur_sum"];
+  optional string visitors_text = 11 [json_name = "visitors_text"];
+  optional string visits_text = 12 [json_name = "visits_text"];
+  optional string pageviews_text = 13 [json_name = "pageviews_text"];
+  optional string views_per_visit_text = 14 [json_name = "views_per_visit_text"];
+  optional string bounce_rate_text = 15 [json_name = "bounce_rate_text"];
+  optional string visit_duration_text = 16 [json_name = "visit_duration_text"];
+  optional string range_text = 17 [json_name = "range_text"];
+  optional string grain_text = 18 [json_name = "grain_text"];
+  optional int32 current_visitors = 19 [json_name = "current_visitors"];
+  google.protobuf.Timestamp window_from = 20 [json_name = "window_from"];
+  google.protobuf.Timestamp window_to = 21 [json_name = "window_to"];
+}
+
+message Zone {
+  optional string id = 1 [json_name = "id"];
+  google.protobuf.Timestamp starts_epoch = 2 [json_name = "starts_epoch"];
+  optional int32 offset_seconds = 3 [json_name = "offset_seconds"];
+  optional string abbr = 4 [json_name = "abbr"];
+}

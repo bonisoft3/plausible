@@ -1,0 +1,55 @@
+@import url("shared/instrument.css");
+
+/* The stitch, shown: one row per visit and one header for the four hundred of
+   them. Every column the fold wrote is a column here, read down, with the local
+   hours a visit was open in as the last of them. */
+
+[data-screen="sessions"] {
+  padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+[data-screen="sessions"] .visits-page { display: grid; gap: var(--sp-md);
+                                        align-content: start; }
+
+/* Sixteen columns do not fit a page at any width worth designing for, so the
+   sheet scrolls inside its own box — the log's arrangement, for the log's
+   reason. The floor is what keeps the three set-valued columns from being
+   squeezed to a word a line; past it the box moves sideways and the document
+   stands still. */
+[data-screen="sessions"] .visits { overflow-x: auto; margin-top: var(--sp-sm); }
+[data-screen="sessions"] table { min-width: 117rem; }
+[data-screen="sessions"] tbody th { color: var(--secondary); }
+[data-screen="sessions"] tbody :is(th, td) { font-size: 0.75rem; }
+/* The log's rhythm, for the log's reason. A row here is as tall as its tallest
+   cell: the three set-valued columns wrap, so a visit holding four paths is
+   several lines deep. */
+[data-screen="sessions"] tbody :is(th, td) { padding-top: 0.1875rem;
+                                             padding-bottom: 0.1875rem; }
+[data-screen="sessions"] .n { text-align: right; }
+[data-screen="sessions"] td:empty::before { content: "\2014"; color: var(--secondary); }
+
+/* Every scalar column takes the width its own content needs and never wraps,
+   which is what sizes thirteen of the sixteen without a rem apiece. The three
+   set-valued ones are the cells whose length is the log's business: they wrap,
+   and each is given a width, because a wrapping column left to negotiate with
+   thirteen that will not wrap is handed a word's worth of it — a visit's two
+   hit names then arrive as four fragments of one. */
+[data-screen="sessions"] :is(th, td) { white-space: nowrap; }
+[data-screen="sessions"] .set { white-space: normal; vertical-align: top; }
+[data-screen="sessions"] :is(th, td):nth-child(14) { width: 14rem;
+                                                     overflow-wrap: anywhere; }
+[data-screen="sessions"] :is(th, td):nth-child(15) { width: 12rem; }
+[data-screen="sessions"] :is(th, td):nth-child(16) { width: 14rem; }
+
+[data-screen="sessions"] .hours { list-style: none; display: flex; flex-wrap: wrap;
+                                  gap: var(--sp-sm); margin: 0; padding: 0; }
+[data-screen="sessions"] .hour { font-size: 0.6875rem; padding: 0 0.3125rem;
+                                 color: var(--secondary); white-space: nowrap;
+                                 border: 1px solid var(--border);
+                                 border-radius: var(--r-sm); }
+
+@media (max-width: 60rem) {
+  [data-screen="sessions"] { padding: var(--sp-lg) var(--sp-md) var(--sp-xl); }
+}

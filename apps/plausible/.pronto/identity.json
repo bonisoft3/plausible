@@ -1,0 +1,1042 @@
+{
+  "0xba279baa3624f69b": {
+    "name": "event",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "epoch",
+        "type": "timestamp",
+        "retired": false
+      },
+      "3": {
+        "name": "visitor",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "name",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "interactive",
+        "type": "bool",
+        "retired": false
+      },
+      "6": {
+        "name": "pathname",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "source",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "browser",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xd99338a824a5da9a": {
+    "name": "zone",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "starts_epoch",
+        "type": "timestamp",
+        "retired": false
+      },
+      "3": {
+        "name": "offset_seconds",
+        "type": "int32",
+        "retired": false
+      },
+      "4": {
+        "name": "abbr",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xbf4c20537de4272b": {
+    "name": "session",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "visitor",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "ord",
+        "type": "int32",
+        "retired": false
+      },
+      "4": {
+        "name": "start_epoch",
+        "type": "timestamp",
+        "retired": false
+      },
+      "5": {
+        "name": "last_epoch",
+        "type": "timestamp",
+        "retired": false
+      },
+      "6": {
+        "name": "start_local",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "last_local",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "entry_page",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "exit_page",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "pageviews",
+        "type": "int32",
+        "retired": false
+      },
+      "11": {
+        "name": "events",
+        "type": "int32",
+        "retired": false
+      },
+      "12": {
+        "name": "bounce",
+        "type": "string",
+        "retired": false
+      },
+      "13": {
+        "name": "duration",
+        "type": "int32",
+        "retired": false
+      },
+      "14": {
+        "name": "source",
+        "type": "string",
+        "retired": false
+      },
+      "15": {
+        "name": "browser",
+        "type": "string",
+        "retired": false
+      },
+      "16": {
+        "name": "pages",
+        "type": "string",
+        "retired": false
+      },
+      "17": {
+        "name": "names",
+        "type": "string",
+        "retired": false
+      },
+      "18": {
+        "name": "pages_text",
+        "type": "string",
+        "retired": false
+      },
+      "19": {
+        "name": "names_text",
+        "type": "string",
+        "retired": false
+      },
+      "20": {
+        "name": "day_key",
+        "type": "string",
+        "retired": false
+      },
+      "21": {
+        "name": "week_key",
+        "type": "string",
+        "retired": false
+      },
+      "22": {
+        "name": "hours_n",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0xf391a2c3bc6a61ee": {
+    "name": "session_hour",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "session_id",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "bucket_key",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "ord",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0x884ec50b9f94765a": {
+    "name": "corpus",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "hits",
+        "type": "int32",
+        "retired": false
+      },
+      "3": {
+        "name": "visits",
+        "type": "int32",
+        "retired": false
+      },
+      "4": {
+        "name": "visitors",
+        "type": "int32",
+        "retired": false
+      },
+      "5": {
+        "name": "first_epoch",
+        "type": "timestamp",
+        "retired": false
+      },
+      "6": {
+        "name": "last_epoch",
+        "type": "timestamp",
+        "retired": false
+      },
+      "7": {
+        "name": "first_local",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "last_local",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "days",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0xb9fa5abdb9fcf355": {
+    "name": "fold",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "note",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "error",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xaa0a90242779ec9f": {
+    "name": "filter_set",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "name",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "says",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "slots",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "pos",
+        "type": "int32",
+        "retired": false
+      },
+      "6": {
+        "name": "range",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "grain",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "as_of_epoch",
+        "type": "timestamp",
+        "retired": false
+      },
+      "9": {
+        "name": "active_bucket",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "f_page",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "f_entry_page",
+        "type": "string",
+        "retired": false
+      },
+      "12": {
+        "name": "f_source",
+        "type": "string",
+        "retired": false
+      },
+      "13": {
+        "name": "f_browser",
+        "type": "string",
+        "retired": false
+      },
+      "14": {
+        "name": "f_name",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xb342c754449e3fb8": {
+    "name": "filter",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "range",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "grain",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "as_of_epoch",
+        "type": "timestamp",
+        "retired": false
+      },
+      "5": {
+        "name": "active_bucket",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "f_page",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "f_entry_page",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "f_source",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "f_browser",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "f_name",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xf3ff619043f60ad2": {
+    "name": "topline",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "visitors_n",
+        "type": "int32",
+        "retired": false
+      },
+      "3": {
+        "name": "visits_n",
+        "type": "int32",
+        "retired": false
+      },
+      "4": {
+        "name": "pageviews_n",
+        "type": "int32",
+        "retired": false
+      },
+      "5": {
+        "name": "events_n",
+        "type": "int32",
+        "retired": false
+      },
+      "6": {
+        "name": "sessions_n",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "bounce_denom",
+        "type": "int32",
+        "retired": false
+      },
+      "8": {
+        "name": "bounce_n",
+        "type": "int32",
+        "retired": false
+      },
+      "9": {
+        "name": "pv_sum",
+        "type": "int32",
+        "retired": false
+      },
+      "10": {
+        "name": "dur_sum",
+        "type": "int32",
+        "retired": false
+      },
+      "11": {
+        "name": "visitors_text",
+        "type": "string",
+        "retired": false
+      },
+      "12": {
+        "name": "visits_text",
+        "type": "string",
+        "retired": false
+      },
+      "13": {
+        "name": "pageviews_text",
+        "type": "string",
+        "retired": false
+      },
+      "14": {
+        "name": "views_per_visit_text",
+        "type": "string",
+        "retired": false
+      },
+      "15": {
+        "name": "bounce_rate_text",
+        "type": "string",
+        "retired": false
+      },
+      "16": {
+        "name": "visit_duration_text",
+        "type": "string",
+        "retired": false
+      },
+      "17": {
+        "name": "range_text",
+        "type": "string",
+        "retired": false
+      },
+      "18": {
+        "name": "grain_text",
+        "type": "string",
+        "retired": false
+      },
+      "19": {
+        "name": "current_visitors",
+        "type": "int32",
+        "retired": false
+      },
+      "20": {
+        "name": "window_from",
+        "type": "timestamp",
+        "retired": false
+      },
+      "21": {
+        "name": "window_to",
+        "type": "timestamp",
+        "retired": false
+      }
+    }
+  },
+  "0x871e0fb7227939a5": {
+    "name": "bucket",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "ord",
+        "type": "int32",
+        "retired": false
+      },
+      "3": {
+        "name": "bucket_key",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "label",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "grain",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "visitors",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "visits",
+        "type": "int32",
+        "retired": false
+      },
+      "8": {
+        "name": "pageviews",
+        "type": "int32",
+        "retired": false
+      },
+      "9": {
+        "name": "share",
+        "type": "int32",
+        "retired": false
+      },
+      "10": {
+        "name": "on_caret",
+        "type": "bool",
+        "retired": false
+      }
+    }
+  },
+  "0xb47c30099578a482": {
+    "name": "tick",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "ord",
+        "type": "int32",
+        "retired": false
+      },
+      "3": {
+        "name": "value",
+        "type": "int32",
+        "retired": false
+      },
+      "4": {
+        "name": "label",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "at",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0x98b48a3a9b3ac28f": {
+    "name": "scale",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "domain_max",
+        "type": "int32",
+        "retired": false
+      },
+      "3": {
+        "name": "points",
+        "type": "int32",
+        "retired": false
+      },
+      "4": {
+        "name": "path_d",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "floor_d",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "caret_point",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "caret_label",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "caret_prev",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "caret_next",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xbec76142cdb7e0e1": {
+    "name": "breakdown",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "panel",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "dim_value",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "ord",
+        "type": "int32",
+        "retired": false
+      },
+      "5": {
+        "name": "visitors",
+        "type": "int32",
+        "retired": false
+      },
+      "6": {
+        "name": "visits",
+        "type": "int32",
+        "retired": false
+      },
+      "7": {
+        "name": "pageviews",
+        "type": "int32",
+        "retired": false
+      },
+      "8": {
+        "name": "events",
+        "type": "int32",
+        "retired": false
+      },
+      "9": {
+        "name": "bounce_n",
+        "type": "int32",
+        "retired": false
+      },
+      "10": {
+        "name": "bounce_denom",
+        "type": "int32",
+        "retired": false
+      },
+      "11": {
+        "name": "sessions_n",
+        "type": "int32",
+        "retired": false
+      },
+      "12": {
+        "name": "dur_sum",
+        "type": "int32",
+        "retired": false
+      },
+      "13": {
+        "name": "bounce_rate_text",
+        "type": "string",
+        "retired": false
+      },
+      "14": {
+        "name": "visit_duration_text",
+        "type": "string",
+        "retired": false
+      },
+      "15": {
+        "name": "share",
+        "type": "int32",
+        "retired": false
+      },
+      "16": {
+        "name": "arc",
+        "type": "int32",
+        "retired": false
+      },
+      "17": {
+        "name": "set_page",
+        "type": "string",
+        "retired": false
+      },
+      "18": {
+        "name": "set_entry_page",
+        "type": "string",
+        "retired": false
+      },
+      "19": {
+        "name": "set_source",
+        "type": "string",
+        "retired": false
+      },
+      "20": {
+        "name": "set_browser",
+        "type": "string",
+        "retired": false
+      },
+      "21": {
+        "name": "set_name",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xb216f2e41cfb1e71": {
+    "name": "chip",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "slot",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "label",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "value",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "set_page",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "set_entry_page",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "set_source",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "set_browser",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "set_name",
+        "type": "string",
+        "retired": false
+      }
+    }
+  },
+  "0xd911e6d6d3021c35": {
+    "name": "panel",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "title",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "note",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "slot",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "column",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "on",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "pos",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0xc4961ace112bb6ff": {
+    "name": "metric",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "says",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "formula",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "source",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "reads",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "pos",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0xc5d96d21f63c11a7": {
+    "name": "range",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "label",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "from_days_back",
+        "type": "int32",
+        "retired": false
+      },
+      "4": {
+        "name": "to_days_back",
+        "type": "int32",
+        "retired": false
+      },
+      "5": {
+        "name": "to_is_as_of",
+        "type": "bool",
+        "retired": false
+      },
+      "6": {
+        "name": "opens_on",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "on_cursor",
+        "type": "bool",
+        "retired": false
+      },
+      "8": {
+        "name": "pos",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0xe740e5f59fcb6494": {
+    "name": "grain",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "range",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "grain",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "buckets",
+        "type": "int32",
+        "retired": false
+      },
+      "5": {
+        "name": "on_cursor",
+        "type": "bool",
+        "retired": false
+      },
+      "6": {
+        "name": "pos",
+        "type": "int32",
+        "retired": false
+      }
+    }
+  },
+  "0xcedb40dcd7016075": {
+    "name": "question",
+    "fields": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "retired": false
+      },
+      "2": {
+        "name": "metric",
+        "type": "string",
+        "retired": false
+      },
+      "3": {
+        "name": "panel",
+        "type": "string",
+        "retired": false
+      },
+      "4": {
+        "name": "dimension",
+        "type": "string",
+        "retired": false
+      },
+      "5": {
+        "name": "range",
+        "type": "string",
+        "retired": false
+      },
+      "6": {
+        "name": "grain",
+        "type": "string",
+        "retired": false
+      },
+      "7": {
+        "name": "filter_set",
+        "type": "string",
+        "retired": false
+      },
+      "8": {
+        "name": "says",
+        "type": "string",
+        "retired": false
+      },
+      "9": {
+        "name": "reads",
+        "type": "string",
+        "retired": false
+      },
+      "10": {
+        "name": "departs",
+        "type": "string",
+        "retired": false
+      },
+      "11": {
+        "name": "expects",
+        "type": "string",
+        "retired": false
+      },
+      "12": {
+        "name": "hard_case",
+        "type": "string",
+        "retired": false
+      },
+      "13": {
+        "name": "note",
+        "type": "string",
+        "retired": false
+      }
+    }
+  }
+}

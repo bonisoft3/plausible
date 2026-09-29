@@ -1,0 +1,72 @@
+@import url("shared/instrument.css");
+
+/* The front door: what the log is, then the eleven ways of asking about it.
+   The figures share one measure and one left edge; the shapes are cards
+   because each is a place to go rather than a value to compare. */
+
+[data-screen="index"] {
+  padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
+  max-width: 66rem;
+  margin: 0 auto;
+}
+
+[data-screen="index"] .index { display: grid; gap: var(--sp-lg);
+                               align-content: start; }
+[data-screen="index"] .masthead { display: grid; gap: var(--sp-sm); }
+[data-screen="index"] h1 { font-size: 1.375rem; letter-spacing: -0.015em; }
+
+/* Figures are compared down a shared left edge, so every one of them is a
+   grid cell of the same width and the numerals share an advance. The band is
+   the dashboard's: hairline gaps over a ruled ground, and the lead count as a
+   filled block. */
+[data-screen="index"] .figures {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0;
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+[data-screen="index"] .fig { display: grid; gap: 1px; align-content: start;
+                             background: var(--surface);
+                             padding: var(--sp-md) 0.6875rem; }
+[data-screen="index"] .fig dd { margin: 0; font-size: 1.375rem; line-height: 1.15;
+                                font-weight: 600; letter-spacing: -0.02em; }
+[data-screen="index"] .fig:first-child { background: var(--accent); }
+[data-screen="index"] .fig:first-child :is(dt, dd) { color: var(--block-ink); }
+/* The first and last hit are instants: they take the width a timestamp needs
+   rather than the width the four counts share. */
+[data-screen="index"] .fig:nth-child(n+5) { grid-column: span 2; }
+[data-screen="index"] .fig:nth-child(n+5) dd { font-size: 0.9375rem;
+                                               font-weight: 500; }
+
+[data-screen="index"] .shapes { list-style: none; margin: 0; padding: 0;
+                                display: grid; gap: var(--sp-lg);
+                                grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); }
+[data-screen="index"] .shape { position: relative; display: grid;
+                               gap: var(--sp-sm); align-content: start;
+                               padding: var(--sp-md) var(--sp-lg) var(--sp-lg);
+                               background: var(--surface);
+                               border: 1px solid var(--border);
+                               border-top: 3px solid var(--border);
+                               border-radius: var(--r-sm);
+                               transition: border-color var(--motion-fast) var(--motion-ease); }
+/* The card's top edge is where it says it is a place to go. A shape is not one
+   of the four dimensions, so every card takes the one interface accent rather
+   than a hue standing for the shape it leads to. */
+[data-screen="index"] .shape:has(a:hover) { border-top-color: var(--accent); }
+/* The card is the link — the whole of it, not the four words at the top. The
+   overlay is the anchor's own box grown to the card, so there is one tab stop
+   per shape and it is the size of the thing it opens. */
+[data-screen="index"] .shape a { display: block; min-height: 24px;
+                                 font-weight: 700; font-size: 0.8125rem;
+                                 text-transform: uppercase; letter-spacing: 0.06em; }
+[data-screen="index"] .shape a::after { content: ""; position: absolute; inset: 0;
+                                        border-radius: var(--r-sm); }
+[data-screen="index"] .shape .says { color: var(--secondary); font-size: 0.8125rem;
+                                     text-wrap: pretty; }
+[data-screen="index"] .shape .slots { font-size: 0.75rem; color: var(--secondary);
+                                      overflow-wrap: anywhere; }
+[data-screen="index"] .shape .slots:empty { display: none; }
+
+@media (max-width: 60rem) {
+  [data-screen="index"] { padding: var(--sp-lg) var(--sp-md) var(--sp-xl); }
+  [data-screen="index"] .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  [data-screen="index"] .fig:nth-child(n+5) { grid-column: span 2; }
+}

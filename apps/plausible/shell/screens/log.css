@@ -1,0 +1,28 @@
+@import url("shared/instrument.css");
+
+/* The log itself, every column of it. Nothing here writes; the screen offers
+   no control at all, which is how "read-only" is stated rather than guarded. */
+
+[data-screen="log"] {
+  padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+[data-screen="log"] .log-page { display: grid; gap: var(--sp-md);
+                                align-content: start; }
+[data-screen="log"] .hits { overflow-x: auto; margin-top: var(--sp-sm); }
+[data-screen="log"] table { min-width: 56rem; }
+[data-screen="log"] :is(th, td) { white-space: nowrap; }
+[data-screen="log"] tbody th { color: var(--secondary); }
+[data-screen="log"] tbody td { color: var(--primary); font-size: 0.8125rem; }
+/* Twelve hundred rows are read by scanning a column, so the vertical rhythm is
+   a sliver: rows that fit in one glance are worth more than rows that are
+   comfortable one at a time. Every cell here is one line of type, because no
+   column on this screen wraps. */
+[data-screen="log"] tbody :is(th, td) { padding-top: 0.1875rem;
+                                        padding-bottom: 0.1875rem; }
+
+@media (max-width: 60rem) {
+  [data-screen="log"] { padding: var(--sp-lg) var(--sp-md) var(--sp-xl); }
+}

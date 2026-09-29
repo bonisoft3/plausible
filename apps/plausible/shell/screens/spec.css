@@ -1,0 +1,83 @@
+@import url("shared/instrument.css");
+
+/* The specification, as rows. `says` and `reads` sit in adjacent cells and are
+   never merged: a departure that could be reworded away would not be one. This
+   is the app's signature screen — the three columns are the argument — so it
+   is the one place the sheet is given real column structure rather than
+   whatever the widest cell asks for. */
+
+[data-screen="spec"] {
+  padding: var(--sp-lg) var(--sp-xl) var(--sp-xl);
+  max-width: 76rem;
+  margin: 0 auto;
+}
+
+[data-screen="spec"] .spec-page { display: grid; gap: var(--sp-lg);
+                                  align-content: start; }
+[data-screen="spec"] h1 { font-size: 1.375rem; letter-spacing: -0.015em; }
+[data-screen="spec"] table { table-layout: fixed; }
+[data-screen="spec"] tbody th { color: var(--primary); font-size: 0.75rem;
+                                overflow-wrap: anywhere; }
+[data-screen="spec"] tbody td { font-size: 0.8125rem; text-wrap: pretty; }
+
+/* Each sheet in a box of its own, and a floor under every one of them. A
+   column of this screen cannot be given up — the argument is the columns side
+   by side — so below the floor the SHEET moves sideways and the document
+   stands still. Without the floor the narrow viewport takes the width out of
+   whichever column has the shortest word in it, and the quotation a reviewer
+   came to read arrives one syllable per line. */
+[data-screen="spec"] .sheet { overflow-x: auto; }
+[data-screen="spec"] .metrics { min-width: 50rem; }
+[data-screen="spec"] .ranges { min-width: 30rem; }
+[data-screen="spec"] .questions { min-width: 54rem; }
+
+/* The two quotations are held to a fixed share of the measure so the reading
+   keeps the width it needs — it is the column that argues, and it is the one a
+   reviewer reads against the other three. */
+[data-screen="spec"] .metrics :is(th, td):nth-child(1) { width: 9rem; }
+[data-screen="spec"] .metrics :is(th, td):nth-child(2) { width: 26%; }
+[data-screen="spec"] .metrics :is(th, td):nth-child(3) { width: 26%; }
+[data-screen="spec"] .formula { white-space: pre-wrap; word-break: break-word;
+                                color: var(--primary); font-size: 0.75rem; }
+
+[data-screen="spec"] .ranges :is(th, td):nth-child(2),
+[data-screen="spec"] .ranges :is(th, td):nth-child(3) { width: 6rem; text-align: right; }
+[data-screen="spec"] .ranges :is(th, td):nth-child(4) { width: 16rem; }
+[data-screen="spec"] .pairs { list-style: none; display: flex; flex-wrap: wrap;
+                              gap: var(--sp-sm); margin: 0; padding: 0; }
+[data-screen="spec"] .pair { font-size: 0.6875rem; padding: 0.0625rem 0.375rem;
+                             color: var(--secondary);
+                             border: 1px solid var(--border);
+                             border-radius: var(--r-sm); }
+
+[data-screen="spec"] .questions :is(th, td):nth-child(1) { width: 15rem; }
+[data-screen="spec"] .questions :is(th, td):nth-child(4) { width: 15rem; }
+
+/* `departs` is an attribute the row reflects, styled here — not a data-when
+   arm, which would need a template per value and a default besides. The word
+   is a mark and its cost is the sentence beside it: a departure is a stated
+   choice, so it is set as a statement and never as an error.
+
+   The two colours are the reserved STATUS pair and never a categorical hue: a
+   hue on this screen would claim the row belongs to a breakdown dimension. A
+   question that departs from nothing is the ordinary case and so carries no
+   colour at all — colour here means a cost was paid. */
+[data-screen="spec"] .mark { color: var(--secondary); }
+[data-screen="spec"] .mark .word { display: inline-block;
+                                   padding: 0.0625rem 0.4375rem;
+                                   border: 1px solid var(--border);
+                                   border-radius: var(--r-sm);
+                                   white-space: nowrap; }
+[data-screen="spec"] .mark .why { display: block; margin-top: 2px;
+                                  font-size: 0.6875rem; }
+/* The status colour is the word AND its edge, and the ground stays the sheet's:
+   a wash of either colour behind the word roughly halves the ratio it has
+   against the surface on the dark twin, which ten-pixel type cannot pay. */
+[data-screen="spec"] .q[data-departs="approximates"] .word { color: var(--attention);
+  border-color: var(--attention); }
+[data-screen="spec"] .q[data-departs="declined"] .word { color: var(--danger);
+  border-color: var(--danger); }
+
+@media (max-width: 60rem) {
+  [data-screen="spec"] { padding: var(--sp-lg) var(--sp-md) var(--sp-xl); }
+}

@@ -1,0 +1,38 @@
+# generated from bayt.cue — do not edit
+include:
+- path: ./compose.bayt.yaml
+  required: false
+services:
+  setup:
+    extends:
+      file: ./compose.setup.yaml
+      service: apps_plausible-setup
+    profiles:
+    - setup
+  build:
+    extends:
+      file: ./compose.build.yaml
+      service: apps_plausible-build
+    profiles:
+    - build
+  launch:
+    extends:
+      file: ./compose.launch.yaml
+      service: apps_plausible-launch
+    profiles:
+    - launch
+    scale: 1
+  integrate:
+    extends:
+      file: ./compose.integrate.yaml
+      service: apps_plausible-integrate
+    profiles:
+    - integrate
+    scale: 1
+  caddy:
+    extends:
+      file: ./compose.caddy.yaml
+      service: apps_plausible-caddy
+    profiles:
+    - caddy
+    scale: 1

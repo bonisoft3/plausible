@@ -1,0 +1,55 @@
+# generated from bayt.cue — do not edit
+services:
+  apps_plausible-integrate:
+    build:
+      additional_contexts:
+        apps_plausible-launch: service:apps_plausible-launch
+        root: ../../..
+      context: ..
+      dockerfile: .bayt/Dockerfile.integrate
+      target: integrate
+      args:
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+    command:
+    - deno
+    - run
+    - --node-modules-dir=auto
+    - --allow-read
+    - --allow-write
+    - --allow-net
+    - --allow-env
+    - --allow-run
+    - --allow-sys
+    - /omnishell/check-visual.ts
+    - '.'
+    depends_on:
+      apps_plausible-launch:
+        condition: service_healthy
+        restart: true
+    environment:
+      APP_URL: http://caddy:8080
+    image: bayt-apps_plausible-integrate:${BAYT_IMAGE_TAG:-latest}
+    scale: 0
+  apps_plausible-integrate_bayt:
+    build:
+      additional_contexts:
+        apps_plausible-launch_bayt: service:apps_plausible-launch_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.integrate
+      target: integrate_bayt
+      args:
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+    image: bayt-apps_plausible-integrate_bayt:latest
+    scale: 0
+  apps_plausible-integrate_srcs:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.integrate
+      target: integrate_srcs
+      args:
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+    image: bayt-apps_plausible-integrate_srcs:latest
+    scale: 0

@@ -1,0 +1,212 @@
+/* The instrument, declared once for all six screens.
+
+   DESIGN.md argues the identity; design.css carries the tokens; this carries
+   what lies between a palette and a page — the two faces, the identity map, the
+   figure, the surface, the sheet, the segmented picker, the control ring. A
+   screen imports it and then declares its own layout, and nothing else.
+
+   Every value here comes through a token design.css declares. A colour or a
+   radius spelled out here would be a second copy of one, and the style lint
+   says so. */
+
+/* Every box measures the way its author wrote it: a padded surface inside a
+   grid column is wider than the column otherwise, which is horizontal overflow
+   on a narrow viewport. */
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  /* The two values the design block has no name for. `--face-figure` is the
+     family every figure is set in, declared here so the app states it once;
+     `--rule-inner` is the hairline between rows INSIDE a surface, one step
+     lighter than the surface's own edge so a panel reads as one object rather
+     than as a stack of boxes. */
+  --face-figure: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --rule-inner: color-mix(in oklab, var(--border) 55%, transparent);
+}
+
+/* Which hue a dimension owns, and the one declaration of it — the dashboard's
+   panel and the full-panel screen both resolve --hue here, so a source cannot be
+   one colour on one screen and another on the other. Panel ids are a seeded,
+   closed vocabulary of four, so these four rules cover every block that ever
+   carries one. DESIGN.md argues why the hue is never the quantity. */
+[data-panel="page"] { --hue: var(--series-1); }
+[data-panel="source"] { --hue: var(--series-2); }
+[data-panel="browser"] { --hue: var(--series-3); }
+[data-panel="entry_page"] { --hue: var(--series-4); }
+
+/* The chrome's face and measure, on the screen roots rather than on `body`:
+   the terminal's own navigation strip is not this app's page and keeps the
+   shell font design.css gives it. 14px is the reading size the density is
+   drawn for; every label below is a fraction of the ROOT's 16px and so is
+   unmoved by it. */
+.screen {
+  font: 400 0.875rem/1.45 system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+}
+
+/* The figure face, and the one declaration of it. Two numbers are comparable
+   at a glance only in a fixed advance — `111` is narrower than `888` in a
+   proportional face, so the eye re-finds the column on every row — and
+   `tabular-nums` is the property that asks for it by name rather than by
+   picking a family that happens to have it.
+   Identifiers ride the same face: a path, a source, a browser string and a
+   published formula are not prose, and setting them as prose invites a reader
+   to parse them as one.
+
+   Every carrier in the app is listed here, and a figure inside a sentence is
+   matched by the binding that put it there rather than by its element: the
+   sentence stays prose and the value in it does not. A screen that grows a
+   carrier adds it to this list rather than restating the face. */
+[data-metric],
+[data-live-visitors],
+.count [data-text],
+.seat-says [data-text],
+.caret-says [data-text],
+.divisor [data-text],
+.figures dd,
+.shape .slots,
+.topline dd,
+.bucket .when,
+.row .dim,
+.chip-label,
+.visits-page tbody th,
+.visits-page tbody td,
+.visit .hour,
+.full tbody th button,
+.full tbody td,
+.log-page tbody th,
+.log-page tbody td,
+.spec-page tbody th,
+.spec-page .ranges tbody td,
+.spec-page .formula,
+.spec-page .pair {
+  font-family: var(--face-figure);
+  font-variant-numeric: tabular-nums;
+}
+/* The window names its range and its grain in words the vocabulary rows carry,
+   so these two bindings are the exception the list above cannot express: they
+   sit inside a sentence and are read as part of it. */
+.seat-says .window-range,
+.seat-says .window-grain {
+  font-family: inherit;
+  font-variant-numeric: normal;
+}
+
+/* Type roles, which DESIGN.md argues: a label is heavy, upper case and widely
+   tracked, and a figure is none of the three. The one screen whose title sits
+   inside a filled block says there why it carries no edge of its own. */
+h1 { margin: 0; font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.01em;
+     text-transform: uppercase; border-bottom: 2px solid var(--primary);
+     padding-bottom: var(--sp-md); }
+/* Every label in the app is ONE role, whether it names a region, a column, a
+   figure or a unit — so it is one declaration, and a screen that grows a label
+   adds it here rather than restating the metrics. */
+h2, h3, .unit, .cell dt, .fig dt, .bucket-head, thead th, .mark .word {
+  font-size: 0.625rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--secondary);
+}
+h2, h3 { margin: 0; }
+/* Prose stays prose. A seat reports a sentence with figures in it, and upper
+   case is the naming layer's mark: applied to a sentence it says the sentence
+   is a label, which is the one thing it is not. */
+.note, .says, .sub, .count, .cursor-says, .seat, .caret-says {
+  margin: 0; color: var(--secondary); font-size: 0.8125rem;
+}
+.sub { max-width: 44rem; text-wrap: pretty; }
+
+/* A link is a target, and the floor is 24px (WCAG 2.5.8, and the size the ir's
+   test-appearance states): a link sized by its line box is 15. Inline-flex is
+   what grows the box a pointer has to land on without growing the type.
+
+   The accent rides the rule UNDER the word and never the word itself. The four
+   hues are computed against the surface as fills, not as ink: painting a
+   sentence in one puts body text at a ratio the set was never sized for. */
+a { color: var(--primary); text-decoration: underline;
+    text-decoration-color: var(--accent); text-decoration-thickness: 2px;
+    text-underline-offset: 3px; font-weight: 500;
+    display: inline-flex; align-items: center; min-height: 24px; }
+a:hover { text-decoration-color: var(--primary); }
+
+/* Controls. The terminal ships no style, so this is the whole of what a
+   button looks like in this app; a screen adds only where its own control is
+   a different shape. A control grows to the target floor above rather than the
+   type growing with it. */
+button {
+  font: inherit; font-weight: 600; color: var(--secondary); cursor: pointer;
+  background: var(--surface-muted); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 0.25rem 0.5rem; min-height: 24px;
+}
+button:hover { color: var(--primary); border-color: var(--secondary); }
+:is(button, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 1px;
+}
+
+/* The two pickers, on the two screens that carry them. One segmented strip
+   per field: the buttons share an edge, so the set reads as one control with
+   alternatives rather than as five controls.
+
+   Matched as lists, because the specification screen names its own table of
+   ranges by the same word — that word is the app's vocabulary, and only a
+   picker is ever a `ul`. */
+ul.ranges, ul.grains {
+  list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap;
+  width: fit-content; background: var(--surface-muted);
+  border: 1px solid var(--border); border-radius: var(--r-md);
+  overflow: hidden;
+}
+ul.ranges > li, ul.grains > li,
+ul.ranges form, ul.grains form { display: flex; }
+ul.ranges button, ul.grains button {
+  border: 0; border-right: 1px solid var(--border); border-radius: 0;
+  background: transparent; padding: 0.375rem 0.6875rem; min-height: 32px;
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+ul.ranges > li:last-child button, ul.grains > li:last-child button { border-right: 0; }
+ul.ranges button:hover, ul.grains button:hover { background: var(--surface); }
+/* The segment the cursor is standing on, as a FILLED BLOCK: the choice in force
+   is the same kind of mark as a panel's header, so a reader reads the control
+   the way they read the page. `aria-current` is the whole carrier: the fold
+   stamps the column, the segment binds it, and the mark is therefore in the
+   accessibility tree and in the picture at once. Nothing here changes a metric
+   of the type — a mark that made the segment wider would move the four beside
+   it every time a reader picked one. */
+ul.ranges button[aria-current="true"], ul.grains button[aria-current="true"] {
+  background: var(--accent); color: var(--block-ink);
+}
+/* Once the strip has to wrap, its segments share the line rather than leaving
+   the tail of each row as empty ground inside the control's own border. The
+   growth is unconditional because the wrap is: `fit-content` on a wrapping flex
+   container resolves to the width available, so on a line that did not wrap
+   there is no free space to distribute and nothing moves. A width breakpoint
+   here would state a guess about when the strip is too long for its container,
+   and the type metrics decide that, not the viewport. */
+ul.ranges > li, ul.grains > li,
+ul.ranges form, ul.grains form { flex: 1 1 auto; }
+ul.ranges button, ul.grains button { width: 100%; }
+
+/* A sheet: the app's three tables, which are the log, one panel in full and
+   the specification. Hairlines carry the structure and there are no vertical
+   rules at all — a ruled grid draws twelve lines to separate what alignment
+   already separates. */
+table {
+  width: 100%; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r-md);
+  border-collapse: separate; border-spacing: 0;
+}
+/* The label role above carries this row's type; what a header adds is its box. */
+thead th {
+  background: var(--surface-muted); text-align: left; vertical-align: bottom;
+  padding: 0.375rem var(--sp-md);
+  border-bottom: 1px solid var(--border);
+}
+/* The header row is the surface's top edge, so it wears the surface's corners
+   — inside the 1px border, which is what the subtraction is. */
+thead th:first-child { border-top-left-radius: calc(var(--r-md) - 1px); }
+thead th:last-child { border-top-right-radius: calc(var(--r-md) - 1px); }
+tbody th, tbody td {
+  text-align: left; vertical-align: top; padding: 0.25rem var(--sp-md);
+  border-top: 1px solid var(--rule-inner);
+}
+tbody th { font-weight: 400; color: var(--secondary); }
+tbody tr:first-child :is(th, td) { border-top: 0; }

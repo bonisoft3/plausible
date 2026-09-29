@@ -1,0 +1,37 @@
+# generated from bayt.cue — do not edit
+services:
+  apps_plausible-build:
+    build:
+      additional_contexts:
+        apps_plausible-setup: service:apps_plausible-setup
+      context: ..
+      dockerfile: .bayt/Dockerfile.build
+      target: build
+      args:
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+    image: bayt-apps_plausible-build:${BAYT_IMAGE_TAG:-latest}
+    scale: 0
+  apps_plausible-build_bayt:
+    build:
+      additional_contexts:
+        apps_plausible-setup_bayt: service:apps_plausible-setup_bayt
+        workspaceroot-setup_bayt: service:workspaceroot-setup_bayt
+      context: ..
+      dockerfile: .bayt/Dockerfile.build
+      target: build_bayt
+      args:
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+    image: bayt-apps_plausible-build_bayt:latest
+    scale: 0
+  apps_plausible-build_srcs:
+    build:
+      context: ..
+      dockerfile: .bayt/Dockerfile.build
+      target: build_srcs
+      args:
+        BUILDKIT_SYNTAX: >-
+          docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+    image: bayt-apps_plausible-build_srcs:latest
+    scale: 0
